@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="6dp"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_avt_item_list_chats"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
+        android:src="@drawable/ic_person_green_24"
+        app:civ_border_color="@color/green_main"
+        app:civ_border_width="1dp" />
+
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:layout_marginStart="6dp"
+        android:layout_toEndOf="@id/img_avt_item_list_chats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:padding="5dp"
+            android:id="@+id/tv_name_item_list_chats"
+            android:fontFamily="@font/rubik_medium"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tv_mess_item_list_chats"
+            android:padding="5dp"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:fontFamily="@font/rubik_medium" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

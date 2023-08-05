@@ -48,6 +48,8 @@ class SigninFragment : Fragment() {
         val strPass = binding.edtPasswordSignIn.text.toString().trim()
         if (isValidEmail(strEmail) && isValidPassword(strPass)) {
             Toast.makeText(requireContext(), "Done", Toast.LENGTH_LONG).show()
+            requireView().findNavController().popBackStack(R.id.login_navigation, true)
+            requireView().findNavController().navigate(R.id.home_navigation)
         }
     }
 
