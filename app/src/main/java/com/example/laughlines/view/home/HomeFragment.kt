@@ -29,9 +29,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
-        val list : List<Chat> = listOf(Chat(1,"a", "Dungx", "Dungx"),
-            Chat(2,"a", "Dungx", "Dungx"), Chat(3,"a", "Dungx", "Dungx")
-        , Chat(4,"a", "Dungx", "Dungx"), Chat(5,"a", "Dungx", "Dungx"))
+        val list : List<Chat> = listOf(Chat(1,"https://lh3.googleusercontent.com/a/AAcHTteWaWnNamX2PqjWcq2robLtpQXoJcvfo6DPYjjPtDNkOLs=s96-c", "Dungx", "Dungx"),
+            Chat(2,"https://lh3.googleusercontent.com/a/AAcHTteWaWnNamX2PqjWcq2robLtpQXoJcvfo6DPYjjPtDNkOLs=s96-c", "Dungx", "Dungx")
+            , Chat(3,"https://lh3.googleusercontent.com/a/AAcHTteWaWnNamX2PqjWcq2robLtpQXoJcvfo6DPYjjPtDNkOLs=s96-c", "Dungx", "Dungx")
+        , Chat(4,"https://lh3.googleusercontent.com/a/AAcHTteWaWnNamX2PqjWcq2robLtpQXoJcvfo6DPYjjPtDNkOLs=s96-c", "Dungx", "Dungx")
+            , Chat(5,"https://lh3.googleusercontent.com/a/AAcHTteWaWnNamX2PqjWcq2robLtpQXoJcvfo6DPYjjPtDNkOLs=s96-c", "Dungx", "Dungx"))
         val chatAdapter = ChatAdapter(Chat.ChatDiffUtil)
         chatAdapter.submitList(list)
         binding.rcvListChatHome.adapter = chatAdapter

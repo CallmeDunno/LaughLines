@@ -1,20 +1,29 @@
 package com.example.laughlines.view.login
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.laughlines.MainActivity
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentSigninBinding
+import com.example.laughlines.log.Logger
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class SigninFragment : Fragment() {
 
     private var _binding: FragmentSigninBinding? = null
     private val binding get() = _binding!!
+    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +56,53 @@ class SigninFragment : Fragment() {
         val strEmail = binding.edtEmailSignIn.text.toString().trim()
         val strPass = binding.edtPasswordSignIn.text.toString().trim()
         if (isValidEmail(strEmail) && isValidPassword(strPass)) {
-            Toast.makeText(requireContext(), "Done", Toast.LENGTH_LONG).show()
-            requireView().findNavController().popBackStack(R.id.login_navigation, true)
-            requireView().findNavController().navigate(R.id.home_navigation)
+            signIn(strEmail, strPass)
+        }
+    }
+
+    private fun signIn(email: String, password: String) {
+        fAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    if (binding.cbRememberSignIn.isChecked) saveDataToSharePreferences(email)
+                    requireView().findNavController().popBackStack(R.id.login_navigation, true)
+                    requireView().findNavController().navigate(R.id.home_navigation)
+                }
+            }
+            .addOnFailureListener {
+                showDialogSignInFail()
+            }
+    }
+
+    private fun showDialogSignInFail() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_sign_in_fail)
+        dialog.setCanceledOnTouchOutside(false)
+        val window = dialog.window ?: return
+        window.setGravity(Gravity.CENTER)
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.findViewById<Button>(R.id.btn_ok_dialog_sign_in_fail).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun saveDataToSharePreferences(email: String) {
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        val ioScope = scope.launch {
+            val s = MainActivity.sharedPref.edit()
+            s.clear()
+            s.putString("email", email)
+            s.apply()
+        }
+        ioScope.invokeOnCompletion {
+            Logger.d("Save data successfully")
         }
     }
 
@@ -60,13 +113,11 @@ class SigninFragment : Fragment() {
             return false
         }
 
-        if (s.length < 8){
+        if (s.length < 8) {
             setTextWarning(2, "Password must be at least 8 characters")
             stateVisibleWarning(2, true)
             return false
         }
-
-        //compare to email's account that get from database for checking exist email
 
         stateVisibleWarning(2, false)
         return true
@@ -78,8 +129,6 @@ class SigninFragment : Fragment() {
             stateVisibleWarning(1, true)
             return false
         }
-
-        //compare to list account that get from database for checking exist email
 
         if (!s.matches(Regex("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}\$"))) {
             setTextWarning(1, "Invalid email")

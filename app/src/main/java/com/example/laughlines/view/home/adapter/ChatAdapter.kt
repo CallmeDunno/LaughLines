@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.laughlines.databinding.ItemListChatsHomeBinding
 import com.example.laughlines.view.home.data.Chat
 
@@ -35,6 +36,7 @@ class ChatAdapter(diffUtil: DiffUtil.ItemCallback<Chat>) :
                 itemView.setOnClickListener {
                     iChatIemClick.onClickChatItem(chat)
                 }
+                Glide.with(itemView).load(chat.avatarUrl).into(imgAvtItemListChats)
                 tvMessItemListChats.text = chat.message
                 tvNameItemListChats.text = chat.name
             }
