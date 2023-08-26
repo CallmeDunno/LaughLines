@@ -10,7 +10,7 @@
         app:startDestination="@id/loginFragment">
         <fragment
             android:id="@+id/loginFragment"
-            android:name="com.example.laughlines.view.login.LoginFragment"
+            android:name="com.example.laughlines.view.start.LoginFragment"
             android:label="fragment_login"
             tools:layout="@layout/fragment_login">
             <action
@@ -22,7 +22,7 @@
         </fragment>
         <fragment
             android:id="@+id/registerFragment"
-            android:name="com.example.laughlines.view.login.RegisterFragment"
+            android:name="com.example.laughlines.view.register.RegisterFragment"
             android:label="fragment_register"
             tools:layout="@layout/fragment_register">
             <action
@@ -31,7 +31,7 @@
         </fragment>
         <fragment
             android:id="@+id/signinFragment"
-            android:name="com.example.laughlines.view.login.SigninFragment"
+            android:name="com.example.laughlines.view.signin.SigninFragment"
             android:label="fragment_signin"
             tools:layout="@layout/fragment_signin">
             <action
@@ -56,6 +56,9 @@
             <action
                 android:id="@+id/action_homeFragment_to_friendsListFragment"
                 app:destination="@id/friendsListFragment" />
+            <action
+                android:id="@+id/action_homeFragment_to_chatFragment"
+                app:destination="@id/chatFragment" />
         </fragment>
         <fragment
             android:id="@+id/profileFragment"
@@ -70,6 +73,25 @@
             android:id="@+id/friendsListFragment"
             android:name="com.example.laughlines.view.friends.FriendsListFragment"
             android:label="fragment_friends_list"
-            tools:layout="@layout/fragment_friends_list" />
+            tools:layout="@layout/fragment_friends_list" >
+            <action
+                android:id="@+id/action_friendsListFragment_to_chatFragment"
+                app:destination="@id/chatFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/chatFragment"
+            android:name="com.example.laughlines.view.chat.ChatFragment"
+            android:label="fragment_chat"
+            tools:layout="@layout/fragment_chat" >
+            <argument
+                android:name="cid"
+                app:argType="string" />
+            <argument
+                android:name="fid"
+                app:argType="string" />
+            <argument
+                android:name="uid"
+                app:argType="string" />
+        </fragment>
     </navigation>
 </navigation>

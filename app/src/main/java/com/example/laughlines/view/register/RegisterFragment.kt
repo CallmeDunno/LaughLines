@@ -1,17 +1,21 @@
-package com.example.laughlines.view.login
+package com.example.laughlines.view.register
 
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentRegisterBinding
 import com.example.laughlines.log.Logger
-import com.example.laughlines.view.login.data.User
+import com.example.laughlines.model.Account
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -39,11 +43,21 @@ class RegisterFragment : Fragment() {
 
     private fun initAction() {
         binding.apply {
+
+            root.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    hideKeyboard(root)
+                }
+                false
+            }
+
             btnBackRegister.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSignInRegister.setOnClickListener {
-                requireView().findNavController().popBackStack()
-                requireView().findNavController()
-                    .navigate(R.id.action_loginFragment_to_signinFragment)
+                requireView().findNavController().popBackStack(
+                    R.id.action_loginFragment_to_signinFragment,
+                    inclusive = false,
+                    saveState = true
+                )
             }
             btnCreateAccountRegister.setOnClickListener {
                 isValid()
@@ -71,7 +85,11 @@ class RegisterFragment : Fragment() {
                 if (it.isSuccessful) {
                     val uid = it.result.user?.uid ?: ""
                     saveUserToFireStore(uid, name, email, password)
-                    Toast.makeText(requireContext(), "You have successfully registered an account!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "You have successfully registered an account!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             .addOnFailureListener {
@@ -87,9 +105,9 @@ class RegisterFragment : Fragment() {
             .addOnCompleteListener { result ->
                 if (result.isSuccessful) {
                     if (result.result.isEmpty) {
-                        val user = User(uid, name, email, password, null)
+                        val account = Account(uid, name, email, password, null)
                         fDb.collection("User")
-                            .add(user)
+                            .add(account)
                             .addOnCompleteListener { document ->
                                 if (document.isSuccessful) Logger.d("Save user to FireStore successfully")
                             }
@@ -191,6 +209,11 @@ class RegisterFragment : Fragment() {
             3 -> binding.tvWarning3Register.text = s
             4 -> binding.tvWarning4Register.text = s
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

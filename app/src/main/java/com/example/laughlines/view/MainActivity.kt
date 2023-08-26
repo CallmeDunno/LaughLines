@@ -1,4 +1,4 @@
-package com.example.laughlines
+package com.example.laughlines.view
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.laughlines.R
 import com.example.laughlines.databinding.ActivityMainBinding
 import com.example.laughlines.log.Logger
 import com.google.firebase.auth.FirebaseAuth
@@ -27,9 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initView()
-
     }
 
     override fun onStart() {
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             val u = fAuth.currentUser
             u?.let {
-                Logger.d("${it.email}")
+                Logger.d(it.uid)
             }
             navController.popBackStack(R.id.login_navigation, true)
             navController.navigate(R.id.home_navigation)
@@ -63,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id){
                 R.id.loginFragment -> binding.bottomNavigationView.visibility = View.GONE
                 R.id.homeFragment -> binding.bottomNavigationView.visibility = View.VISIBLE
+                R.id.chatFragment -> binding.bottomNavigationView.visibility = View.GONE
             }
         }
     }

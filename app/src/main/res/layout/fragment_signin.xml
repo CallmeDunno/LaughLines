@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.login.SigninFragment">
+    tools:context=".view.signin.SigninFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -212,7 +212,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/btn_register_sign_in"
+                android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

@@ -1,4 +1,4 @@
-package com.example.laughlines.view.login
+package com.example.laughlines.view.start
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentLoginBinding
 import com.example.laughlines.log.Logger
-import com.example.laughlines.view.login.data.User
+import com.example.laughlines.model.Account
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -100,9 +100,9 @@ class LoginFragment : Fragment() {
                 .addOnCompleteListener { result ->
                     if (result.isSuccessful) {
                         if (result.result.isEmpty) {
-                            val user = User(uid, name!!, email!!, null, avatarUrl)
+                            val account = Account(uid, name!!, email!!, null, avatarUrl)
                             fDb.collection("User")
-                                .add(user)
+                                .add(account)
                                 .addOnCompleteListener { document ->
                                     if (document.isSuccessful) Logger.d("Save user to FireStore successfully")
                                 }

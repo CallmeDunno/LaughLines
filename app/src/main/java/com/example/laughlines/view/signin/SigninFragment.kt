@@ -1,23 +1,21 @@
-package com.example.laughlines.view.login
+package com.example.laughlines.view.signin
 
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.laughlines.MainActivity
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentSigninBinding
-import com.example.laughlines.log.Logger
+import com.example.laughlines.view.MainActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class SigninFragment : Fragment() {
 
@@ -38,16 +36,27 @@ class SigninFragment : Fragment() {
         initAction()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initAction() {
         binding.apply {
+
+            root.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    hideKeyboard(root)
+                }
+                false
+            }
+
             btnBackSignIn.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSignIn.setOnClickListener {
                 isValid()
             }
-            btnRegisterSignIn.setOnClickListener {
-                requireView().findNavController().popBackStack()
-                requireView().findNavController()
-                    .navigate(R.id.action_loginFragment_to_registerFragment)
+            btnRegister.setOnClickListener {
+                requireView().findNavController().popBackStack(
+                    R.id.action_loginFragment_to_registerFragment,
+                    inclusive = false,
+                    saveState = true
+                )
             }
         }
     }
@@ -94,16 +103,10 @@ class SigninFragment : Fragment() {
     }
 
     private fun saveDataToSharePreferences(email: String) {
-        val scope = CoroutineScope(Job() + Dispatchers.IO)
-        val ioScope = scope.launch {
-            val s = MainActivity.sharedPref.edit()
-            s.clear()
-            s.putString("email", email)
-            s.apply()
-        }
-        ioScope.invokeOnCompletion {
-            Logger.d("Save data successfully")
-        }
+        val s = MainActivity.sharedPref.edit()
+        s.clear()
+        s.putString("email", email)
+        s.apply()
     }
 
     private fun isValidPassword(s: String): Boolean {
@@ -153,6 +156,11 @@ class SigninFragment : Fragment() {
     private fun setTextWarning(t: Int, s: String) {
         if (t == 1) binding.tvWarning1SignIn.text = s
         else binding.tvWarning2SignIn.text = s
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

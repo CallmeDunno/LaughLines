@@ -1,13 +1,12 @@
-package com.example.laughlines
+package com.example.laughlines.view.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
-import com.example.laughlines.databinding.ActivitySplashBinding
-import com.example.laughlines.log.Logger
+import com.example.laughlines.R
+import com.example.laughlines.view.MainActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {

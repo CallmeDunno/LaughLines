@@ -1,6 +1,6 @@
-package com.example.laughlines.view.login.data
+package com.example.laughlines.model
 
-data class User(
+data class Account(
     val id: String,
     val name: String,
     val email: String,
