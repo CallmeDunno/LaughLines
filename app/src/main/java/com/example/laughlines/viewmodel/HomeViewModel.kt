@@ -5,26 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laughlines.data.repo.HomeRepository
 import com.example.laughlines.model.Friend
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-    private val repository = HomeRepository()
-
-//    fun getAccountList(): MutableLiveData<List<User>> {
-//        val mutableLiveData = MutableLiveData<List<User>>()
-//        val list = ArrayList<User>()
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val def = async {
-//                for (doc in repository.getAllAccount()) {
-//
-//                }
-//                return@async list
-//            }
-//            mutableLiveData.postValue(def.await())
-//        }
-//        return mutableLiveData
-//    }
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
 
     fun fetchFriendList(uid: String): MutableLiveData<List<Friend>> {
         val mutableLiveData = MutableLiveData<List<Friend>>()

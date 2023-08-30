@@ -21,17 +21,20 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class StartFragment : Fragment() {
 
     private val GOOGLE_SIGN_IN_CLIENT_CODE = 100
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
     private lateinit var client: GoogleSignInClient
-    private val fDb = Firebase.firestore
-    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Inject lateinit var fDb: FirebaseFirestore
+    @Inject lateinit var fAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

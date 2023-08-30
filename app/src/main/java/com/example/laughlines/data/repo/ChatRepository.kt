@@ -5,13 +5,11 @@ import com.example.laughlines.log.Logger
 import com.example.laughlines.model.Friend
 import com.example.laughlines.model.Messages
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class ChatRepository {
-
-    private val fDb = Firebase.firestore
+class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore) {
 
     fun getFriend(fid: String, cid: String): MutableLiveData<Friend> {
         val mutableLiveData = MutableLiveData<Friend>()

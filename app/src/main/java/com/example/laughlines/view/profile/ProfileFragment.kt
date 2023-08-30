@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentProfileBinding
-import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding : FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val fAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

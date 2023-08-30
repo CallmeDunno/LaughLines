@@ -13,14 +13,18 @@ import com.example.laughlines.model.Friend
 import com.example.laughlines.view.home.adapter.FriendAdapter
 import com.example.laughlines.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val friendAdapter by lazy { FriendAdapter() }
     private val viewModel by viewModels<HomeViewModel>()
+
+    @Inject lateinit var fAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

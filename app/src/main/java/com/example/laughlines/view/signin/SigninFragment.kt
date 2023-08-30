@@ -16,12 +16,16 @@ import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentSigninBinding
 import com.example.laughlines.view.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SigninFragment : Fragment() {
 
     private var _binding: FragmentSigninBinding? = null
     private val binding get() = _binding!!
-    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Inject lateinit var fAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

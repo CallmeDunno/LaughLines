@@ -18,9 +18,11 @@ import com.example.laughlines.model.DateTime
 import com.example.laughlines.model.Messages
 import com.example.laughlines.view.chat.adapter.ChatAdapter
 import com.example.laughlines.viewmodel.ChatViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class ChatFragment : Fragment() {
 
     private var _itemBinding: FragmentChatBinding? = null

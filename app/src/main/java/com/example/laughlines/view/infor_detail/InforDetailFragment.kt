@@ -13,7 +13,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.laughlines.databinding.FragmentInforDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InforDetailFragment : Fragment() {
 
     private var _binding: FragmentInforDetailBinding? = null
@@ -42,7 +44,6 @@ class InforDetailFragment : Fragment() {
                 }
                 false
             }
-            0
 
             btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSave.setOnClickListener { requireView().findNavController().popBackStack() }

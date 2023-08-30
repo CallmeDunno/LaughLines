@@ -17,15 +17,18 @@ import com.example.laughlines.databinding.FragmentRegisterBinding
 import com.example.laughlines.log.Logger
 import com.example.laughlines.model.Account
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private val fDb = Firebase.firestore
-    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Inject lateinit var fDb : FirebaseFirestore
+    @Inject lateinit var fAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

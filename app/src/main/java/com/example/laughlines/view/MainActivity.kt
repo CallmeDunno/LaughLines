@@ -11,14 +11,18 @@ import com.example.laughlines.R
 import com.example.laughlines.databinding.ActivityMainBinding
 import com.example.laughlines.log.Logger
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private var _navController: NavController? = null
     private val navController get() = _navController!!
-    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Inject lateinit var fAuth: FirebaseAuth
 
     companion object {
         lateinit var sharedPref : SharedPreferences

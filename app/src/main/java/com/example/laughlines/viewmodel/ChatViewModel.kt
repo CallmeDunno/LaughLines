@@ -6,11 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.laughlines.data.repo.ChatRepository
 import com.example.laughlines.model.Friend
 import com.example.laughlines.model.Messages
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatViewModel : ViewModel() {
-
-    private val repository = ChatRepository()
+@HiltViewModel
+class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
     fun fetchMessage(cid: String): MutableLiveData<List<Messages>> {
         var mutableLiveData = MutableLiveData<List<Messages>>()
