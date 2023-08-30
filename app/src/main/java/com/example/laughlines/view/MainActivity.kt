@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (getDataInSharePreference() == null && fAuth.currentUser == null) {
+        if (getDataInSharePreference() == null) {
             navController.popBackStack(R.id.home_navigation, true)
             navController.navigate(R.id.login_navigation)
         } else {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getDataInSharePreference() : String? {
-        return sharedPref.getString("email", null)
+        return sharedPref.getString("uid", null)
     }
 
     private fun initView() {
@@ -60,9 +60,12 @@ class MainActivity : AppCompatActivity() {
         // Handler event when change destination
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id){
-                R.id.loginFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.startFragment -> binding.bottomNavigationView.visibility = View.GONE
                 R.id.homeFragment -> binding.bottomNavigationView.visibility = View.VISIBLE
                 R.id.chatFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.profileFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.inforDetailFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.changePasswordDetailFragment -> binding.bottomNavigationView.visibility = View.GONE
             }
         }
     }

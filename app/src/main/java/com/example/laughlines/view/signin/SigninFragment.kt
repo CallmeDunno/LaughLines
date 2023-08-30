@@ -53,7 +53,7 @@ class SigninFragment : Fragment() {
             }
             btnRegister.setOnClickListener {
                 requireView().findNavController().popBackStack(
-                    R.id.action_loginFragment_to_registerFragment,
+                    R.id.action_startFragment_to_registerFragment,
                     inclusive = false,
                     saveState = true
                 )
@@ -73,7 +73,7 @@ class SigninFragment : Fragment() {
         fAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    if (binding.cbRememberSignIn.isChecked) saveDataToSharePreferences(email)
+                    if (binding.cbRememberSignIn.isChecked) saveDataToSharePreferences()
                     requireView().findNavController().popBackStack(R.id.login_navigation, true)
                     requireView().findNavController().navigate(R.id.home_navigation)
                 }
@@ -102,11 +102,14 @@ class SigninFragment : Fragment() {
         dialog.show()
     }
 
-    private fun saveDataToSharePreferences(email: String) {
-        val s = MainActivity.sharedPref.edit()
-        s.clear()
-        s.putString("email", email)
-        s.apply()
+    private fun saveDataToSharePreferences(){
+        val u = fAuth.currentUser
+        u?.let {
+            val s = MainActivity.sharedPref.edit()
+            s.clear()
+            s.putString("uid", it.uid)
+            s.apply()
+        }
     }
 
     private fun isValidPassword(s: String): Boolean {

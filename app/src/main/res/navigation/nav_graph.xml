@@ -7,17 +7,17 @@
 
     <navigation
         android:id="@+id/login_navigation"
-        app:startDestination="@id/loginFragment">
+        app:startDestination="@id/startFragment">
         <fragment
-            android:id="@+id/loginFragment"
-            android:name="com.example.laughlines.view.start.LoginFragment"
+            android:id="@+id/startFragment"
+            android:name="com.example.laughlines.view.start.StartFragment"
             android:label="fragment_login"
-            tools:layout="@layout/fragment_login">
+            tools:layout="@layout/fragment_start">
             <action
-                android:id="@+id/action_loginFragment_to_signinFragment"
+                android:id="@+id/action_startFragment_to_signinFragment"
                 app:destination="@id/signinFragment" />
             <action
-                android:id="@+id/action_loginFragment_to_registerFragment"
+                android:id="@+id/action_startFragment_to_registerFragment"
                 app:destination="@id/registerFragment" />
         </fragment>
         <fragment
@@ -26,8 +26,8 @@
             android:label="fragment_register"
             tools:layout="@layout/fragment_register">
             <action
-                android:id="@+id/action_registerFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                android:id="@+id/action_registerFragment_to_startFragment"
+                app:destination="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/signinFragment"
@@ -38,8 +38,8 @@
                 android:id="@+id/action_global_homeFragment"
                 app:destination="@id/home_navigation"/>
             <action
-                android:id="@+id/action_signinFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                android:id="@+id/action_signinFragment_to_startFragment"
+                app:destination="@id/startFragment" />
         </fragment>
     </navigation>
     <navigation
@@ -68,6 +68,12 @@
             <action
                 android:id="@+id/action_global_login_navigation"
                 app:destination="@id/login_navigation" />
+            <action
+                android:id="@+id/action_profileFragment_to_inforDetailFragment"
+                app:destination="@id/inforDetailFragment" />
+            <action
+                android:id="@+id/action_profileFragment_to_changePasswordDetailFragment"
+                app:destination="@id/changePasswordDetailFragment" />
         </fragment>
         <fragment
             android:id="@+id/friendsListFragment"
@@ -93,5 +99,15 @@
                 android:name="uid"
                 app:argType="string" />
         </fragment>
+        <fragment
+            android:id="@+id/inforDetailFragment"
+            android:name="com.example.laughlines.view.infor_detail.InforDetailFragment"
+            android:label="fragment_infor_detail"
+            tools:layout="@layout/fragment_infor_detail" />
+        <fragment
+            android:id="@+id/changePasswordDetailFragment"
+            android:name="com.example.laughlines.view.change_pass_detail.ChangePasswordDetailFragment"
+            android:label="fragment_change_password_detail"
+            tools:layout="@layout/fragment_change_password_detail" />
     </navigation>
 </navigation>

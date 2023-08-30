@@ -10,9 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.laughlines.R
-import com.example.laughlines.databinding.FragmentLoginBinding
+import com.example.laughlines.databinding.FragmentStartBinding
 import com.example.laughlines.log.Logger
 import com.example.laughlines.model.Account
+import com.example.laughlines.view.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -23,10 +24,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class LoginFragment : Fragment() {
+class StartFragment : Fragment() {
 
     private val GOOGLE_SIGN_IN_CLIENT_CODE = 100
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
     private lateinit var client: GoogleSignInClient
     private val fDb = Firebase.firestore
@@ -36,7 +37,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,10 +57,10 @@ class LoginFragment : Fragment() {
                 startActivityForResult(client.signInIntent, GOOGLE_SIGN_IN_CLIENT_CODE)
             }
             btnLoginWithEmail.setOnClickListener {
-                findNavController().navigate(R.id.action_loginFragment_to_signinFragment)
+                findNavController().navigate(R.id.action_startFragment_to_signinFragment)
             }
             tvRegisterLogIn.setOnClickListener {
-                findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                findNavController().navigate(R.id.action_startFragment_to_registerFragment)
             }
         }
     }
@@ -76,6 +77,7 @@ class LoginFragment : Fragment() {
                         if (it.isSuccessful) {
                             val user = fAuth.currentUser
                             saveUserToFireStore(user)
+                            saveDataToSharePreferences(user)
                             requireView().findNavController()
                                 .popBackStack(R.id.login_navigation, true)
                             requireView().findNavController().navigate(R.id.home_navigation)
@@ -85,6 +87,15 @@ class LoginFragment : Fragment() {
                         Logger.e("Login with Google account failure")
                     }
             }
+        }
+    }
+
+    private fun saveDataToSharePreferences(u: FirebaseUser?) {
+        u?.let {
+            val s = MainActivity.sharedPref.edit()
+            s.clear()
+            s.putString("uid", it.uid)
+            s.apply()
         }
 
     }

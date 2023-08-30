@@ -3,17 +3,27 @@ package com.example.laughlines.view.home.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.laughlines.databinding.ItemUserBinding
+import com.example.laughlines.databinding.ItemFriendBinding
 import com.example.laughlines.listener.IClickItem
 import com.example.laughlines.model.Friend
 
 
-class FriendAdapter(diffUtil: DiffUtil.ItemCallback<Friend>) :
-    ListAdapter<Friend, FriendAdapter.FriendVH>(diffUtil) {
+class FriendAdapter : ListAdapter<Friend, FriendAdapter.FriendVH>(AsyncDifferConfig.Builder(object :
+    DiffUtil.ItemCallback<Friend>() {
+    override fun areItemsTheSame(oldItem: Friend, newItem: Friend): Boolean {
+        return oldItem.fid == newItem.fid
+    }
+
+    override fun areContentsTheSame(oldItem: Friend, newItem: Friend): Boolean {
+        return oldItem == newItem
+    }
+
+}).build()) {
 
     private lateinit var iClickItem: IClickItem
 
@@ -23,7 +33,7 @@ class FriendAdapter(diffUtil: DiffUtil.ItemCallback<Friend>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendVH {
         val itemBinding =
-            ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemFriendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FriendVH(itemBinding, iClickItem)
     }
 
@@ -33,10 +43,10 @@ class FriendAdapter(diffUtil: DiffUtil.ItemCallback<Friend>) :
         }
     }
 
-    inner class FriendVH(itemBinding: ItemUserBinding, private val iClickItem: IClickItem) :
+    inner class FriendVH(itemBinding: ItemFriendBinding, private val iClickItem: IClickItem) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        private var _itemBinding: ItemUserBinding? = null
+        private var _itemBinding: ItemFriendBinding? = null
         private val itemBinding get() = _itemBinding!!
 
         init {

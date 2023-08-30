@@ -1,5 +1,6 @@
 package com.example.laughlines.view.register
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
@@ -15,7 +16,6 @@ import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentRegisterBinding
 import com.example.laughlines.log.Logger
 import com.example.laughlines.model.Account
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -41,6 +41,7 @@ class RegisterFragment : Fragment() {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initAction() {
         binding.apply {
 
@@ -54,7 +55,7 @@ class RegisterFragment : Fragment() {
             btnBackRegister.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSignInRegister.setOnClickListener {
                 requireView().findNavController().popBackStack(
-                    R.id.action_loginFragment_to_signinFragment,
+                    R.id.action_startFragment_to_signinFragment,
                     inclusive = false,
                     saveState = true
                 )
