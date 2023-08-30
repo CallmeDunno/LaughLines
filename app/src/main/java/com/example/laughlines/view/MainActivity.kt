@@ -11,7 +11,9 @@ import com.example.laughlines.R
 import com.example.laughlines.databinding.ActivityMainBinding
 import com.example.laughlines.log.Logger
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null

@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.laughlines.data.repo.HomeRepository
 import com.example.laughlines.model.Friend
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-    private val repository = HomeRepository()
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repository : HomeRepository) : ViewModel() {
 
 //    fun getAccountList(): MutableLiveData<List<User>> {
 //        val mutableLiveData = MutableLiveData<List<User>>()

@@ -2,10 +2,9 @@ package com.example.laughlines.data.repo
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class HomeRepository {
-
-    private val fDb = FirebaseFirestore.getInstance()
+class HomeRepository @Inject constructor(private val fDb: FirebaseFirestore) {
 
     suspend fun getUserById(id: String) = fDb.collection("User")
         .whereEqualTo("id", id)
