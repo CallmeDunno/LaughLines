@@ -1,6 +1,5 @@
 package com.example.laughlines.view
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.ActivityMainBinding
-import com.example.laughlines.log.Logger
-import com.google.firebase.auth.FirebaseAuth
+import com.example.laughlines.utils.SharedPreferencesManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,11 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var _navController: NavController? = null
     private val navController get() = _navController!!
 
-    @Inject lateinit var fAuth: FirebaseAuth
-
-    companion object {
-        lateinit var sharedPref : SharedPreferences
-    }
+    @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,26 +31,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (getDataInSharePreference() == null) {
+        if (sharedPreManager.getString("uid").equals("")) {
             navController.popBackStack(R.id.home_navigation, true)
             navController.navigate(R.id.login_navigation)
         } else {
-            val u = fAuth.currentUser
-            u?.let {
-                Logger.d(it.uid)
-            }
             navController.popBackStack(R.id.login_navigation, true)
             navController.navigate(R.id.home_navigation)
         }
     }
 
-    private fun getDataInSharePreference() : String? {
-        return sharedPref.getString("uid", null)
-    }
-
     private fun initView() {
-        sharedPref = getSharedPreferences("data_user", MODE_PRIVATE)
-
         // Set up Nav Controller for BottomNavigationView
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
         _navController = navHostFragment.navController

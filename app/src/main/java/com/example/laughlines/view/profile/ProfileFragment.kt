@@ -8,13 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentProfileBinding
+import com.example.laughlines.log.Logger
+import com.example.laughlines.utils.SharedPreferencesManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding : FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +31,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Logger.d(sharedPreManager.getString("uid").toString())
         initAction()
     }
 

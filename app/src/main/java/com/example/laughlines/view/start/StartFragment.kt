@@ -7,21 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentStartBinding
 import com.example.laughlines.log.Logger
-import com.example.laughlines.model.Account
-import com.example.laughlines.view.MainActivity
+import com.example.laughlines.utils.SharedPreferencesManager
+import com.example.laughlines.utils.UiState
+import com.example.laughlines.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -32,9 +31,9 @@ class StartFragment : Fragment() {
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
     private lateinit var client: GoogleSignInClient
+    private val viewModel by viewModels<LoginViewModel>()
 
-    @Inject lateinit var fDb: FirebaseFirestore
-    @Inject lateinit var fAuth: FirebaseAuth
+    @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,60 +74,20 @@ class StartFragment : Fragment() {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val account = task.getResult(ApiException::class.java)
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                fAuth.signInWithCredential(credential)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            val user = fAuth.currentUser
-                            saveUserToFireStore(user)
-                            saveDataToSharePreferences(user)
+                viewModel.signInWithCredential(credential).observe(viewLifecycleOwner){
+                    when(it){
+                        is UiState.Success -> {
+                            sharedPreManager.putString("uid", it.data.uid)
+                            Logger.e(it.data.uid)
+                            viewModel.saveUserToFireStore(it.data)
                             requireView().findNavController()
                                 .popBackStack(R.id.login_navigation, true)
                             requireView().findNavController().navigate(R.id.home_navigation)
                         }
+                        is UiState.Failure -> { Logger.e(it.message.toString()) }
                     }
-                    .addOnFailureListener {
-                        Logger.e("Login with Google account failure")
-                    }
+                }
             }
-        }
-    }
-
-    private fun saveDataToSharePreferences(u: FirebaseUser?) {
-        u?.let {
-            val s = MainActivity.sharedPref.edit()
-            s.clear()
-            s.putString("uid", it.uid)
-            s.apply()
-        }
-
-    }
-
-    private fun saveUserToFireStore(u: FirebaseUser?) {
-        u?.let {
-            val name = it.displayName
-            val email = it.email
-            val avatarUrl = it.photoUrl.toString()
-            val uid = it.uid
-            fDb.collection("User").whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener { result ->
-                    if (result.isSuccessful) {
-                        if (result.result.isEmpty) {
-                            val account = Account(uid, name!!, email!!, null, avatarUrl)
-                            fDb.collection("User")
-                                .add(account)
-                                .addOnCompleteListener { document ->
-                                    if (document.isSuccessful) Logger.d("Save user to FireStore successfully")
-                                }
-                                .addOnFailureListener { e ->
-                                    Logger.e("Save user to FireStore failure with ${e.message}")
-                                }
-                        }
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Logger.e("Fail ${exception.message}")
-                }
         }
     }
 

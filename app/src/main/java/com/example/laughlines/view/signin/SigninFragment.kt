@@ -11,11 +11,13 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentSigninBinding
-import com.example.laughlines.view.MainActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.example.laughlines.utils.SharedPreferencesManager
+import com.example.laughlines.utils.UiState
+import com.example.laughlines.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -24,8 +26,10 @@ class SigninFragment : Fragment() {
 
     private var _binding: FragmentSigninBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<LoginViewModel>()
 
-    @Inject lateinit var fAuth: FirebaseAuth
+    @Inject
+    lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,16 +49,12 @@ class SigninFragment : Fragment() {
         binding.apply {
 
             root.setOnTouchListener { _, event ->
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    hideKeyboard(root)
-                }
+                if (event.action == MotionEvent.ACTION_DOWN) { hideKeyboard(root) }
                 false
             }
 
             btnBackSignIn.setOnClickListener { requireView().findNavController().popBackStack() }
-            btnSignIn.setOnClickListener {
-                isValid()
-            }
+            btnSignIn.setOnClickListener { isValid() }
             btnRegister.setOnClickListener {
                 requireView().findNavController().popBackStack(
                     R.id.action_startFragment_to_registerFragment,
@@ -69,22 +69,21 @@ class SigninFragment : Fragment() {
         val strEmail = binding.edtEmailSignIn.text.toString().trim()
         val strPass = binding.edtPasswordSignIn.text.toString().trim()
         if (isValidEmail(strEmail) && isValidPassword(strPass)) {
-            signIn(strEmail, strPass)
-        }
-    }
-
-    private fun signIn(email: String, password: String) {
-        fAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    if (binding.cbRememberSignIn.isChecked) saveDataToSharePreferences()
-                    requireView().findNavController().popBackStack(R.id.login_navigation, true)
-                    requireView().findNavController().navigate(R.id.home_navigation)
+            viewModel.signIn(strEmail, strPass).observe(viewLifecycleOwner) {
+                when (it) {
+                    is UiState.Success -> {
+                        if (it.data.isNotEmpty()){
+                            if (binding.cbRememberSignIn.isChecked) {
+                                sharedPreManager.putString("uid", it.data)
+                            }
+                            requireView().findNavController().popBackStack(R.id.login_navigation, true)
+                            requireView().findNavController().navigate(R.id.home_navigation)
+                        }
+                    }
+                    is UiState.Failure -> { showDialogSignInFail() }
                 }
             }
-            .addOnFailureListener {
-                showDialogSignInFail()
-            }
+        }
     }
 
     private fun showDialogSignInFail() {
@@ -104,16 +103,6 @@ class SigninFragment : Fragment() {
             dialog.dismiss()
         }
         dialog.show()
-    }
-
-    private fun saveDataToSharePreferences(){
-        val u = fAuth.currentUser
-        u?.let {
-            val s = MainActivity.sharedPref.edit()
-            s.clear()
-            s.putString("uid", it.uid)
-            s.apply()
-        }
     }
 
     private fun isValidPassword(s: String): Boolean {

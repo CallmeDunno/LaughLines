@@ -11,24 +11,21 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.databinding.FragmentRegisterBinding
-import com.example.laughlines.log.Logger
 import com.example.laughlines.model.Account
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.laughlines.utils.UiState
+import com.example.laughlines.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-
-    @Inject lateinit var fDb : FirebaseFirestore
-    @Inject lateinit var fAuth: FirebaseAuth
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +38,6 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAction()
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -78,52 +74,31 @@ class RegisterFragment : Fragment() {
             && isValidPass(strPass)
             && isValidConfirmPassword(strPass, strConfirmPass)
         ) {
-            createUser(strName, strEmail, strPass)
+            viewModel.createAccount(strEmail, strPass).observe(viewLifecycleOwner) {
+                when(it){
+                    is UiState.Success -> {
+                        Toast.makeText(requireContext(), "You have successfully registered an account!", Toast.LENGTH_SHORT).show()
+                        val account = Account(it.data, strName, strEmail, strPass, null)
+                        viewModel.saveUserToFireStore(account)
+                        clearEditText()
+                    }
+                    is UiState.Failure -> {
+                        setTextWarning(2, it.message.toString())
+                        stateVisibleWarning(2, true)
+                    }
+                }
+            }
         }
 
     }
 
-    private fun createUser(name: String, email: String, password: String) {
-        fAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val uid = it.result.user?.uid ?: ""
-                    saveUserToFireStore(uid, name, email, password)
-                    Toast.makeText(
-                        requireContext(),
-                        "You have successfully registered an account!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            .addOnFailureListener {
-                setTextWarning(2, "${it.message}")
-                stateVisibleWarning(2, true)
-            }
-
-    }
-
-    private fun saveUserToFireStore(uid: String, name: String, email: String, password: String) {
-        fDb.collection("User").whereEqualTo("email", email)
-            .get()
-            .addOnCompleteListener { result ->
-                if (result.isSuccessful) {
-                    if (result.result.isEmpty) {
-                        val account = Account(uid, name, email, password, null)
-                        fDb.collection("User")
-                            .add(account)
-                            .addOnCompleteListener { document ->
-                                if (document.isSuccessful) Logger.d("Save user to FireStore successfully")
-                            }
-                            .addOnFailureListener { e ->
-                                Logger.e("Save user to FireStore failure with ${e.message}")
-                            }
-                    }
-                }
-            }
-            .addOnFailureListener { exception ->
-                Logger.e("Fail ${exception.message}")
-            }
+    private fun clearEditText(){
+        binding.apply {
+            edtNameRegister.setText("")
+            edtEmailRegister.setText("")
+            edtPasswordRegister.setText("")
+            edtConfirmPasswordRegister.setText("")
+        }
     }
 
     private fun isValidConfirmPassword(s1: String, s2: String): Boolean {

@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import com.example.laughlines.databinding.FragmentHomeBinding
 import com.example.laughlines.listener.IClickItem
 import com.example.laughlines.model.Friend
+import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.view.home.adapter.FriendAdapter
 import com.example.laughlines.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +26,7 @@ class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
     @Inject lateinit var fAuth: FirebaseAuth
+    @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

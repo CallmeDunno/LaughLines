@@ -2,6 +2,7 @@ package com.example.laughlines.di
 
 import com.example.laughlines.data.repo.ChatRepository
 import com.example.laughlines.data.repo.HomeRepository
+import com.example.laughlines.data.repo.LoginRepository
 import com.example.laughlines.data.repo.ProfileRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,4 +27,8 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideProfileRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) = ProfileRepository(fDb, fAuth)
+
+    @Provides
+    @Singleton
+    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) = LoginRepository(fDb, fAuth)
 }
