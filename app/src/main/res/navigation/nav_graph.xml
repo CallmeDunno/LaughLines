@@ -10,7 +10,7 @@
         app:startDestination="@id/startFragment">
         <fragment
             android:id="@+id/startFragment"
-            android:name="com.example.laughlines.view.start.StartFragment"
+            android:name="com.example.laughlines.ui.start.StartFragment"
             android:label="fragment_login"
             tools:layout="@layout/fragment_start">
             <action
@@ -22,24 +22,17 @@
         </fragment>
         <fragment
             android:id="@+id/registerFragment"
-            android:name="com.example.laughlines.view.register.RegisterFragment"
+            android:name="com.example.laughlines.ui.register.RegisterFragment"
             android:label="fragment_register"
-            tools:layout="@layout/fragment_register">
-            <action
-                android:id="@+id/action_registerFragment_to_startFragment"
-                app:destination="@id/startFragment" />
-        </fragment>
+            tools:layout="@layout/fragment_register"/>
         <fragment
             android:id="@+id/signinFragment"
-            android:name="com.example.laughlines.view.signin.SigninFragment"
+            android:name="com.example.laughlines.ui.signin.SigninFragment"
             android:label="fragment_signin"
             tools:layout="@layout/fragment_signin">
             <action
                 android:id="@+id/action_global_homeFragment"
                 app:destination="@id/home_navigation"/>
-            <action
-                android:id="@+id/action_signinFragment_to_startFragment"
-                app:destination="@id/startFragment" />
         </fragment>
     </navigation>
     <navigation
@@ -47,7 +40,7 @@
         app:startDestination="@id/homeFragment">
         <fragment
             android:id="@+id/homeFragment"
-            android:name="com.example.laughlines.view.home.HomeFragment"
+            android:name="com.example.laughlines.ui.home.HomeFragment"
             android:label="fragment_home"
             tools:layout="@layout/fragment_home">
             <action
@@ -62,7 +55,7 @@
         </fragment>
         <fragment
             android:id="@+id/profileFragment"
-            android:name="com.example.laughlines.view.profile.ProfileFragment"
+            android:name="com.example.laughlines.ui.profile.ProfileFragment"
             android:label="fragment_profile"
             tools:layout="@layout/fragment_profile" >
             <action
@@ -77,7 +70,7 @@
         </fragment>
         <fragment
             android:id="@+id/friendsListFragment"
-            android:name="com.example.laughlines.view.friends.FriendsListFragment"
+            android:name="com.example.laughlines.ui.friends.FriendsListFragment"
             android:label="fragment_friends_list"
             tools:layout="@layout/fragment_friends_list" >
             <action
@@ -86,7 +79,7 @@
         </fragment>
         <fragment
             android:id="@+id/chatFragment"
-            android:name="com.example.laughlines.view.chat.ChatFragment"
+            android:name="com.example.laughlines.ui.chat.ChatFragment"
             android:label="fragment_chat"
             tools:layout="@layout/fragment_chat" >
             <argument
@@ -95,18 +88,15 @@
             <argument
                 android:name="fid"
                 app:argType="string" />
-            <argument
-                android:name="uid"
-                app:argType="string" />
         </fragment>
         <fragment
             android:id="@+id/inforDetailFragment"
-            android:name="com.example.laughlines.view.infor_detail.InforDetailFragment"
+            android:name="com.example.laughlines.ui.infor_detail.InforDetailFragment"
             android:label="fragment_infor_detail"
             tools:layout="@layout/fragment_infor_detail" />
         <fragment
             android:id="@+id/changePasswordDetailFragment"
-            android:name="com.example.laughlines.view.change_pass_detail.ChangePasswordDetailFragment"
+            android:name="com.example.laughlines.ui.change_pass_detail.ChangePasswordDetailFragment"
             android:label="fragment_change_password_detail"
             tools:layout="@layout/fragment_change_password_detail" />
     </navigation>

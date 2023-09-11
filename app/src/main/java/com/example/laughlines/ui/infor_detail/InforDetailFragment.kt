@@ -1,4 +1,4 @@
-package com.example.laughlines.view.infor_detail
+package com.example.laughlines.ui.infor_detail
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -57,7 +57,6 @@ class InforDetailFragment : Fragment() {
                     val content = edtName.text.toString().trim()
                     edtName.error = if (content.length >= 6) null else "Minimum length is 6"
                 }
-
             })
         }
     }

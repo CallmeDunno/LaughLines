@@ -1,8 +1,9 @@
 package com.example.laughlines.utils
 
 import android.content.SharedPreferences
+import javax.inject.Inject
 
-class SharedPreferencesManager (private val sharedPre: SharedPreferences) {
+class SharedPreferencesManager @Inject constructor(private val sharedPre: SharedPreferences) {
 
     fun putString(key: String, value: String){
         sharedPre.edit().apply {

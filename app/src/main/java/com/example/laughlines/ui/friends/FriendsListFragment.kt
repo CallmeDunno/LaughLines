@@ -1,4 +1,4 @@
-package com.example.laughlines.view.friends
+package com.example.laughlines.ui.friends
 
 import android.os.Bundle
 import android.view.LayoutInflater

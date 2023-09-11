@@ -1,4 +1,4 @@
-package com.example.laughlines.view.register
+package com.example.laughlines.ui.register
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -53,11 +53,8 @@ class RegisterFragment : Fragment() {
 
             btnBackRegister.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSignInRegister.setOnClickListener {
-                requireView().findNavController().popBackStack(
-                    R.id.action_startFragment_to_signinFragment,
-                    inclusive = false,
-                    saveState = true
-                )
+                requireView().findNavController().popBackStack(R.id.registerFragment, true)
+                requireView().findNavController().navigate(R.id.signinFragment)
             }
             btnCreateAccountRegister.setOnClickListener {
                 isValid()
@@ -78,7 +75,7 @@ class RegisterFragment : Fragment() {
                 when(it){
                     is UiState.Success -> {
                         Toast.makeText(requireContext(), "You have successfully registered an account!", Toast.LENGTH_SHORT).show()
-                        val account = Account(it.data, strName, strEmail, strPass, null)
+                        val account = Account(it.data, strName, strEmail, strPass)
                         viewModel.saveUserToFireStore(account)
                         clearEditText()
                     }

@@ -1,4 +1,4 @@
-package com.example.laughlines.view.start
+package com.example.laughlines.ui.start
 
 import android.app.Activity
 import android.content.Intent
@@ -67,6 +67,7 @@ class StartFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK){
@@ -78,7 +79,6 @@ class StartFragment : Fragment() {
                     when(it){
                         is UiState.Success -> {
                             sharedPreManager.putString("uid", it.data.uid)
-                            Logger.e(it.data.uid)
                             viewModel.saveUserToFireStore(it.data)
                             requireView().findNavController()
                                 .popBackStack(R.id.login_navigation, true)

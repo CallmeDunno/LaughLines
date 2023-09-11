@@ -1,4 +1,4 @@
-package com.example.laughlines.view.splash
+package com.example.laughlines.ui.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.laughlines.R
-import com.example.laughlines.view.MainActivity
+import com.example.laughlines.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

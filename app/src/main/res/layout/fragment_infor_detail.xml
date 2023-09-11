@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.infor_detail.InforDetailFragment">
+    tools:context=".ui.infor_detail.InforDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
@@ -13,7 +13,7 @@
         android:background="@color/green_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/btn_back"
@@ -30,12 +30,12 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="Back"
-            android:gravity="center_vertical"
-            android:fontFamily="@font/rubik_medium"
-            android:textSize="20sp"
-            android:textColor="@color/white"
             android:layout_marginStart="10dp"
+            android:fontFamily="@font/rubik_medium"
+            android:gravity="center_vertical"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_back"
@@ -49,7 +49,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" >
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
@@ -74,8 +74,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="150dp"
                 android:id="@+id/img_avatar"
+                android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_person_green_24"
@@ -114,19 +114,19 @@
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
                 android:drawableStart="@drawable/ic_person_green_24"
                 android:drawablePadding="6dp"
                 android:fontFamily="@font/rubik_medium"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="10dp"
                 android:hint="Your name"
                 android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,23 +134,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
             <Button
                 android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="6dp"
                 android:background="@drawable/btn_positive"
+                android:fontFamily="@font/rubik_medium"
+                android:padding="6dp"
                 android:text="Save"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:fontFamily="@font/rubik_medium" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

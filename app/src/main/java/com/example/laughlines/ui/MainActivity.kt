@@ -1,4 +1,4 @@
-package com.example.laughlines.view
+package com.example.laughlines.ui
 
 import android.os.Bundle
 import android.view.View
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (sharedPreManager.getString("uid").equals("")) {
+        if (sharedPreManager.getString("uid").isNullOrEmpty()) {
             navController.popBackStack(R.id.home_navigation, true)
             navController.navigate(R.id.login_navigation)
         } else {
@@ -48,12 +48,9 @@ class MainActivity : AppCompatActivity() {
         // Handler event when change destination
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id){
-                R.id.startFragment -> binding.bottomNavigationView.visibility = View.GONE
-                R.id.homeFragment -> binding.bottomNavigationView.visibility = View.VISIBLE
-                R.id.chatFragment -> binding.bottomNavigationView.visibility = View.GONE
-                R.id.profileFragment -> binding.bottomNavigationView.visibility = View.GONE
-                R.id.inforDetailFragment -> binding.bottomNavigationView.visibility = View.GONE
-                R.id.changePasswordDetailFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.homeFragment,
+                R.id.friendsListFragment-> binding.bottomNavigationView.visibility = View.VISIBLE
+                else -> binding.bottomNavigationView.visibility = View.GONE
             }
         }
     }

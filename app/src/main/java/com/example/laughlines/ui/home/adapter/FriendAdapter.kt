@@ -1,4 +1,4 @@
-package com.example.laughlines.view.home.adapter
+package com.example.laughlines.ui.home.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

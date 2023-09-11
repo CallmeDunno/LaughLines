@@ -1,4 +1,4 @@
-package com.example.laughlines.view.signin
+package com.example.laughlines.ui.signin
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -56,11 +56,8 @@ class SigninFragment : Fragment() {
             btnBackSignIn.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSignIn.setOnClickListener { isValid() }
             btnRegister.setOnClickListener {
-                requireView().findNavController().popBackStack(
-                    R.id.action_startFragment_to_registerFragment,
-                    inclusive = false,
-                    saveState = true
-                )
+                requireView().findNavController().popBackStack(R.id.signinFragment, true)
+                requireView().findNavController().navigate(R.id.registerFragment)
             }
         }
     }

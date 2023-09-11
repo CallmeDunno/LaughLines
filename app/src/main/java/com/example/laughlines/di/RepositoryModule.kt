@@ -4,6 +4,7 @@ import com.example.laughlines.data.repo.ChatRepository
 import com.example.laughlines.data.repo.HomeRepository
 import com.example.laughlines.data.repo.LoginRepository
 import com.example.laughlines.data.repo.ProfileRepository
+import com.example.laughlines.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -18,7 +19,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideHomeRepository(fDb : FirebaseFirestore) = HomeRepository(fDb)
+    fun provideHomeRepository(fDb: FirebaseFirestore) = HomeRepository(fDb)
 
     @Provides
     @Singleton
@@ -26,9 +27,14 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) = ProfileRepository(fDb, fAuth)
+    fun provideProfileRepository(
+        fDb: FirebaseFirestore,
+        fAuth: FirebaseAuth,
+        sharedPreManager: SharedPreferencesManager
+    ) = ProfileRepository(fDb, fAuth, sharedPreManager)
 
     @Provides
     @Singleton
-    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) = LoginRepository(fDb, fAuth)
+    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) =
+        LoginRepository(fDb, fAuth)
 }

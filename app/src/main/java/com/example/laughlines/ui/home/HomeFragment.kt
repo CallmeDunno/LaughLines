@@ -1,4 +1,4 @@
-package com.example.laughlines.view.home
+package com.example.laughlines.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,9 @@ import androidx.navigation.findNavController
 import com.example.laughlines.databinding.FragmentHomeBinding
 import com.example.laughlines.listener.IClickItem
 import com.example.laughlines.model.Friend
+import com.example.laughlines.ui.home.adapter.FriendAdapter
 import com.example.laughlines.utils.SharedPreferencesManager
-import com.example.laughlines.view.home.adapter.FriendAdapter
 import com.example.laughlines.viewmodel.HomeViewModel
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,7 +24,6 @@ class HomeFragment : Fragment() {
     private val friendAdapter by lazy { FriendAdapter() }
     private val viewModel by viewModels<HomeViewModel>()
 
-    @Inject lateinit var fAuth: FirebaseAuth
     @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onCreateView(
@@ -46,9 +44,7 @@ class HomeFragment : Fragment() {
         friendAdapter.setOnClickUserItem(object : IClickItem {
             override fun setOnClickItemChat(friend: Friend) {
                 val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(
-                    friend.cid, friend.fid,
-                    fAuth.currentUser?.uid.toString()
-                )
+                    friend.cid, friend.fid)
                 requireView().findNavController().navigate(action)
             }
         })
@@ -60,7 +56,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        fAuth.currentUser?.uid?.let {
+        val uid = sharedPreManager.getString("uid")
+        uid?.let {
             viewModel.fetchFriendList(it).observe(viewLifecycleOwner) { friends ->
                 if (friends.isEmpty()) {
                     binding.tvWarningHome.visibility = View.VISIBLE
@@ -70,6 +67,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
     }
 
 }

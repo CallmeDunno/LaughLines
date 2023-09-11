@@ -1,9 +1,9 @@
 package com.example.laughlines.data.repo
 
-import androidx.lifecycle.MutableLiveData
 import com.example.laughlines.log.Logger
 import com.example.laughlines.model.Friend
 import com.example.laughlines.model.Messages
+import com.example.laughlines.utils.UiState
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -11,8 +11,7 @@ import javax.inject.Inject
 
 class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore) {
 
-    fun getFriend(fid: String, cid: String): MutableLiveData<Friend> {
-        val mutableLiveData = MutableLiveData<Friend>()
+    fun getFriend(fid: String, cid: String, result: (UiState<Friend>) -> Unit) {
         fDb.collection("User")
             .whereEqualTo("id", fid)
             .get()
@@ -22,16 +21,15 @@ class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore) {
                         val name = f["name"].toString()
                         val avatarUrl = f["avatarUrl"].toString()
                         val friend = Friend(fid, cid, name, avatarUrl)
-                        mutableLiveData.postValue(friend)
+                        result.invoke(UiState.Success(friend))
                         break
                     }
                 }
             }
-        return mutableLiveData
+            .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message}")) }
     }
 
-    fun getMessages(cid: String): MutableLiveData<List<Messages>> {
-        val mutableLiveData = MutableLiveData<List<Messages>>()
+    fun getMessages(cid: String, result: (UiState<List<Messages>>) -> Unit) {
         val list = ArrayList<Messages>()
         fDb.collection("Chats")
             .document(cid)
@@ -39,6 +37,7 @@ class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore) {
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Logger.d(error.message.toString())
+                    result.invoke(UiState.Failure("Error: ${error.message}"))
                     return@addSnapshotListener
                 }
                 if (value != null) {
@@ -49,21 +48,21 @@ class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore) {
                             val recipient = m.document.data["recipient"].toString()
                             val sender = m.document.data["sender"].toString()
                             val timestamp = m.document.data["timestamp"].toString()
-                            val x = Messages(messId, message, recipient, sender, timestamp)
-                            list.add(x)
+                            list.add(Messages(messId, message, recipient, sender, timestamp))
                         }
                     }
-                    mutableLiveData.postValue(list)
+                    result.invoke(UiState.Success(list))
                 }
             }
-        return mutableLiveData
     }
 
-    suspend fun insertMessage(messages: Messages, cid: String) {
+    suspend fun insertMessage(messages: Messages, cid: String, result: (UiState<String>) -> Unit) {
         fDb.collection("Chats")
             .document(cid)
             .collection("Message")
             .add(messages)
+            .addOnCompleteListener { result.invoke(UiState.Success("Insert message successful")) }
+            .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message}")) }
             .await()!!
     }
 

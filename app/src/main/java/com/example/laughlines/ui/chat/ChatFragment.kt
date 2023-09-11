@@ -1,4 +1,4 @@
-package com.example.laughlines.view.chat
+package com.example.laughlines.ui.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,18 +9,23 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.laughlines.databinding.FragmentChatBinding
+import com.example.laughlines.log.Logger
 import com.example.laughlines.model.DateTime
 import com.example.laughlines.model.Messages
-import com.example.laughlines.view.chat.adapter.ChatAdapter
+import com.example.laughlines.ui.chat.adapter.ChatAdapter
+import com.example.laughlines.utils.SharedPreferencesManager
+import com.example.laughlines.utils.UiState
 import com.example.laughlines.viewmodel.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -28,12 +33,14 @@ class ChatFragment : Fragment() {
     private var _itemBinding: FragmentChatBinding? = null
     private val itemBinding get() = _itemBinding!!
     private lateinit var chatAdapter: ChatAdapter
-//    private val chatAdapter by lazy {
+
+    //    private val chatAdapter by lazy {
 //        ChatNewAdapter(uid) {
 //            Logger.d(it.messageID)
 //        }
 //    }
     private val viewModel by viewModels<ChatViewModel>()
+    @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
     private lateinit var uid: String
     private lateinit var cid: String
@@ -55,7 +62,7 @@ class ChatFragment : Fragment() {
 
     private fun initVariables(arguments: Bundle) {
         arguments.apply {
-            uid = this.getString("uid").toString()
+            uid = sharedPreManager.getString("uid")!!
             cid = this.getString("cid").toString()
             fid = this.getString("fid").toString()
         }
@@ -82,8 +89,17 @@ class ChatFragment : Fragment() {
                 val timestamp = DateTime(getCurrentTime()).toString()
                 if (!TextUtils.isEmpty(message)) {
                     val m = Messages(null, message, recipient, sender, timestamp)
-                    viewModel.insertMessage(m, cid)
-                    itemBinding.edtMessageChat.setText("")
+                    viewModel.insertMessage(m, cid).observe(viewLifecycleOwner) {
+                        when(it) {
+                            is UiState.Success -> {
+                                itemBinding.edtMessageChat.setText("")
+                                Logger.d(it.data)
+                            }
+                            is UiState.Failure -> {
+                                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -100,24 +116,39 @@ class ChatFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.fetchMessage(cid).observe(viewLifecycleOwner) {
-            Collections.sort(it, Messages.Companion.SortByDateTime())
-            chatAdapter.submitList(it)
-            chatAdapter.notifyItemInserted(it.size + 1)
-            itemBinding.rcvMessageListChat.post { // Là một phương thức được sử dụng để thực thi một tác vụ trong vòng lặp chính của RecyclerView.
-                itemBinding.rcvMessageListChat.smoothScrollToPosition(it.size + 1) //Là một phương thức được sử dụng để cuộn danh sách đến vị trí được chỉ định.
+            when (it) {
+                is UiState.Success -> {
+                    Collections.sort(it.data, Messages.Companion.SortByDateTime())
+                    chatAdapter.submitList(it.data)
+                    chatAdapter.notifyItemInserted(it.data.size + 1)
+                    itemBinding.rcvMessageListChat.post { // Là một phương thức được sử dụng để thực thi một tác vụ trong vòng lặp chính của RecyclerView.
+                        itemBinding.rcvMessageListChat.smoothScrollToPosition(it.data.size + 1) //Là một phương thức được sử dụng để cuộn danh sách đến vị trí được chỉ định.
+                    }
+                }
+                is UiState.Failure -> {
+                    Logger.e(it.message.toString())
+                }
             }
+
         }
 
-        viewModel.fetchFriend(fid, cid).observe(viewLifecycleOwner){
-            itemBinding.apply {
-                tvNameChat.text = it.name
-                Glide.with(requireView()).load(it.avatarUrl).into(imgAvtChat)
+        viewModel.fetchFriend(fid, cid).observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Success -> {
+                    itemBinding.apply {
+                        tvNameChat.text = it.data.name
+                        Glide.with(requireView()).load(it.data.avatarUrl).into(imgAvtChat)
+                    }
+                }
+                is UiState.Failure -> {
+                    Logger.e(it.message.toString())
+                }
             }
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun getCurrentTime() : String {
+    private fun getCurrentTime(): String {
         val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
         return formatter.format(Date())
     }

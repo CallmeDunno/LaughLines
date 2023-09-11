@@ -1,4 +1,4 @@
-package com.example.laughlines.view.chat.adapter
+package com.example.laughlines.ui.chat.adapter
 
 import android.view.LayoutInflater
 import android.view.View
