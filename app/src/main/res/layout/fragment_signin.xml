@@ -1,227 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.signin.SigninFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
 
-        <ImageButton
-            android:id="@+id/btn_back_sign_in"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_arrow_back_green_24" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:fontFamily="@font/rubik_medium"
-            android:gravity="center"
-            android:text="Sign in"
-            android:textAlignment="center"
-            android:textColor="@color/green_main"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/rubik_medium"
-        android:text="Welcome back! Sign in using your email to continue us"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView7"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:layout_constraintVertical_bias="1.0">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.signin.SigninFragment">
 
         <LinearLayout
-            android:id="@+id/linear_layout_sign_in"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:orientation="vertical"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:weightSum="10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/custom_edt">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_email_sign_in"
-                    android:layout_width="match_parent"
-                    android:inputType="textEmailAddress"
-                    android:layout_height="48dp"
-                    android:drawableStart="@drawable/ic_person_green_24"
-                    android:drawablePadding="6dp"
-                    android:fontFamily="@font/rubik_medium"
-                    android:hint="Your email address"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <ImageButton
+                android:id="@+id/btn_back_sign_in"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_arrow_back_green_24" />
 
             <TextView
-                android:id="@+id/tv_warning_1_sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Warning"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
+                android:gravity="center"
+                android:text="Sign in"
+                android:textAlignment="center"
+                android:textColor="@color/green_main"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/custom_edt"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_password_sign_in"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:inputType="textPassword"
-                    android:drawableStart="@drawable/ic_lock_24"
-                    android:drawablePadding="6dp"
-                    android:fontFamily="@font/rubik_medium"
-                    android:hint="Your password"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_warning_2_sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/rubik_medium"
-                android:text="Warning"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white" />
 
         </LinearLayout>
 
-
-        <CheckBox
-            android:id="@+id/cb_remember_sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:buttonTint="@color/green_main"
-            android:fontFamily="@font/rubik_medium"
-            android:padding="6dp"
-            android:textColor="@color/black"
-            android:text="Remember me"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/linear_layout_sign_in"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout_sign_in" />
-
-        <Button
-            android:id="@+id/btn_sign_in"
+        <TextView
+            android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/btn_positive"
             android:fontFamily="@font/rubik_medium"
-            android:text="Sign in"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:text="Welcome back! Sign in using your email to continue us"
+            android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/linear_layout_sign_in"
-            app:layout_constraintStart_toStartOf="@+id/linear_layout_sign_in"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout_sign_in" />
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/linear_layout_sign_in"
-            app:layout_constraintStart_toStartOf="@+id/linear_layout_sign_in"
-            app:layout_constraintTop_toBottomOf="@+id/btn_sign_in">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView7"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            app:layout_constraintVertical_bias="1.0">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_layout_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/custom_edt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_email_sign_in"
+                        android:layout_width="match_parent"
+                        android:inputType="textEmailAddress"
+                        android:layout_height="48dp"
+                        android:drawableStart="@drawable/ic_person_green_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:hint="Your email address"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_warning_1_sign_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="Warning"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/custom_edt"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_password_sign_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:inputType="textPassword"
+                        android:drawableStart="@drawable/ic_lock_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:hint="Your password"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_warning_2_sign_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="Warning"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+
+            <CheckBox
+                android:id="@+id/cb_remember_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/green_main"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Don't have an account?"
-                android:textColor="#A3A3A3"
-                android:textSize="14sp" />
+                android:padding="6dp"
+                android:textColor="@color/black"
+                android:text="Remember me"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/linear_layout_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout_sign_in" />
 
-            <TextView
-                android:id="@+id/btn_register"
+            <Button
+                android:id="@+id/btn_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="128dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/btn_positive"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/linear_layout_sign_in"
+                app:layout_constraintStart_toStartOf="@+id/linear_layout_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout_sign_in" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/rubik_medium"
-                android:text="Register"
-                android:textColor="@color/green_main"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/linear_layout_sign_in"
+                app:layout_constraintStart_toStartOf="@+id/linear_layout_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/btn_sign_in">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="Don't have an account?"
+                    android:textColor="#A3A3A3"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/btn_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="Register"
+                    android:textColor="@color/green_main"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

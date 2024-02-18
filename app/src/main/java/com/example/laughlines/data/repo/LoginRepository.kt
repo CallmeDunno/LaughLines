@@ -55,11 +55,8 @@ class LoginRepository @Inject constructor(
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener {
-                if (it.isEmpty) {
-                    result.invoke(UiState.Success(true))
-                } else {
-                    result.invoke(UiState.Success(false))
-                }
+                if (it.isEmpty) result.invoke(UiState.Success(true))
+                else result.invoke(UiState.Success(false))
             }
             .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message.toString()}")) }
 

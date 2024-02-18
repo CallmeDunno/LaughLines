@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout"
+        tools:context=".ui.morse_code.MorseCodeFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layoutDirection="ltr"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_margin="16dp"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_arrow_back_black_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:enabled="false"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="3dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Off"
+                android:textColor="@color/davy_grey"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="/"
+                android:textColor="#585858"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvOff"
+                app:layout_constraintEnd_toStartOf="@+id/tvOff"
+                app:layout_constraintTop_toTopOf="@+id/tvOff" />
+
+            <TextView
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="3dp"
+                android:id="@+id/tvStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:enabled="false"
+                android:fontFamily="@font/rubik_medium"
+                android:text="Start"
+                android:textColor="@color/davy_grey"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv"
+                app:layout_constraintEnd_toEndOf="@+id/tv"
+                app:layout_constraintTop_toTopOf="@+id/tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvLabelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="27dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Please fill in this box"
+            android:textColor="@color/orange_red"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <EditText
+            android:id="@+id/edtText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_border_white_conner_16"
+            android:fontFamily="@font/rubik_medium"
+            android:hint="Enter text here"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp"
+            android:scrollbarSize="1dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/black"
+            android:textColorHint="@color/davy_grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelInput" />
+
+        <ImageView
+            android:id="@+id/imgWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_warning"
+            app:layout_constraintBottom_toBottomOf="@id/edtText"
+            app:layout_constraintEnd_toEndOf="@id/edtText"
+            app:layout_constraintTop_toTopOf="@id/edtText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnTransmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_border_green_conner_10"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Transmit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/edtText" />
+
+        <TextView
+            android:id="@+id/tvLabelMorseCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="27dp"
+            android:layout_marginTop="12sp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Morse code"
+            android:textColor="@color/davy_grey"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/btnTransmit" />
+
+        <TextView
+            android:id="@+id/edtMorseCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_border_white_conner_16"
+            android:fontFamily="@font/rubik_medium"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp"
+            android:scrollbarSize="1dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/davy_grey"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelMorseCode"
+            tools:layout_editor_absoluteX="13dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

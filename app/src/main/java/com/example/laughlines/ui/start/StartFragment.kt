@@ -2,15 +2,11 @@ package com.example.laughlines.ui.start
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.laughlines.R
+import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentStartBinding
 import com.example.laughlines.log.Logger
 import com.example.laughlines.utils.SharedPreferencesManager
@@ -25,30 +21,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StartFragment : Fragment() {
+class StartFragment : BaseFragment<FragmentStartBinding>() {
+    override val layoutId: Int = R.layout.fragment_start
 
     private val GOOGLE_SIGN_IN_CLIENT_CODE = 100
-    private var _binding: FragmentStartBinding? = null
-    private val binding get() = _binding!!
+
     private lateinit var client: GoogleSignInClient
     private val viewModel by viewModels<LoginViewModel>()
 
     @Inject lateinit var sharedPreManager: SharedPreferencesManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentStartBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun initView() {
+        super.initView()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initAction()
-    }
-
-    private fun initAction() {
+    override fun initAction() {
         binding.apply {
             btnLoginWithGoogle.setOnClickListener {
                 val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

@@ -1,46 +1,32 @@
 package com.example.laughlines.ui.infor_detail
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.laughlines.R
+import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentInforDetailBinding
+import com.example.laughlines.utils.extensions.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class InforDetailFragment : Fragment() {
+class InforDetailFragment : BaseFragment<FragmentInforDetailBinding>() {
 
-    private var _binding: FragmentInforDetailBinding? = null
-    private val binding get() = _binding!!
+    override val layoutId: Int = R.layout.fragment_infor_detail
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentInforDetailBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initAction()
+    override fun initView() {
+        super.initView()
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initAction() {
+    override fun initAction() {
         binding.apply {
 
-            root.setOnTouchListener { _, event ->
+            root.setOnTouchListener { view, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
-                    hideKeyboard(root)
+                    view.hideKeyboard()
                 }
                 false
             }
@@ -59,11 +45,6 @@ class InforDetailFragment : Fragment() {
                 }
             })
         }
-    }
-
-    private fun hideKeyboard(view: View) {
-        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

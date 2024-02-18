@@ -1,52 +1,38 @@
 package com.example.laughlines.ui.register
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.laughlines.R
+import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentRegisterBinding
 import com.example.laughlines.model.Account
 import com.example.laughlines.utils.UiState
+import com.example.laughlines.utils.extensions.hideKeyboard
 import com.example.laughlines.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
+    override val layoutId: Int = R.layout.fragment_register
 
-    private var _binding: FragmentRegisterBinding? = null
-    private val binding get() = _binding!!
     private val viewModel by viewModels<LoginViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initAction()
+    override fun initView() {
+        super.initView()
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initAction() {
+    override fun initAction() {
         binding.apply {
 
-            root.setOnTouchListener { _, event ->
+            root.setOnTouchListener { view, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
-                    hideKeyboard(root)
+                    view.hideKeyboard()
                 }
                 false
             }
@@ -185,11 +171,6 @@ class RegisterFragment : Fragment() {
             3 -> binding.tvWarning3Register.text = s
             4 -> binding.tvWarning4Register.text = s
         }
-    }
-
-    private fun hideKeyboard(view: View) {
-        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

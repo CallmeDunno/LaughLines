@@ -1,33 +1,25 @@
 package com.example.laughlines.ui
 
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.laughlines.R
+import com.example.laughlines.base.BaseActivity
 import com.example.laughlines.databinding.ActivityMainBinding
 import com.example.laughlines.utils.SharedPreferencesManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+    override val layoutID: Int = R.layout.activity_main
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
     private var _navController: NavController? = null
     private val navController get() = _navController!!
 
-    @Inject lateinit var sharedPreManager: SharedPreferencesManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        initView()
-    }
+    @Inject
+    lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun onStart() {
         super.onStart()
@@ -40,18 +32,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initView() {
-        // Set up Nav Controller for BottomNavigationView
+    override fun initView() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
         _navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)
-        // Handler event when change destination
+    }
+
+    override fun initAction() {
+        super.initAction()
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id){
-                R.id.homeFragment,
-                R.id.friendsListFragment-> binding.bottomNavigationView.visibility = View.VISIBLE
+            when (destination.id) {
+                R.id.homeFragment, R.id.friendsListFragment -> binding.bottomNavigationView.visibility = View.VISIBLE
                 else -> binding.bottomNavigationView.visibility = View.GONE
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

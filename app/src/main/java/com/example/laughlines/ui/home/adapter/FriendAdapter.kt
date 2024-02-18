@@ -13,8 +13,7 @@ import com.example.laughlines.listener.IClickItem
 import com.example.laughlines.model.Friend
 
 
-class FriendAdapter : ListAdapter<Friend, FriendAdapter.FriendVH>(AsyncDifferConfig.Builder(object :
-    DiffUtil.ItemCallback<Friend>() {
+class FriendAdapter : ListAdapter<Friend, FriendAdapter.FriendVH>(AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Friend>() {
     override fun areItemsTheSame(oldItem: Friend, newItem: Friend): Boolean {
         return oldItem.fid == newItem.fid
     }
@@ -32,8 +31,7 @@ class FriendAdapter : ListAdapter<Friend, FriendAdapter.FriendVH>(AsyncDifferCon
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendVH {
-        val itemBinding =
-            ItemFriendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemFriendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FriendVH(itemBinding, iClickItem)
     }
 
@@ -43,15 +41,7 @@ class FriendAdapter : ListAdapter<Friend, FriendAdapter.FriendVH>(AsyncDifferCon
         }
     }
 
-    inner class FriendVH(itemBinding: ItemFriendBinding, private val iClickItem: IClickItem) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        private var _itemBinding: ItemFriendBinding? = null
-        private val itemBinding get() = _itemBinding!!
-
-        init {
-            this._itemBinding = itemBinding
-        }
+    inner class FriendVH(private val itemBinding: ItemFriendBinding, private val iClickItem: IClickItem) : RecyclerView.ViewHolder(itemBinding.root) {
 
         @SuppressLint("SetTextI18n")
         fun bindData(friend: Friend) {

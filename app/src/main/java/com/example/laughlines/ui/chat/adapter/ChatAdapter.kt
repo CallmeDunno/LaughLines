@@ -10,39 +10,30 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.laughlines.databinding.ItemListMessageChatBinding
 import com.example.laughlines.model.Messages
 
-class ChatAdapter(private val uid: String) :
-    ListAdapter<Messages, ChatAdapter.ChatVH>(
-        AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Messages>() {
-            override fun areItemsTheSame(oldItem: Messages, newItem: Messages): Boolean {
-                return oldItem.messageID == newItem.messageID
-            }
+class ChatAdapter(private val uid: String) : ListAdapter<Messages, ChatAdapter.ChatVH>(AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Messages>() {
+    override fun areItemsTheSame(oldItem: Messages, newItem: Messages): Boolean {
+        return oldItem.messageID == newItem.messageID
+    }
 
-            override fun areContentsTheSame(oldItem: Messages, newItem: Messages): Boolean {
-                return oldItem == newItem
-            }
+    override fun areContentsTheSame(oldItem: Messages, newItem: Messages): Boolean {
+        return oldItem == newItem
+    }
 
-        }).build()
-    ) {
+}).build()) {
 
-    inner class ChatVH(itemBinding: ItemListMessageChatBinding) : ViewHolder(itemBinding.root) {
-        private var _itemBinding: ItemListMessageChatBinding? = null
-        private val itemBinding get() = _itemBinding!!
-
-        init {
-            this._itemBinding = itemBinding
-        }
+    inner class ChatVH(private val itemBinding: ItemListMessageChatBinding) : ViewHolder(itemBinding.root) {
 
         fun bindData(messages: Messages) {
             itemBinding.apply {
                 if (uid == messages.sender) {
                     layoutRecipientChat.visibility = View.GONE
                     layoutSenderChat.visibility = View.VISIBLE
-                    tvTimestampSenderChat.text = messages.timestamp.toString()
+                    tvTimestampSenderChat.text = messages.timestamp
                     tvMessageSender.text = messages.message
                 } else {
                     layoutSenderChat.visibility = View.GONE
                     layoutRecipientChat.visibility = View.VISIBLE
-                    tvTimestampRecipientChat.text = messages.timestamp.toString()
+                    tvTimestampRecipientChat.text = messages.timestamp
                     tvMessageRecipient.text = messages.message
                 }
             }
@@ -51,8 +42,7 @@ class ChatAdapter(private val uid: String) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatVH {
-        val itemBinding =
-            ItemListMessageChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemListMessageChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ChatVH(itemBinding)
     }
 

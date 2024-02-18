@@ -11,26 +11,18 @@ import com.example.laughlines.model.Messages
 
 //Class tham khảo, không sử dụng
 
-class ChatNewAdapter(private val uid: String, private val onClick: (Messages) -> Unit) :
-    ListAdapter<Messages, ChatNewAdapter.ViewHolder>(
-        AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Messages>() {
-            override fun areItemsTheSame(
-                oldItem: Messages, newItem: Messages
-            ): Boolean {
-                return oldItem.messageID == newItem.messageID
-            }
+class ChatNewAdapter(private val uid: String, private val onClick: (Messages) -> Unit) : ListAdapter<Messages, ChatNewAdapter.ViewHolder>(AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Messages>() {
+    override fun areItemsTheSame(oldItem: Messages, newItem: Messages): Boolean {
+        return oldItem.messageID == newItem.messageID
+    }
 
-            override fun areContentsTheSame(
-                oldItem: Messages, newItem: Messages
-            ): Boolean {
-                return oldItem == newItem
-            }
+    override fun areContentsTheSame(oldItem: Messages, newItem: Messages): Boolean {
+        return oldItem == newItem
+    }
 
-        }).build()
-    ) {
+}).build()) {
 
-    class ViewHolder(private val binding: ItemListMessageChatBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemListMessageChatBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(onClick: (Messages) -> Unit, item: Messages, uid: String) {
 
             itemView.setOnClickListener {
@@ -54,11 +46,7 @@ class ChatNewAdapter(private val uid: String, private val onClick: (Messages) ->
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ItemListMessageChatBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+        return ViewHolder(ItemListMessageChatBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

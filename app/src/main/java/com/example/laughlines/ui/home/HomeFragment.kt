@@ -1,12 +1,10 @@
 package com.example.laughlines.ui.home
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.example.laughlines.R
+import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentHomeBinding
 import com.example.laughlines.listener.IClickItem
 import com.example.laughlines.model.Friend
@@ -17,40 +15,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+    override val layoutId: Int = R.layout.fragment_home
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
     private val friendAdapter by lazy { FriendAdapter() }
     private val viewModel by viewModels<HomeViewModel>()
 
-    @Inject lateinit var sharedPreManager: SharedPreferencesManager
+    @Inject
+    lateinit var sharedPreManager: SharedPreferencesManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
-        initAction()
-    }
-
-    private fun initAction() {
+    override fun initAction() {
         friendAdapter.setOnClickUserItem(object : IClickItem {
             override fun setOnClickItemChat(friend: Friend) {
-                val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(
-                    friend.cid, friend.fid)
+                val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(friend.cid, friend.fid)
                 requireView().findNavController().navigate(action)
             }
         })
     }
 
-    private fun initView() {
+    override fun initView() {
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         binding.rcvChatsListHome.adapter = friendAdapter
         initViewModel()
     }
@@ -67,7 +51,5 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
     }
-
 }
