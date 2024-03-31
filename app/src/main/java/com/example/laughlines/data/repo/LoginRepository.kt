@@ -42,6 +42,7 @@ class LoginRepository @Inject constructor(
     fun saveUserToFireStore(account: Account) {
         checkAccountExists(account.email) { result ->
             when (result) {
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     if (result.data) addAccountToFireStore(account)
                 }

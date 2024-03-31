@@ -35,7 +35,7 @@
             tools:layout="@layout/fragment_register" />
         <fragment
             android:id="@+id/signinFragment"
-            android:name="com.example.laughlines.ui.signin.SigninFragment"
+            android:name="com.example.laughlines.ui.signin.SignInFragment"
             android:label="fragment_signin"
             tools:layout="@layout/fragment_signin">
             <action
@@ -139,9 +139,9 @@
             tools:layout="@layout/fragment_infor_detail" />
         <fragment
             android:id="@+id/changePasswordDetailFragment"
-            android:name="com.example.laughlines.ui.change_pass_detail.ChangePasswordDetailFragment"
+            android:name="com.example.laughlines.ui.change_pass_detail.ChangePasswordFragment"
             android:label="fragment_change_password_detail"
-            tools:layout="@layout/fragment_change_password_detail" />
+            tools:layout="@layout/fragment_change_password" />
         <fragment
             android:id="@+id/morseCodeFragment"
             android:name="com.example.laughlines.ui.morse_code.MorseCodeFragment"

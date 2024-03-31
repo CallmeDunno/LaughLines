@@ -59,6 +59,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         ) {
             viewModel.createAccount(strEmail, strPass).observe(viewLifecycleOwner) {
                 when(it){
+                    is UiState.Loading -> {}
                     is UiState.Success -> {
                         Toast.makeText(requireContext(), "You have successfully registered an account!", Toast.LENGTH_SHORT).show()
                         val account = Account(it.data, strName, strEmail, strPass)

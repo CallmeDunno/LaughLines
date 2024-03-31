@@ -8,7 +8,6 @@ import com.example.laughlines.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
-
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
@@ -24,6 +23,5 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
         }
     }
-
 
 }

@@ -75,7 +75,7 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                     if (!tvStart.isEnabled && !tvOff.isEnabled){
                         tvStart.isEnabled = true
                         tvOff.isEnabled = false
-                        tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_main))
+                        tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
                         tvOff.setTextColor(ContextCompat.getColor(requireContext(), R.color.davy_grey))
                         btnTransmit.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_border_gray_conner_10)
                     }
@@ -85,14 +85,14 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                         tvStart.isEnabled = false
                         tvOff.isEnabled = true
                         tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.davy_grey))
-                        tvOff.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_main))
+                        tvOff.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
                         morseCode.setMorseCode(edtMorseCode.text.toString().trim())
                         morseCode.flashMorseCode()
                         morseCode.isCompleted.observe(viewLifecycleOwner){
                             if (it){
                                 tvStart.isEnabled = true
                                 tvOff.isEnabled = false
-                                tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_main))
+                                tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
                                 tvOff.setTextColor(ContextCompat.getColor(requireContext(), R.color.davy_grey))
                                 morseCode.isCompleted.postValue(false)
                             }
@@ -105,7 +105,7 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                         tvOff.isEnabled = false
                         morseCode.cancelFlashMorseCode()
                         binding.tvOff.setTextColor(ContextCompat.getColor(requireContext(), R.color.davy_grey))
-                        binding.tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_main))
+                        binding.tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
                     }
                 }
                 edtText.setOnFocusChangeListener { _, b ->

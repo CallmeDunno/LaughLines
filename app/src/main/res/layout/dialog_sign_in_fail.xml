@@ -14,7 +14,7 @@
             android:id="@+id/textView8"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/green_main"
+            android:background="@color/jungle_green"
             android:fontFamily="@font/rubik_medium"
             android:padding="6dp"
             android:text="Error"

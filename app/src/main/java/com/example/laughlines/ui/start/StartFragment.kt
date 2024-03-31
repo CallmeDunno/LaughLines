@@ -29,7 +29,8 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     private lateinit var client: GoogleSignInClient
     private val viewModel by viewModels<LoginViewModel>()
 
-    @Inject lateinit var sharedPreManager: SharedPreferencesManager
+    @Inject
+    lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun initView() {
         super.initView()
@@ -37,18 +38,16 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
 
     override fun initAction() {
         binding.apply {
-            btnLoginWithGoogle.setOnClickListener {
-                val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id)) //Vào file build gradle (project) cập nhật classpath google-service lên phiên bản mới nhất là tự có
-                    .requestEmail()
-                    .build()
+            btnGoogle.setOnClickListener {
+                val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)) //Vào file build gradle (project) cập nhật classpath google-service lên phiên bản mới nhất là tự có
+                    .requestEmail().build()
                 client = GoogleSignIn.getClient(requireContext(), options)
                 startActivityForResult(client.signInIntent, GOOGLE_SIGN_IN_CLIENT_CODE)
             }
-            btnLoginWithEmail.setOnClickListener {
+            btnEmail.setOnClickListener {
                 findNavController().navigate(R.id.action_startFragment_to_signinFragment)
             }
-            tvRegisterLogIn.setOnClickListener {
+            btnRegister.setOnClickListener {
                 findNavController().navigate(R.id.action_startFragment_to_registerFragment)
             }
         }
@@ -57,21 +56,23 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == GOOGLE_SIGN_IN_CLIENT_CODE) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val account = task.getResult(ApiException::class.java)
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                viewModel.signInWithCredential(credential).observe(viewLifecycleOwner){
-                    when(it){
+                viewModel.signInWithCredential(credential).observe(viewLifecycleOwner) {
+                    when (it) {
+                        is UiState.Loading -> {}
                         is UiState.Success -> {
                             sharedPreManager.putString("uid", it.data.uid)
                             viewModel.saveUserToFireStore(it.data)
-                            requireView().findNavController()
-                                .popBackStack(R.id.login_navigation, true)
+                            requireView().findNavController().popBackStack(R.id.login_navigation, true)
                             requireView().findNavController().navigate(R.id.home_navigation)
                         }
-                        is UiState.Failure -> { Logger.e(it.message.toString()) }
+                        is UiState.Failure -> {
+                            Logger.e(it.message.toString())
+                        }
                     }
                 }
             }

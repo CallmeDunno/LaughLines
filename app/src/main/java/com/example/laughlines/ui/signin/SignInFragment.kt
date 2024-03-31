@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SigninFragment : BaseFragment<FragmentSigninBinding>() {
+class SignInFragment : BaseFragment<FragmentSigninBinding>() {
     override val layoutId: Int = R.layout.fragment_signin
 
     private val viewModel by viewModels<LoginViewModel>()
@@ -51,14 +51,15 @@ class SigninFragment : BaseFragment<FragmentSigninBinding>() {
     }
 
     private fun isValid() {
-        val strEmail = binding.edtEmailSignIn.text.toString().trim()
-        val strPass = binding.edtPasswordSignIn.text.toString().trim()
+        val strEmail = binding.edtEmail.text.toString().trim()
+        val strPass = binding.edtPassword.text.toString().trim()
         if (isValidEmail(strEmail) && isValidPassword(strPass)) {
             viewModel.signIn(strEmail, strPass).observe(viewLifecycleOwner) {
                 when (it) {
+                    is UiState.Loading -> {}
                     is UiState.Success -> {
                         if (it.data.isNotEmpty()){
-                            if (binding.cbRememberSignIn.isChecked) {
+                            if (binding.cbRemember.isChecked) {
                                 sharedPreManager.putString("uid", it.data)
                             }
                             requireView().findNavController().popBackStack(R.id.login_navigation, true)

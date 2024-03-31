@@ -25,6 +25,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun initView() {
         viewModel.getAccount().observe(viewLifecycleOwner) {
             when (it) {
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     binding.apply {
                         Glide.with(requireView()).load(it.data.avatarUrl).into(imgAvatar)

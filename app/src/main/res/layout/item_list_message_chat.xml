@@ -25,7 +25,7 @@
             android:background="@drawable/custom_tv_recipient_message_chat"
             android:fontFamily="@font/rubik_medium"
             android:text="Hi"
-            android:textColor="@color/green_main"
+            android:textColor="@color/jungle_green"
             android:textSize="16sp" />
 
         <TextView

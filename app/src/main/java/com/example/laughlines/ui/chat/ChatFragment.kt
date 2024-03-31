@@ -73,6 +73,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
                     val m = Messages(null, message, recipient, sender, timestamp)
                     viewModel.insertMessage(m, cid).observe(viewLifecycleOwner) {
                         when(it) {
+                            is UiState.Loading -> {}
                             is UiState.Success -> {
                                 edtMessageChat.setText("")
                                 Logger.d(it.data)
@@ -99,6 +100,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
     private fun initViewModel() {
         viewModel.fetchMessage(cid).observe(viewLifecycleOwner) {
             when (it) {
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     Collections.sort(it.data, Messages.Companion.SortByDateTime())
                     chatAdapter.submitList(it.data)
@@ -116,6 +118,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
 
         viewModel.fetchFriend(fid, cid).observe(viewLifecycleOwner) {
             when (it) {
+                is UiState.Loading -> {}
                 is UiState.Success -> {
                     binding.apply {
                         tvNameChat.text = it.data.name
