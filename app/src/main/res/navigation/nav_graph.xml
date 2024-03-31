@@ -106,6 +106,9 @@
             <action
                 android:id="@+id/action_profileFragment_to_morseCodeFragment"
                 app:destination="@id/morseCodeFragment" />
+            <action
+                android:id="@+id/action_profileFragment_to_qrCodeFragment"
+                app:destination="@id/qrCodeFragment" />
         </fragment>
         <fragment
             android:id="@+id/friendsListFragment"
@@ -134,12 +137,12 @@
         </fragment>
         <fragment
             android:id="@+id/inforDetailFragment"
-            android:name="com.example.laughlines.ui.infor_detail.InforDetailFragment"
+            android:name="com.example.laughlines.ui.information.InformationFragment"
             android:label="fragment_infor_detail"
-            tools:layout="@layout/fragment_infor_detail" />
+            tools:layout="@layout/fragment_information" />
         <fragment
             android:id="@+id/changePasswordDetailFragment"
-            android:name="com.example.laughlines.ui.change_pass_detail.ChangePasswordFragment"
+            android:name="com.example.laughlines.ui.change_password.ChangePasswordFragment"
             android:label="fragment_change_password_detail"
             tools:layout="@layout/fragment_change_password" />
         <fragment
@@ -147,5 +150,10 @@
             android:name="com.example.laughlines.ui.morse_code.MorseCodeFragment"
             android:label="fragment_morse_code"
             tools:layout="@layout/fragment_morse_code" />
+        <fragment
+            android:id="@+id/qrCodeFragment"
+            android:name="com.example.laughlines.ui.qr_code.QrCodeFragment"
+            android:label="QrCodeFragment"
+            tools:layout="@layout/fragment_qr_code" />
     </navigation>
 </navigation>

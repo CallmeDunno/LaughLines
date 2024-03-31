@@ -54,6 +54,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initAction() {
+        super.initAction()
         binding.apply {
             rcvMessageListChat.setOnTouchListener { view, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -89,6 +90,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
     }
 
     override fun initView() {
+        super.initView()
         chatAdapter = ChatAdapter(uid)
 
         binding.rcvMessageListChat.adapter = chatAdapter

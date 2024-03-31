@@ -15,24 +15,25 @@ import com.example.laughlines.utils.extensions.hideKeyboard
 class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
     override val layoutId: Int = R.layout.fragment_morse_code
 
-    private lateinit var morseCode : MorseCode
+    private lateinit var morseCode: MorseCode
 
-    override fun initView(){
+    override fun initView() {
+        super.initView()
         morseCode = MorseCode(requireContext())
         binding.apply {
             edtText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    if (p0.toString().isEmpty()){
+                    if (p0.toString().isEmpty()) {
                         with(tvLabelInput) {
-                            text = "Please fill in this box"
+                            text = getString(R.string.please_fill_in_this_box)
                             setTextColor(ContextCompat.getColor(requireContext(), R.color.orange_red))
                         }
                         imgWarning.visibility = View.VISIBLE
                     } else {
                         with(tvLabelInput) {
-                            text = "Your text"
+                            text = getString(R.string.your_text)
                             setTextColor(ContextCompat.getColor(requireContext(), R.color.davy_grey))
                         }
                         imgWarning.visibility = View.GONE
@@ -44,7 +45,8 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
         }
     }
 
-    override fun initAction(){
+    override fun initAction() {
+        super.initAction()
         binding.apply {
             binding.apply {
                 layout.setOnClickListener { it.hideKeyboard() }
@@ -56,9 +58,9 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                     it.hideKeyboard()
                     edtText.clearFocus()
                     val text = edtText.text.toString().trim()
-                    if (text.isNotEmpty()){
+                    if (text.isNotEmpty()) {
                         btnTransmit.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_border_gray_conner_10)
-                        with(edtMorseCode){
+                        with(edtMorseCode) {
                             setText(morseCode.getMorseCodeFromText(text))
                             movementMethod = ScrollingMovementMethod()
                             this.visibility = View.VISIBLE
@@ -66,13 +68,13 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                         tvLabelMorseCode.visibility = View.VISIBLE
                     } else {
                         btnTransmit.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_border_gray_conner_10)
-                        with(edtMorseCode){
+                        with(edtMorseCode) {
                             setText("")
                             this.visibility = View.GONE
                         }
                         tvLabelMorseCode.visibility = View.GONE
                     }
-                    if (!tvStart.isEnabled && !tvOff.isEnabled){
+                    if (!tvStart.isEnabled && !tvOff.isEnabled) {
                         tvStart.isEnabled = true
                         tvOff.isEnabled = false
                         tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
@@ -81,15 +83,15 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                     }
                 }
                 tvStart.setOnClickListener {
-                    if (tvStart.isEnabled){
+                    if (tvStart.isEnabled) {
                         tvStart.isEnabled = false
                         tvOff.isEnabled = true
                         tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.davy_grey))
                         tvOff.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
                         morseCode.setMorseCode(edtMorseCode.text.toString().trim())
                         morseCode.flashMorseCode()
-                        morseCode.isCompleted.observe(viewLifecycleOwner){
-                            if (it){
+                        morseCode.isCompleted.observe(viewLifecycleOwner) {
+                            if (it) {
                                 tvStart.isEnabled = true
                                 tvOff.isEnabled = false
                                 tvStart.setTextColor(ContextCompat.getColor(requireContext(), R.color.jungle_green))
@@ -100,7 +102,7 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                     }
                 }
                 tvOff.setOnClickListener {
-                    if (tvOff.isEnabled){
+                    if (tvOff.isEnabled) {
                         tvStart.isEnabled = true
                         tvOff.isEnabled = false
                         morseCode.cancelFlashMorseCode()
@@ -109,7 +111,7 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                     }
                 }
                 edtText.setOnFocusChangeListener { _, b ->
-                    if (b){
+                    if (b) {
                         btnTransmit.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_border_green_conner_10)
                     }
                 }

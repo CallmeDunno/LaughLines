@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout"
         tools:context=".ui.morse_code.MorseCodeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layoutDirection="ltr"
             android:layout_height="?attr/actionBarSize"
+            android:layoutDirection="ltr"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -38,10 +38,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:enabled="false"
+                android:fontFamily="@font/rubik_medium"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="3dp"
-                android:fontFamily="@font/rubik_medium"
-                android:text="Off"
+                android:text="@string/off"
                 android:textColor="@color/davy_grey"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,15 +62,15 @@
                 app:layout_constraintTop_toTopOf="@+id/tvOff" />
 
             <TextView
-                android:paddingHorizontal="5dp"
-                android:paddingVertical="3dp"
                 android:id="@+id/tvStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:enabled="false"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Start"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="3dp"
+                android:text="@string/start"
                 android:textColor="@color/davy_grey"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv"
@@ -86,7 +86,7 @@
             android:layout_marginHorizontal="27dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Please fill in this box"
+            android:text="@string/please_fill_in_this_box"
             android:textColor="@color/orange_red"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/header" />
@@ -98,8 +98,9 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/bg_border_white_conner_16"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM"
             android:fontFamily="@font/rubik_medium"
-            android:hint="Enter text here"
+            android:hint="@string/enter_text_here"
             android:inputType="textMultiLine"
             android:maxLines="3"
             android:paddingHorizontal="16dp"
@@ -111,7 +112,6 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM"
             app:layout_constraintTop_toBottomOf="@id/tvLabelInput" />
 
         <ImageView
@@ -132,7 +132,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_border_green_conner_10"
             android:fontFamily="@font/rubik_medium"
-            android:text="Transmit"
+            android:text="@string/transmit"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -145,7 +145,7 @@
             android:layout_marginHorizontal="27dp"
             android:layout_marginTop="12sp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Morse code"
+            android:text="@string/morse_code"
             android:textColor="@color/davy_grey"
             android:textSize="14sp"
             android:visibility="invisible"

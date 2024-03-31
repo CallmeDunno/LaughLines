@@ -23,6 +23,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun initView() {
+        super.initView()
         viewModel.getAccount().observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {}
@@ -41,8 +42,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     override fun initAction() {
+        super.initAction()
         binding.apply {
-            btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
+            toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
             btnMorseCode.setOnClickListener { requireView().findNavController().navigate(R.id.action_profileFragment_to_morseCodeFragment) }
             btnChangeInfor.setOnClickListener {
                 requireView().findNavController()
@@ -57,6 +59,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 viewModel.signOut()
                 requireView().findNavController().popBackStack(R.id.home_navigation, true)
                 requireView().findNavController().navigate(R.id.login_navigation)
+            }
+            btnQrCode.setOnClickListener {
+                requireView().findNavController().navigate(R.id.action_profileFragment_to_qrCodeFragment)
             }
         }
     }

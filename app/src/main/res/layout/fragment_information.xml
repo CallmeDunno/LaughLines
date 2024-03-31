@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.change_password.ChangePasswordFragment">
+        tools:context=".ui.information.InformationFragment">
 
         <include
             android:id="@+id/toolbar"
@@ -30,27 +30,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="24dp"
                 android:fontFamily="@font/rubik_medium"
-                android:text="@string/new_password"
+                android:text="@string/change_avatar"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/edtNewPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_white_border_green_corner_80"
-                android:fontFamily="@font/rubik_medium"
-                android:hint="@string/new_password_message"
-                android:maxLines="1"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="@dimen/_10sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/davy_grey"
-                android:textSize="16sp" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/ic_person_green_24"
+                app:civ_border_color="@color/jungle_green"
+                app:civ_border_width="1dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,19 +55,22 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/rubik_medium"
-                android:text="@string/confirm_new_password"
+                android:text="@string/change_name"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/edtConfirmNewPassword"
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_white_border_green_corner_80"
                 android:fontFamily="@font/rubik_medium"
-                android:hint="@string/confirm_new_password_message"
+                android:hint="@string/enter_your_name"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:textColor="@color/black"
@@ -93,5 +93,4 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

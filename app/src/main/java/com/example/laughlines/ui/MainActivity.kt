@@ -33,6 +33,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
+        super.initView()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
         _navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)

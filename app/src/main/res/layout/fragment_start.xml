@@ -24,6 +24,7 @@
             <RelativeLayout
                 android:id="@+id/relative_layout"
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +59,7 @@
                 android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="32dp"
                 android:orientation="vertical"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -71,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_medium"
-                    android:text="Great time"
+                    android:text="@string/great_time"
                     android:textColor="@color/white"
                     android:textSize="36sp" />
 
@@ -80,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_medium"
-                    android:text="with your friends"
+                    android:text="@string/with_your_friends"
                     android:textColor="@color/white"
                     android:textSize="48sp"
                     android:textStyle="bold" />
@@ -90,9 +91,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="16dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:text="Our chat app is the perfect way to stay connected with friends and family."
+                    android:text="@string/text_start"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -123,7 +124,7 @@
                         android:layout_margin="6dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Sign in"
+                        android:text="@string/sign_in"
                         android:textAlignment="center"
                         android:textColor="@color/jungle_green"
                         android:textSize="24sp"
@@ -138,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Sign in or register an account to take quiz, take part in challenge, and more."
+                        android:text="@string/text_start_2"
                         android:textAlignment="center"
                         android:textColor="@color/jungle_green"
                         android:textSize="14sp"
@@ -157,7 +158,7 @@
                         android:drawableEnd="@drawable/ic_google"
                         android:drawablePadding="10dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Sign in with Google"
+                        android:text="@string/sign_in_with_google"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -192,7 +193,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/white"
                             android:padding="10dp"
-                            android:text="OR"
+                            android:text="@string/or"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -206,7 +207,7 @@
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/btn_positive"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Sign in"
+                        android:text="@string/sign_in"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="16sp"

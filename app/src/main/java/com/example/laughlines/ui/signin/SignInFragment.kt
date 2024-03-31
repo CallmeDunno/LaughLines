@@ -30,18 +30,22 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
 
     override fun initView() {
         super.initView()
+        binding.toolbar.tvHeader.text = getText(R.string.sign_in)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initAction() {
+        super.initAction()
         binding.apply {
 
             root.setOnTouchListener { view, event ->
-                if (event.action == MotionEvent.ACTION_DOWN) { view.hideKeyboard() }
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    view.hideKeyboard()
+                }
                 false
             }
 
-            btnBackSignIn.setOnClickListener { requireView().findNavController().popBackStack() }
+            toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
             btnSignIn.setOnClickListener { isValid() }
             btnRegister.setOnClickListener {
                 requireView().findNavController().popBackStack(R.id.signinFragment, true)
@@ -58,7 +62,7 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
                 when (it) {
                     is UiState.Loading -> {}
                     is UiState.Success -> {
-                        if (it.data.isNotEmpty()){
+                        if (it.data.isNotEmpty()) {
                             if (binding.cbRemember.isChecked) {
                                 sharedPreManager.putString("uid", it.data)
                             }
@@ -66,7 +70,9 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
                             requireView().findNavController().navigate(R.id.home_navigation)
                         }
                     }
-                    is UiState.Failure -> { showDialogSignInFail() }
+                    is UiState.Failure -> {
+                        showDialogSignInFail()
+                    }
                 }
             }
         }
@@ -79,10 +85,7 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
         dialog.setCanceledOnTouchOutside(false)
         val window = dialog.window ?: return
         window.setGravity(Gravity.CENTER)
-        window.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialog.findViewById<Button>(R.id.btn_ok_dialog_sign_in_fail).setOnClickListener {
@@ -93,13 +96,13 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
 
     private fun isValidPassword(s: String): Boolean {
         if (TextUtils.isEmpty(s)) {
-            setTextWarning(2, "Can't be left blank")
+            setTextWarning(2, getString(R.string.cannot_be_left_blank))
             stateVisibleWarning(2, true)
             return false
         }
 
         if (s.length < 8) {
-            setTextWarning(2, "Password must be at least 8 characters")
+            setTextWarning(2, getString(R.string.password_must_be_at_least_8_characters))
             stateVisibleWarning(2, true)
             return false
         }
@@ -110,13 +113,13 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
 
     private fun isValidEmail(s: String): Boolean {
         if (TextUtils.isEmpty(s)) {
-            setTextWarning(1, "Can't be left blank")
+            setTextWarning(1, getString(R.string.cannot_be_left_blank))
             stateVisibleWarning(1, true)
             return false
         }
 
         if (!s.matches(Regex("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}\$"))) {
-            setTextWarning(1, "Invalid email")
+            setTextWarning(1, getString(R.string.invalid_email))
             stateVisibleWarning(1, true)
             return false
         }

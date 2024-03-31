@@ -14,4 +14,8 @@
     <color name="orange_red">#FF4D4D</color>
     <color name="raisin_black">#232526</color>
     <color name="eerie_black">#191b1c</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="gainsboro">#DFDDDD</color>
+    <color name="quick_silver">#A0A0A0</color>
+    <color name="arsenic">#424242</color>
 </resources>

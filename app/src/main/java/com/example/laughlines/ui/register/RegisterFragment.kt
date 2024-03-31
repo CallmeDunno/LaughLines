@@ -24,10 +24,14 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     override fun initView() {
         super.initView()
+        binding.toolbar.apply {
+            tvHeader.text = getString(R.string.register_account)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initAction() {
+        super.initAction()
         binding.apply {
 
             root.setOnTouchListener { view, event ->
@@ -37,13 +41,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                 false
             }
 
-            btnBackRegister.setOnClickListener { requireView().findNavController().popBackStack() }
-            btnSignInRegister.setOnClickListener {
-                requireView().findNavController().popBackStack(R.id.registerFragment, true)
-                requireView().findNavController().navigate(R.id.signinFragment)
-            }
-            btnCreateAccountRegister.setOnClickListener {
+            toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
+            btnCreateAccount.setOnClickListener {
                 isValid()
+                requireView().findNavController().popBackStack()
             }
         }
     }
@@ -53,15 +54,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         val strEmail = binding.edtEmailRegister.text.toString().trim()
         val strPass = binding.edtPasswordRegister.text.toString().trim()
         val strConfirmPass = binding.edtConfirmPasswordRegister.text.toString().trim()
-        if (isValidName(strName) && isValidEmail(strEmail)
-            && isValidPass(strPass)
-            && isValidConfirmPassword(strPass, strConfirmPass)
-        ) {
+        if (isValidName(strName) && isValidEmail(strEmail) && isValidPass(strPass) && isValidConfirmPassword(strPass, strConfirmPass)) {
             viewModel.createAccount(strEmail, strPass).observe(viewLifecycleOwner) {
-                when(it){
+                when (it) {
                     is UiState.Loading -> {}
                     is UiState.Success -> {
-                        Toast.makeText(requireContext(), "You have successfully registered an account!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.create_account_successful), Toast.LENGTH_SHORT).show()
                         val account = Account(it.data, strName, strEmail, strPass)
                         viewModel.saveUserToFireStore(account)
                         clearEditText()
@@ -76,7 +74,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     }
 
-    private fun clearEditText(){
+    private fun clearEditText() {
         binding.apply {
             edtNameRegister.setText("")
             edtEmailRegister.setText("")
@@ -87,13 +85,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     private fun isValidConfirmPassword(s1: String, s2: String): Boolean {
         if (TextUtils.isEmpty(s2)) {
-            setTextWarning(4, "Can't be left blank")
+            setTextWarning(4, getString(R.string.cannot_be_left_blank))
             stateVisibleWarning(4, true)
             return false
         }
 
         if (s1 != s2) {
-            setTextWarning(4, "Doesn't match the password")
+            setTextWarning(4, getString(R.string.doesnot_match_the_password))
             stateVisibleWarning(4, true)
             return false
         }
@@ -104,13 +102,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     private fun isValidPass(s: String): Boolean {
         if (TextUtils.isEmpty(s)) {
-            setTextWarning(3, "Can't be left blank")
+            setTextWarning(3, getString(R.string.cannot_be_left_blank))
             stateVisibleWarning(3, true)
             return false
         }
 
         if (s.length < 8) {
-            setTextWarning(3, "Password must be at least 8 characters")
+            setTextWarning(3, getString(R.string.password_must_be_at_least_8_characters))
             stateVisibleWarning(3, true)
             return false
         }
@@ -121,13 +119,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     private fun isValidEmail(s: String): Boolean {
         if (TextUtils.isEmpty(s)) {
-            setTextWarning(2, "Can't be left blank")
+            setTextWarning(2, getString(R.string.cannot_be_left_blank))
             stateVisibleWarning(2, true)
             return false
         }
 
         if (!s.matches(Regex("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}\$"))) {
-            setTextWarning(2, "Invalid email")
+            setTextWarning(2, getString(R.string.invalid_email))
             stateVisibleWarning(2, true)
             return false
         }
@@ -138,7 +136,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     private fun isValidName(s: String): Boolean {
         if (TextUtils.isEmpty(s)) {
-            setTextWarning(1, "Can't be left blank")
+            setTextWarning(1, getString(R.string.cannot_be_left_blank))
             stateVisibleWarning(1, true)
             return false
         }

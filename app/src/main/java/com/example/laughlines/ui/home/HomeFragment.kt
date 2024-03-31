@@ -25,6 +25,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var sharedPreManager: SharedPreferencesManager
 
     override fun initAction() {
+        super.initAction()
         friendAdapter.setOnClickUserItem(object : IClickItem {
             override fun setOnClickItemChat(friend: Friend) {
                 val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(friend.cid, friend.fid)
@@ -34,6 +35,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
+        super.initView()
         requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         binding.rcvChatsListHome.adapter = friendAdapter
         initViewModel()

@@ -37,6 +37,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
     }
 
     override fun initAction() {
+        super.initAction()
         binding.apply {
             btnGoogle.setOnClickListener {
                 val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)) //Vào file build gradle (project) cập nhật classpath google-service lên phiên bản mới nhất là tự có
