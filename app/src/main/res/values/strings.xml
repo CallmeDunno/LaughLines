@@ -41,6 +41,7 @@
     <string name="morse_code">Morse code</string>
     <string name="qr_code">QR code</string>
     <string name="sign_out">Sign out</string>
+    <string name="scan_result">Scan result</string>
     <string name="start">Start</string>
     <string name="off">Off</string>
     <string name="please_fill_in_this_box">Please fill in this box</string>
@@ -49,6 +50,11 @@
     <string name="your_text">Your text</string>
     <string name="qr_code_scanner">QR Code Scanner</string>
     <string name="qr_code_generator">QR Code Generator</string>
-
+    <string name="text_qr">Insert the QR code into the scanning position, the scanning process will be performed automatically.</string>
+    <string name="my_qr_code">My QR Code</string>
+    <string name="gallery">Gallery</string>
+    <string name="share">Share</string>
+    <string name="text_share">Share your QR code to make friends with everyone</string>
+    <string name="text_save">Save your QR code to the gallery</string>
 
 </resources>

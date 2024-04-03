@@ -11,10 +11,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.friends.FriendsListFragment">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Friends List" />
+
 
     </FrameLayout>
 </layout>

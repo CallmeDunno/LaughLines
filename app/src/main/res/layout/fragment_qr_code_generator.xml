@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,9 +10,127 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/jungle_green"
+        android:background="@color/white"
         tools:context=".ui.qr_code.QrCodeGeneratorFragment">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/view_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgQr"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="180dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="Your name"
+            android:textAlignment="center"
+            android:textColor="@color/jungle_green"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="@id/imgQr" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginTop="@dimen/_minus56sdp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textColor="@color/jungle_green"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/imgQr" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
+
+        <TextView
+            android:id="@+id/btnShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_border_green_corner_20"
+            android:backgroundTint="@color/jungle_green"
+            android:fontFamily="@font/rubik_medium"
+            android:paddingVertical="12dp"
+            android:text="@string/share"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/vertical_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_line" />
+
+        <TextView
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white_border_green_corner_20"
+            android:backgroundTint="@color/jungle_green"
+            android:fontFamily="@font/rubik_medium"
+            android:paddingVertical="12dp"
+            android:text="@string/save"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/vertical_line"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_line" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/text_share"
+            android:textAlignment="center"
+            android:textColor="#A5A5A5"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/btnShare"
+            app:layout_constraintStart_toStartOf="@id/btnShare"
+            app:layout_constraintTop_toBottomOf="@id/btnShare" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/text_save"
+            android:textAlignment="center"
+            android:textColor="#A5A5A5"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/btnSave"
+            app:layout_constraintStart_toStartOf="@id/btnSave"
+            app:layout_constraintTop_toBottomOf="@id/btnSave" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

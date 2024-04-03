@@ -154,6 +154,15 @@
             android:id="@+id/qrCodeFragment"
             android:name="com.example.laughlines.ui.qr_code.QrCodeFragment"
             android:label="QrCodeFragment"
-            tools:layout="@layout/fragment_qr_code" />
+            tools:layout="@layout/fragment_qr_code">
+            <action
+                android:id="@+id/action_qrCodeFragment_to_qrCodeGeneratorFragment"
+                app:destination="@id/qrCodeGeneratorFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/qrCodeGeneratorFragment"
+            android:name="com.example.laughlines.ui.qr_code.QrCodeGeneratorFragment"
+            android:label="QrCodeGeneratorFragment"
+            tools:layout="@layout/fragment_qr_code_generator" />
     </navigation>
 </navigation>
