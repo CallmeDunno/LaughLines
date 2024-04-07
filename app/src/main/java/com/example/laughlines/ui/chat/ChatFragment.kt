@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.MotionEvent
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide

@@ -1,10 +1,12 @@
 package com.example.laughlines.ui.profile
 
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.laughlines.R
 import com.example.laughlines.base.BaseFragment
+import com.example.laughlines.base.TestDialog
 import com.example.laughlines.databinding.FragmentProfileBinding
 import com.example.laughlines.log.Logger
 import com.example.laughlines.utils.SharedPreferencesManager
@@ -47,14 +49,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
             btnMorseCode.setOnClickListener { requireView().findNavController().navigate(R.id.action_profileFragment_to_morseCodeFragment) }
             btnChangeInfor.setOnClickListener {
-                requireView().findNavController()
-                    .navigate(R.id.action_profileFragment_to_inforDetailFragment)
+                requireView().findNavController().navigate(R.id.action_profileFragment_to_inforDetailFragment)
             }
             btnChangePass.setOnClickListener {
-                requireView().findNavController()
-                    .navigate(R.id.action_profileFragment_to_changePasswordDetailFragment)
+                requireView().findNavController().navigate(R.id.action_profileFragment_to_changePasswordDetailFragment)
             }
-            btnChatbot.setOnClickListener { }
+            btnChatbot.setOnClickListener {
+                val test = TestDialog(requireContext(), {
+                    Log.e("Dunno", it)
+                }, {Log.i("Dunno", it)})
+                test.x = sharedPreManager.getString("uid") ?: "asdfghjk"
+                test.show()
+            }
             btnSignOut.setOnClickListener {
                 viewModel.signOut()
                 requireView().findNavController().popBackStack(R.id.home_navigation, true)

@@ -44,4 +44,8 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         }
         return mutableLiveData
     }
+
+    fun resetPassword() {
+        repository.resetPassword()
+    }
 }

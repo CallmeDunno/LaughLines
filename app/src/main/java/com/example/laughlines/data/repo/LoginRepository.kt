@@ -1,5 +1,6 @@
 package com.example.laughlines.data.repo
 
+import android.util.Log
 import com.example.laughlines.model.Account
 import com.example.laughlines.utils.UiState
 import com.google.firebase.auth.AuthCredential
@@ -49,6 +50,11 @@ class LoginRepository @Inject constructor(
                 is UiState.Failure -> {}
             }
         }
+    }
+
+    fun resetPassword() {
+        fAuth.sendPasswordResetEmail("quocdungnguyen24122002@gmail.com")
+            .addOnSuccessListener { Log.e("Dunno", "aaaa") }
     }
 
     private fun checkAccountExists(email: String, result: (UiState<Boolean>) -> Unit) =

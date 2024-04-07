@@ -11,7 +11,9 @@ import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentMorseCodeBinding
 import com.example.laughlines.model.MorseCode
 import com.example.laughlines.utils.extensions.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
     override val layoutId: Int = R.layout.fragment_morse_code
 
