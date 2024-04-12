@@ -96,6 +96,9 @@ dependencies {
     //QrCode
     implementation 'com.github.androidmads:QRGenerator:1.0.1'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
+
+    //Notification animation
+    implementation 'com.nex3z:notification-badge:1.0.4'
 }
 
 kapt {

@@ -1,41 +1,47 @@
 package com.example.laughlines.ui.qr_code
 
-import android.app.Dialog
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Handler
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.view.Gravity
+import android.util.Log
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
+import com.bumptech.glide.Glide
 import com.example.laughlines.R
 import com.example.laughlines.base.BaseFragment
+import com.example.laughlines.databinding.BottomSheetResultQrBinding
 import com.example.laughlines.databinding.FragmentQrCodeBinding
+import com.example.laughlines.dialog.LoadingDialog
+import com.example.laughlines.utils.Constant
+import com.example.laughlines.utils.SharedPreferencesManager
+import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hide
 import com.example.laughlines.utils.extensions.show
+import com.example.laughlines.viewmodel.QrCodeViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
     override val layoutId: Int = R.layout.fragment_qr_code
 
     private lateinit var codeScanner: CodeScanner
+    private lateinit var loadingDialog: LoadingDialog
+
+    private val viewModel by viewModels<QrCodeViewModel>()
+
+    @Inject
+    lateinit var sharedPref: SharedPreferencesManager
 
     override fun initView() {
         super.initView()
@@ -50,12 +56,37 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         }
 
         initScanner()
+        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun initAction() {
         super.initAction()
         binding.toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
         binding.btnMyQrCode.setOnClickListener { requireView().findNavController().navigate(R.id.action_qrCodeFragment_to_qrCodeGeneratorFragment) }
+    }
+
+    override fun onObserve() {
+        super.onObserve()
+        viewModel.requestLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                is UiState.Loading -> {
+                    loadingDialog.show()
+                }
+                is UiState.Failure -> {
+                    loadingDialog.dismiss()
+                    notify(getString(R.string.qr_error))
+                    Log.e("Dunno", it.message.toString())
+                }
+                is UiState.Success -> {
+                    loadingDialog.dismiss()
+                    if (it.data) {
+                        notify(getString(R.string.request_successful))
+                    } else {
+                        notify(getString(R.string.the_request_has_been_sent))
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -66,7 +97,7 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
     override fun onPause() {
         codeScanner.releaseResources()
         super.onPause()
-//        codeScanner.stopPreview()
+        codeScanner.stopPreview()
 
     }
 
@@ -84,8 +115,7 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
                                               vibrator.vibrate(500)
                                           }
                                           binding.scannerView.isMaskVisible = false
-                                          notify(result.text)
-                                          showResultDialog(result.text)
+                                          showResultBottomSheet(result.text)
                                       }, 500)
             }
         }
@@ -98,45 +128,55 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         binding.scannerView.isMaskVisible = true
     }
 
-    private fun showResultDialog(result: String): Dialog {
+    private fun showResultBottomSheet(id: String) {
         binding.scanning.hide()
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_qr_result)
-        val window = dialog.window!!
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val windowAttribute = window.attributes
-        windowAttribute.gravity = Gravity.CENTER
-        window.attributes = windowAttribute
-        val txtResult = dialog.findViewById<TextView>(R.id.txtResult)
-        val btnCopy = dialog.findViewById<ImageView>(R.id.btnCopy)
-        val btnClose = dialog.findViewById<ImageView>(R.id.btnClose)
-        btnClose.setOnClickListener { view1: View? ->
-            dialog.dismiss()
-            actionContinuePreview()
-        }
-        txtResult.text = result
-        btnCopy.setOnClickListener { view1: View? ->
-            val clipboard = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("label", result)
-            if (clipboard != null) {
-                clipboard.setPrimaryClip(clip)
-//                btnCopy.setImageResource(R.drawable.ic_check)
-                btnCopy.imageTintList = ColorStateList.valueOf(Color.parseColor("#1CCF7A"))
-                btnCopy.isClickable = false
-            }
-//            notify(getString(R.string.copy_successful))
-        }
-        dialog.setCancelable(false)
+        val bottomSheetBinding = BottomSheetResultQrBinding.inflate(layoutInflater)
+        val bottomSheet = BottomSheetDialog(requireContext())
+        bottomSheet.setContentView(bottomSheetBinding.root)
 
-        dialog.setOnDismissListener {
+        viewModel.getInformation(sharedPref.getString(Constant.Key.ID.name)!!, id).observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                    bottomSheetBinding.apply {
+                        vLoading.show()
+                        btnAddFriend.isEnabled = false
+                        btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.davy_grey))
+                    }
+                }
+                is UiState.Failure -> {
+                    Log.e("Dunno", "Error: ${it.message}")
+                    notify(getString(R.string.qr_error))
+                }
+                is UiState.Success -> {
+                    bottomSheetBinding.apply {
+                        vLoading.hide()
+                        btnAddFriend.isEnabled = true
+                        btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.jungle_green))
+
+                        val qrResult = it.data
+                        if (qrResult.avatar == null || qrResult.avatar == "null") {
+                            Glide.with(requireView()).load(R.drawable.ic_person_green_24).into(imgAvatar)
+                        } else {
+                            Glide.with(requireView()).load(qrResult.avatar).into(imgAvatar)
+                        }
+                        tvName.text = qrResult.name
+                        tvEmail.text = qrResult.email
+                        tvFriend.text = "${qrResult.sumFriend} friends"
+                    }
+                }
+            }
+        }
+
+        bottomSheetBinding.btnAddFriend.setOnClickListener {
+            viewModel.requestFriend(sharedPref.getString(Constant.Key.ID.name)!!, id)
+        }
+
+        bottomSheet.setOnDismissListener {
+            actionContinuePreview()
             binding.scanning.show()
             onResume()
         }
-
-        dialog.show()
-        return dialog
+        bottomSheet.show()
     }
 
 }

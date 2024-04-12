@@ -56,5 +56,21 @@
     <string name="share">Share</string>
     <string name="text_share">Share your QR code to make friends with everyone</string>
     <string name="text_save">Save your QR code to the gallery</string>
-
+    <string name="loading">Loading…</string>
+    <string name="text_warning_home">You don\'t have any chats yet, click here to find more friends.</string>
+    <string name="message">Message</string>
+    <string name="calls">Calls</string>
+    <string name="contacts">Contacts</string>
+    <string name="profile">Profile</string>
+    <string name="my_status">My status</string>
+    <string name="tap_to_chat">Tap to chat</string>
+    <string name="add_friend">Add friend</string>
+    <string name="qr_error">An error occurred, please try again</string>
+    <string name="request_successful">Request Successful</string>
+    <string name="the_request_has_been_sent">The request has been sent</string>
+    <string name="accept">Accept</string>
+    <string name="delete">Delete</string>
+    <string name="request">Request</string>
+    <string name="no_request">You don\'t have any friend requests, please come back later.</string>
+    <string name="deleted_successful">Deleted successful</string>
 </resources>

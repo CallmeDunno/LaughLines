@@ -1,17 +1,11 @@
 package com.example.laughlines.ui.profile
 
-import android.util.Log
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.bumptech.glide.Glide
 import com.example.laughlines.R
 import com.example.laughlines.base.BaseFragment
-import com.example.laughlines.base.TestDialog
 import com.example.laughlines.databinding.FragmentProfileBinding
-import com.example.laughlines.log.Logger
+import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
-import com.example.laughlines.utils.UiState
-import com.example.laughlines.viewmodel.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -19,28 +13,12 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override val layoutId: Int = R.layout.fragment_profile
 
-    private val viewModel by viewModels<ProfileViewModel>()
-
     @Inject
-    lateinit var sharedPreManager: SharedPreferencesManager
+    lateinit var sharedPref: SharedPreferencesManager
 
     override fun initView() {
         super.initView()
-        viewModel.getAccount().observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Success -> {
-                    binding.apply {
-                        Glide.with(requireView()).load(it.data.avatarUrl).into(imgAvatar)
-                        tvName.text = it.data.name
-                        tvEmail.text = it.data.email
-                    }
-                }
-                is UiState.Failure -> {
-                    Logger.e(it.message.toString())
-                }
-            }
-        }
+
     }
 
     override fun initAction() {
@@ -54,15 +32,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             btnChangePass.setOnClickListener {
                 requireView().findNavController().navigate(R.id.action_profileFragment_to_changePasswordDetailFragment)
             }
-            btnChatbot.setOnClickListener {
-                val test = TestDialog(requireContext(), {
-                    Log.e("Dunno", it)
-                }, {Log.i("Dunno", it)})
-                test.x = sharedPreManager.getString("uid") ?: "asdfghjk"
-                test.show()
-            }
+            btnChatbot.setOnClickListener {}
             btnSignOut.setOnClickListener {
-                viewModel.signOut()
+//                viewModel.signOut()
+                sharedPref.removeKey(Constant.Key.ID.name)
                 requireView().findNavController().popBackStack(R.id.home_navigation, true)
                 requireView().findNavController().navigate(R.id.login_navigation)
             }

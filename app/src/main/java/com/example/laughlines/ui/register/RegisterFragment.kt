@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentRegisterBinding
+import com.example.laughlines.dialog.LoadingDialog
 import com.example.laughlines.model.Account
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hideKeyboard
@@ -44,7 +45,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
             btnCreateAccount.setOnClickListener {
                 isValid()
-                requireView().findNavController().popBackStack()
             }
         }
     }
@@ -55,18 +55,23 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         val strPass = binding.edtPasswordRegister.text.toString().trim()
         val strConfirmPass = binding.edtConfirmPasswordRegister.text.toString().trim()
         if (isValidName(strName) && isValidEmail(strEmail) && isValidPass(strPass) && isValidConfirmPassword(strPass, strConfirmPass)) {
+            val dialogLoading = LoadingDialog(requireContext())
+            dialogLoading.show()
             viewModel.createAccount(strEmail, strPass).observe(viewLifecycleOwner) {
                 when (it) {
                     is UiState.Loading -> {}
                     is UiState.Success -> {
                         Toast.makeText(requireContext(), getString(R.string.create_account_successful), Toast.LENGTH_SHORT).show()
-                        val account = Account(it.data, strName, strEmail, strPass)
+                        val account = Account(it.data, strName, strEmail, null, null)
                         viewModel.saveUserToFireStore(account)
                         clearEditText()
+                        dialogLoading.dismiss()
+                        requireView().findNavController().popBackStack()
                     }
                     is UiState.Failure -> {
                         setTextWarning(2, it.message.toString())
                         stateVisibleWarning(2, true)
+                        dialogLoading.dismiss()
                     }
                 }
             }

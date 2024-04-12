@@ -9,6 +9,7 @@ import com.example.laughlines.R
 import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentStartBinding
 import com.example.laughlines.log.Logger
+import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.viewmodel.LoginViewModel
@@ -66,7 +67,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>() {
                     when (it) {
                         is UiState.Loading -> {}
                         is UiState.Success -> {
-                            sharedPreManager.putString("uid", it.data.uid)
+                            sharedPreManager.putString(Constant.Key.ID.name, it.data.uid)
                             viewModel.saveUserToFireStore(it.data)
                             requireView().findNavController().popBackStack(R.id.login_navigation, true)
                             requireView().findNavController().navigate(R.id.home_navigation)

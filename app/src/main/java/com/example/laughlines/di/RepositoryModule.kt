@@ -1,9 +1,6 @@
 package com.example.laughlines.di
 
-import com.example.laughlines.data.repo.ChatRepository
-import com.example.laughlines.data.repo.HomeRepository
-import com.example.laughlines.data.repo.LoginRepository
-import com.example.laughlines.data.repo.ProfileRepository
+import com.example.laughlines.data.repo.*
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +16,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideHomeRepository(fDb: FirebaseFirestore) = HomeRepository(fDb)
+    fun provideHomeRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = HomeRepository(fDb, sharedPreManager)
 
     @Provides
     @Singleton
@@ -27,14 +24,19 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(
-        fDb: FirebaseFirestore,
-        fAuth: FirebaseAuth,
-        sharedPreManager: SharedPreferencesManager
-    ) = ProfileRepository(fDb, fAuth, sharedPreManager)
+    fun provideProfileRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth, sharedPreManager: SharedPreferencesManager) = ProfileRepository(fDb, fAuth, sharedPreManager)
 
     @Provides
     @Singleton
-    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) =
-        LoginRepository(fDb, fAuth)
+    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) = LoginRepository(fDb, fAuth)
+
+    @Provides
+    @Singleton
+    fun provideQrCodeRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = QrCodeRepository(fDb, sharedPreManager)
+
+    @Provides
+    @Singleton
+    fun provideRequestRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = RequestRepository(fDb, sharedPreManager)
+
+
 }

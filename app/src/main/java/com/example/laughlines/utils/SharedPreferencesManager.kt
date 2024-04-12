@@ -27,6 +27,10 @@ class SharedPreferencesManager @Inject constructor(private val sharedPre: Shared
         return sharedPre.getBoolean(key, false)
     }
 
+    fun removeKey(key: String) {
+        sharedPre.edit().remove(key).apply()
+    }
+
     fun clear() {
         sharedPre.edit().apply {
             clear()

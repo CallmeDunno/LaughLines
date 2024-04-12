@@ -23,7 +23,7 @@ abstract class BaseDialog<VB : ViewBinding>(context: Context) : Dialog(context) 
         this.setCanceledOnTouchOutside(false)
         val window = this.window!!
         window.setGravity(Gravity.CENTER)
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         initView()

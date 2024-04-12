@@ -7,6 +7,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.laughlines.R
 import com.example.laughlines.base.BaseActivity
 import com.example.laughlines.databinding.ActivityMainBinding
+import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onStart() {
         super.onStart()
-        if (sharedPreManager.getString("uid").isNullOrEmpty()) {
+        if (sharedPreManager.getString(Constant.Key.ID.name).isNullOrEmpty()) {
             navController.popBackStack(R.id.home_navigation, true)
             navController.navigate(R.id.login_navigation)
         } else {

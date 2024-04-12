@@ -4,12 +4,12 @@
         <item
             android:id="@+id/homeFragment"
             android:icon="@drawable/ic_message_24"
-            android:title="Home" />
+            android:title="@string/message" />
         <item android:id="@+id/friendsListFragment"
-            android:title="Friends"
+            android:title="@string/contacts"
             android:icon="@drawable/ic_group_friends_24" />
         <item android:id="@+id/profileFragment"
-            android:title="Profile"
+            android:title="@string/profile"
             android:icon="@drawable/ic_person_24" />
     </group>
 

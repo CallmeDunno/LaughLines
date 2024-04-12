@@ -12,6 +12,8 @@ import androidx.navigation.findNavController
 import com.example.laughlines.R
 import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.FragmentSigninBinding
+import com.example.laughlines.dialog.LoadingDialog
+import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hideKeyboard
@@ -26,7 +28,7 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
     private val viewModel by viewModels<LoginViewModel>()
 
     @Inject
-    lateinit var sharedPreManager: SharedPreferencesManager
+    lateinit var sharedPref: SharedPreferencesManager
 
     override fun initView() {
         super.initView()
@@ -58,19 +60,30 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
         val strEmail = binding.edtEmail.text.toString().trim()
         val strPass = binding.edtPassword.text.toString().trim()
         if (isValidEmail(strEmail) && isValidPassword(strPass)) {
+            val loadingDialog = LoadingDialog(requireContext())
             viewModel.signIn(strEmail, strPass).observe(viewLifecycleOwner) {
                 when (it) {
-                    is UiState.Loading -> {}
+                    is UiState.Loading -> {
+                        loadingDialog.show()
+                    }
                     is UiState.Success -> {
                         if (it.data.isNotEmpty()) {
-                            if (binding.cbRemember.isChecked) {
-                                sharedPreManager.putString("uid", it.data)
+                            viewModel.getID(it.data).observe(viewLifecycleOwner) {it2 ->
+                                when(it2) {
+                                    is UiState.Loading -> {}
+                                    is UiState.Failure -> {}
+                                    is UiState.Success -> {
+                                        sharedPref.putString(Constant.Key.ID.name, it2.data)
+                                        loadingDialog.dismiss()
+                                        requireView().findNavController().popBackStack(R.id.login_navigation, true)
+                                        requireView().findNavController().navigate(R.id.home_navigation)
+                                    }
+                                }
                             }
-                            requireView().findNavController().popBackStack(R.id.login_navigation, true)
-                            requireView().findNavController().navigate(R.id.home_navigation)
                         }
                     }
                     is UiState.Failure -> {
+                        loadingDialog.dismiss()
                         showDialogSignInFail()
                     }
                 }

@@ -25,7 +25,9 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,20 +118,6 @@
                 android:textSize="12sp"
                 android:textStyle="italic"
                 android:visibility="invisible" />
-
-            <CheckBox
-                android:id="@+id/cbRemember"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:buttonTint="@color/jungle_green"
-                android:fontFamily="@font/rubik_medium"
-                android:padding="6dp"
-                android:text="@string/remember"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btnSignIn"

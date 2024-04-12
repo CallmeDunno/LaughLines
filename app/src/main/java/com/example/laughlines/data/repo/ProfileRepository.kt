@@ -14,24 +14,9 @@ class ProfileRepository @Inject constructor(
 ) {
 
     fun getAccount(result: (UiState<Person>) -> Unit) {
-        val uid = sharedPreManager.getString("uid")!!
-        fDb.collection("User")
-            .whereEqualTo("id", uid)
-            .limit(1)
-            .get()
-            .addOnCompleteListener {
-                if (it.isSuccessful)
-                    for (p in it.result) {
-                        val name = p.data["name"].toString()
-                        val email = p.data["email"].toString()
-                        val avatarUrl = p.data["avatarUrl"].toString()
-                        val person = Person(name, email, avatarUrl)
-                        result.invoke(UiState.Success(person))
-                        break
-                    }
-            }
-            .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message.toString()}")) }
+
     }
+
 
     fun signOut() {
         fAuth.signOut()

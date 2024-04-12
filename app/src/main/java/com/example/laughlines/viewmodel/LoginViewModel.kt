@@ -45,6 +45,14 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         return mutableLiveData
     }
 
+    fun getID(uid: String) : MutableLiveData<UiState<String>> {
+        val mLiveData = MutableLiveData<UiState<String>>()
+        repository.getIdDocument(uid) {
+            mLiveData.postValue(it)
+        }
+        return mLiveData
+    }
+
     fun resetPassword() {
         repository.resetPassword()
     }

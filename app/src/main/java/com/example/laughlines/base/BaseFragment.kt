@@ -27,6 +27,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initVariable()
         initView()
+        onObserve()
         initAction()
     }
 
@@ -36,6 +37,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
+
+    open fun onObserve() {}
 
     open fun initAction() {}
 

@@ -2,6 +2,7 @@ package com.example.laughlines.data.repo
 
 import android.util.Log
 import com.example.laughlines.model.Account
+import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.UiState
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -16,18 +17,19 @@ class LoginRepository @Inject constructor(
 
     fun createAccount(email: String, password: String, result: (UiState<String>) -> Unit) =
         fAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { result.invoke(UiState.Success(it.result.user?.uid.toString())) }
+            .addOnSuccessListener { result.invoke(UiState.Success(it.user?.uid.toString())) }
             .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message.toString()}")) }
 
     fun signIn(email: String, password: String, result: (UiState<String>) -> Unit) {
+        result.invoke(UiState.Loading)
         fAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { result.invoke(UiState.Success(it.result.user?.uid.toString())) }
+            .addOnSuccessListener { result.invoke(UiState.Success(it.user?.uid.toString())) }
             .addOnFailureListener { result.invoke(UiState.Failure(it.message.toString())) }
     }
 
     fun signInWithCredential(credential: AuthCredential, result: (UiState<FirebaseUser>) -> Unit) {
         fAuth.signInWithCredential(credential)
-            .addOnCompleteListener { result.invoke(UiState.Success(fAuth.currentUser!!)) }
+            .addOnSuccessListener { result.invoke(UiState.Success(fAuth.currentUser!!)) }
             .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message.toString()}")) }
     }
 
@@ -36,7 +38,7 @@ class LoginRepository @Inject constructor(
         val email = u.email.toString()
         val avatarUrl = u.photoUrl.toString()
         val uid = u.uid
-        val account = Account(uid, name, email, null, avatarUrl)
+        val account = Account(uid, name, email, avatarUrl, null)
         saveUserToFireStore(account)
     }
 
@@ -58,7 +60,7 @@ class LoginRepository @Inject constructor(
     }
 
     private fun checkAccountExists(email: String, result: (UiState<Boolean>) -> Unit) =
-        fDb.collection("User")
+        fDb.collection(Constant.Collection.User.name)
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener {
@@ -67,6 +69,15 @@ class LoginRepository @Inject constructor(
             }
             .addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message.toString()}")) }
 
-    private fun addAccountToFireStore(account: Account) = fDb.collection("User")
+    private fun addAccountToFireStore(account: Account) = fDb.collection(Constant.Collection.User.name)
         .add(account)
+
+    fun getIdDocument(uid: String, result: (UiState<String>) -> Unit) {
+        fDb.collection(Constant.Collection.User.name)
+            .whereEqualTo("id", uid)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result.invoke(UiState.Success(it.documents[0].id)) }
+            .addOnFailureListener { result.invoke(UiState.Failure(it.message.toString())) }
+    }
 }
