@@ -20,38 +20,52 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imgQr"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutQrCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="180dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:fontFamily="@font/rubik_medium"
-            android:text="Your name"
-            android:textAlignment="center"
-            android:textColor="@color/jungle_green"
-            android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="@id/imgQr" />
+            <ImageView
+                android:id="@+id/imgQr"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
-            android:layout_marginTop="@dimen/_minus56sdp"
-            android:fontFamily="@font/rubik_medium"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textColor="@color/jungle_green"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/imgQr" />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:fontFamily="@font/rubik_medium"
+                android:textAlignment="center"
+                android:textColor="@color/jungle_green"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imgQr" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="64dp"
+                android:layout_marginTop="@dimen/_minus56sdp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@color/jungle_green"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/imgQr"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontal_line"

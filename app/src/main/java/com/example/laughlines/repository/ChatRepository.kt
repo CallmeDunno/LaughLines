@@ -1,4 +1,4 @@
-package com.example.laughlines.data.repo
+package com.example.laughlines.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject

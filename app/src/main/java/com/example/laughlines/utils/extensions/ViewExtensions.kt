@@ -10,6 +10,11 @@ internal fun View.hideKeyboard() {
     this.clearFocus()
 }
 
+//internal fun View.showKeyboard() {
+//    val methodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//    methodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+//}
+
 internal fun View.show() {
     visibility = View.VISIBLE
 }

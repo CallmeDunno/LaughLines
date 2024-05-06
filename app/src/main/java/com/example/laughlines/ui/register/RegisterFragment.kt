@@ -14,6 +14,7 @@ import com.example.laughlines.dialog.LoadingDialog
 import com.example.laughlines.model.Account
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hideKeyboard
+import com.example.laughlines.utils.extensions.show
 import com.example.laughlines.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,9 +53,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     private fun isValid() {
         val strName = binding.edtNameRegister.text.toString().trim()
         val strEmail = binding.edtEmailRegister.text.toString().trim()
+        val strNumberPhone = binding.edtNumberPhoneRegister.text.toString()
         val strPass = binding.edtPasswordRegister.text.toString().trim()
         val strConfirmPass = binding.edtConfirmPasswordRegister.text.toString().trim()
-        if (isValidName(strName) && isValidEmail(strEmail) && isValidPass(strPass) && isValidConfirmPassword(strPass, strConfirmPass)) {
+        if (isValidName(strName) && isValidEmail(strEmail) && isValidPass(strPass) && isValidConfirmPassword(strPass, strConfirmPass) && inValidNumberPhone(strNumberPhone)) {
             val dialogLoading = LoadingDialog(requireContext())
             dialogLoading.show()
             viewModel.createAccount(strEmail, strPass).observe(viewLifecycleOwner) {
@@ -62,7 +64,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                     is UiState.Loading -> {}
                     is UiState.Success -> {
                         Toast.makeText(requireContext(), getString(R.string.create_account_successful), Toast.LENGTH_SHORT).show()
-                        val account = Account(it.data, strName, strEmail, null, null)
+                        val account = Account(it.data, strName, strEmail, null, null, strNumberPhone)
                         viewModel.saveUserToFireStore(account)
                         clearEditText()
                         dialogLoading.dismiss()
@@ -83,9 +85,20 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         binding.apply {
             edtNameRegister.setText("")
             edtEmailRegister.setText("")
+            edtNumberPhoneRegister.setText("")
             edtPasswordRegister.setText("")
             edtConfirmPasswordRegister.setText("")
         }
+    }
+
+    private fun inValidNumberPhone(str: String): Boolean {
+        if (str.length in 0 until 10) {
+            binding.tvWarning5Register.text = getString(R.string.incorrect_format)
+            binding.tvWarning5Register.show()
+            return false
+        }
+        binding.tvWarning5Register.visibility = View.INVISIBLE
+        return true
     }
 
     private fun isValidConfirmPassword(s1: String, s2: String): Boolean {

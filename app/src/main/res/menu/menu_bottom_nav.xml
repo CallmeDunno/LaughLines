@@ -5,7 +5,7 @@
             android:id="@+id/homeFragment"
             android:icon="@drawable/ic_message_24"
             android:title="@string/message" />
-        <item android:id="@+id/friendsListFragment"
+        <item android:id="@+id/contactFragment"
             android:title="@string/contacts"
             android:icon="@drawable/ic_group_friends_24" />
         <item android:id="@+id/profileFragment"

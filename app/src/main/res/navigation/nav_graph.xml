@@ -62,7 +62,6 @@
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
             <action
                 android:id="@+id/action_homeFragment_to_chatFragment"
                 app:destination="@id/chatFragment"
@@ -130,6 +129,9 @@
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            <action
+                android:id="@+id/action_contactFragment_to_qrCodeFragment"
+                app:destination="@id/qrCodeFragment" />
         </fragment>
         <fragment
             android:id="@+id/chatFragment"

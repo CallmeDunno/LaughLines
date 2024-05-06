@@ -1,6 +1,6 @@
 package com.example.laughlines.di
 
-import com.example.laughlines.data.repo.*
+import com.example.laughlines.repository.*
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,5 +38,8 @@ class RepositoryModule {
     @Singleton
     fun provideRequestRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = RequestRepository(fDb, sharedPreManager)
 
+    @Provides
+    @Singleton
+    fun provideContactRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = ContactRepository(fDb, sharedPreManager)
 
 }

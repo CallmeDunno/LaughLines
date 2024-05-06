@@ -1,4 +1,4 @@
-package com.example.laughlines.data.repo
+package com.example.laughlines.repository
 
 import com.example.laughlines.model.Person
 import com.example.laughlines.utils.SharedPreferencesManager

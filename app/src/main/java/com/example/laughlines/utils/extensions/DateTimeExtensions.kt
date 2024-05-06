@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("SimpleDateFormat")
-fun formatDateTime() : String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy hh:mm")
+fun formatDateTime(type: String) : String {
+    val formatter = SimpleDateFormat(type)
     return formatter.format(Date())
 }

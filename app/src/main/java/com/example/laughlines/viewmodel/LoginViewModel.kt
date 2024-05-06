@@ -2,7 +2,7 @@ package com.example.laughlines.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.laughlines.data.repo.LoginRepository
+import com.example.laughlines.repository.LoginRepository
 import com.example.laughlines.model.Account
 import com.example.laughlines.utils.UiState
 import com.google.firebase.auth.AuthCredential

@@ -1,9 +1,13 @@
 package com.example.laughlines.ui.qr_code
 
+import android.app.Activity.RESULT_OK
 import android.content.Context.VIBRATOR_SERVICE
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.graphics.LinearGradient
 import android.graphics.Shader
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.VibrationEffect
@@ -23,13 +27,20 @@ import com.example.laughlines.databinding.FragmentQrCodeBinding
 import com.example.laughlines.dialog.LoadingDialog
 import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
+import com.example.laughlines.utils.StorageUtils
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hide
 import com.example.laughlines.utils.extensions.show
 import com.example.laughlines.viewmodel.QrCodeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.NotFoundException
+import com.google.zxing.RGBLuminanceSource
+import com.google.zxing.common.HybridBinarizer
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
@@ -37,6 +48,7 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
 
     private lateinit var codeScanner: CodeScanner
     private lateinit var loadingDialog: LoadingDialog
+    private val GALLERY_REQUEST_CODE = 10
 
     private val viewModel by viewModels<QrCodeViewModel>()
 
@@ -63,12 +75,18 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         super.initAction()
         binding.toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
         binding.btnMyQrCode.setOnClickListener { requireView().findNavController().navigate(R.id.action_qrCodeFragment_to_qrCodeGeneratorFragment) }
+        binding.btnGallery.setOnClickListener {
+            val i = Intent()
+            i.type = "image/*"
+            i.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(i, "Select Picture"), GALLERY_REQUEST_CODE)
+        }
     }
 
     override fun onObserve() {
         super.onObserve()
         viewModel.requestLiveData.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is UiState.Loading -> {
                     loadingDialog.show()
                 }
@@ -99,6 +117,20 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         super.onPause()
         codeScanner.stopPreview()
 
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && data != null && requestCode == GALLERY_REQUEST_CODE) {
+            Log.e("Dunno", "Uri: ${data.data.toString()}")
+            StorageUtils.uriToBitmap(requireContext(), Uri.parse(data.data.toString()))?.let { bitmap ->
+                decodeQRCode(bitmap)?.let { id ->
+                    binding.scannerView.visibility = View.INVISIBLE
+                    showResultBottomSheet(id)
+                }
+            }
+        }
     }
 
     private fun initScanner() {
@@ -174,9 +206,24 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         bottomSheet.setOnDismissListener {
             actionContinuePreview()
             binding.scanning.show()
+            binding.scannerView.show()
             onResume()
         }
         bottomSheet.show()
     }
 
+    private fun decodeQRCode(bitmap: Bitmap): String? {
+        return try {
+            val intArray = IntArray(bitmap.width * bitmap.height)
+            bitmap.getPixels(intArray, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+            val source = RGBLuminanceSource(bitmap.width, bitmap.height, intArray)
+            val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
+            val reader = MultiFormatReader()
+            val result = reader.decode(binaryBitmap)
+            result.text
+        } catch (e: NotFoundException) {
+            Log.e("QRDecode", "Không tìm thấy mã QR trong hình ảnh", e)
+            null
+        }
+    }
 }

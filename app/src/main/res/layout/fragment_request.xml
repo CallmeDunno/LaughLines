@@ -36,11 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:fontFamily="@font/rubik_medium"
-            android:lineSpacingExtra="6dp"
             android:text="@string/no_request"
             android:textAlignment="center"
             android:textColor="@color/eerie_black"
-            android:textSize="18sp"
+            android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

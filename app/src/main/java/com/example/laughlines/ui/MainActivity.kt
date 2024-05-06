@@ -44,7 +44,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.initAction()
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment, R.id.friendsListFragment -> binding.bottomNavigationView.visibility = View.VISIBLE
+                R.id.homeFragment, R.id.contactFragment -> binding.bottomNavigationView.visibility = View.VISIBLE
                 else -> binding.bottomNavigationView.visibility = View.GONE
             }
         }
@@ -54,4 +54,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onBackPressed()
         finish()
     }
+
 }

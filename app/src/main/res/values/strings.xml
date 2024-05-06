@@ -19,6 +19,8 @@
     <string name="change_information">Change information</string>
     <string name="text_register">Get chatting with friends and family today by signing up for our chat app!</string>
     <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_number_phone">Enter your number phone</string>
+    <string name="incorrect_format">Incorrect format, please try again</string>
     <string name="create_account">Create your account</string>
     <string name="register_account">Register account</string>
     <string name="create_account_successful">You have successfully registered an account!</string>
@@ -73,4 +75,18 @@
     <string name="request">Request</string>
     <string name="no_request">You don\'t have any friend requests, please come back later.</string>
     <string name="deleted_successful">Deleted successful</string>
+    <string name="accept_successful">Accepted successful</string>
+    <string name="saved_successfully">Saved successfully</string>
+    <string name="search">Search…</string>
+    <string name="contact_empty">You are not connected to anyone yet. Use the Qr Code feature to connect with friends.</string>
+    <string name="information">Information</string>
+    <string name="call">Call</string>
+    <string name="sms">SMS</string>
+    <string name="email">Email</string>
+    <string name="text_delete_friend">If you do this, all messages between the two of you will be deleted. Are you sure you will unfriend this friend?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="not_found">Not found</string>
+    <string name="this_action_cannot_be_performed">This action cannot be performed</string>
+    <string name="what_are_you_thinking">What are you thinking?</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.laughlines.data.repo
+package com.example.laughlines.repository
 
 import android.util.Log
 import com.example.laughlines.model.Account
@@ -38,7 +38,7 @@ class LoginRepository @Inject constructor(
         val email = u.email.toString()
         val avatarUrl = u.photoUrl.toString()
         val uid = u.uid
-        val account = Account(uid, name, email, avatarUrl, null)
+        val account = Account(uid, name, email, avatarUrl, null, null)
         saveUserToFireStore(account)
     }
 

@@ -3,7 +3,7 @@ package com.example.laughlines.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.laughlines.data.repo.QrCodeRepository
+import com.example.laughlines.repository.QrCodeRepository
 import com.example.laughlines.model.QrResult
 import com.example.laughlines.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,5 +30,15 @@ class QrCodeViewModel @Inject constructor(private val repository: QrCodeReposito
                 requestLiveData.postValue(it)
             }
         }
+    }
+
+    fun getMyName(id: String) : MutableLiveData<UiState<String>> {
+        val mLiveData = MutableLiveData<UiState<String>>()
+        viewModelScope.launch {
+            repository.getMyInformation(id) {
+                mLiveData.postValue(it)
+            }
+        }
+        return mLiveData
     }
 }

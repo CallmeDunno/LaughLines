@@ -98,6 +98,7 @@
                     android:fontFamily="@font/rubik_medium"
                     android:hint="@string/enter_your_password"
                     android:maxLines="1"
+                    android:inputType="textPassword"
                     android:paddingVertical="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="@color/black"
