@@ -64,7 +64,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                     is UiState.Loading -> {}
                     is UiState.Success -> {
                         Toast.makeText(requireContext(), getString(R.string.create_account_successful), Toast.LENGTH_SHORT).show()
-                        val account = Account(it.data, strName, strEmail, null, null, strNumberPhone)
+                        val account = Account(it.data, strName, strEmail, numberPhone =  strNumberPhone)
                         viewModel.saveUserToFireStore(account)
                         clearEditText()
                         dialogLoading.dismiss()

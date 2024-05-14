@@ -10,25 +10,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/layoutParent"
         tools:context=".ui.chat.ChatFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/layoutHeader"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/jungle_green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageButton
-                android:id="@+id/btn_back_chat"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
+                android:layout_marginStart="16dp"
                 android:background="@color/jungle_green"
                 android:contentDescription="@string/app_name"
+                android:padding="6dp"
                 android:src="@drawable/ic_arrow_back_white_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,110 +38,101 @@
                 tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_avt_chat"
+                android:id="@+id/imgAvatar"
                 android:layout_width="60dp"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:layout_weight="2"
-                android:src="@drawable/ic_person_24"
+                android:padding="10dp"
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_back_chat"
-                app:layout_constraintStart_toEndOf="@+id/btn_back_chat"
-                app:layout_constraintTop_toTopOf="@+id/btn_back_chat" />
+                app:civ_border_width="0.5dp"
+                app:civ_circle_background_color="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toTopOf="@+id/btnBack" />
 
             <TextView
-                android:id="@+id/tv_name_chat"
+                android:id="@+id/tvName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:fontFamily="@font/rubik_medium"
-                android:text="Dunno"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/img_avt_chat"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_avt_chat"
-                app:layout_constraintTop_toTopOf="@+id/img_avt_chat" />
+                app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_message_list_chat"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_list_message_chat" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+            android:id="@+id/layoutFooter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:weightSum="10"
+            android:background="#F3F3F3"
+            android:paddingVertical="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
-                android:id="@+id/btn_camera"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_camera" />
+                android:id="@+id/btnMore"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="10dp"
+                android:padding="4dp"
+                android:rotation="90"
+                android:src="@drawable/ic_more"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btnSend"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginEnd="10dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_send"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/gainsboro" />
 
             <EditText
-                android:id="@+id/edt_message_chat"
+                android:id="@+id/edtMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:layout_weight="8"
-                android:autofillHints=""
-                android:background="@drawable/custom_edt_bg_black"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_white_border_green_corner_20"
                 android:fontFamily="@font/rubik_medium"
-                android:hint="Send message"
+                android:hint="@string/send_message"
                 android:inputType="text"
-                android:maxLines="3"
-                android:minHeight="48dp"
-                android:scrollbarSize="3dp"
-                android:scrollbars="vertical"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:ignore="VisualLintTextFieldSize" />
+                android:maxLines="4"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/raisin_black"
+                android:textColorHint="@color/gainsboro"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/btnMore"
+                app:layout_constraintEnd_toStartOf="@id/btnSend"
+                app:layout_constraintStart_toEndOf="@id/btnMore"
+                app:layout_constraintTop_toTopOf="@id/btnMore" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/btn_send_message_chat"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_send" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/layoutHeader"
+            app:layout_constraintBottom_toTopOf="@id/layoutFooter"
+            tools:listitem="@layout/item_message" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

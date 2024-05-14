@@ -22,8 +22,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     @Inject
     lateinit var sharedPreManager: SharedPreferencesManager
 
-    override fun onStart() {
-        super.onStart()
+    override fun initView() {
+        super.initView()
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        _navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)
+
         if (sharedPreManager.getString(Constant.Key.ID.name).isNullOrEmpty()) {
             navController.popBackStack(R.id.home_navigation, true)
             navController.navigate(R.id.login_navigation)
@@ -31,13 +36,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             navController.popBackStack(R.id.login_navigation, true)
             navController.navigate(R.id.home_navigation)
         }
-    }
-
-    override fun initView() {
-        super.initView()
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
-        _navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)
     }
 
     override fun initAction() {

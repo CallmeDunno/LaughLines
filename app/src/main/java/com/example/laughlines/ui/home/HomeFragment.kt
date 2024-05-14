@@ -1,5 +1,6 @@
 package com.example.laughlines.ui.home
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -11,37 +12,51 @@ import com.example.laughlines.databinding.FragmentHomeBinding
 import com.example.laughlines.dialog.LoadingDialog
 import com.example.laughlines.dialog.StatusDialog
 import com.example.laughlines.model.Account
-import com.example.laughlines.utils.SharedPreferencesManager
+import com.example.laughlines.ui.home.adapter.ChatAdapter
+import com.example.laughlines.ui.home.adapter.StatusAdapter
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override val layoutId: Int = R.layout.fragment_home
 
-    private val friendIdList = ArrayList<String>()
     private lateinit var myAccount: Account
 
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var loadingDialog: LoadingDialog
 
-    @Inject
-    lateinit var sharedPref: SharedPreferencesManager
+    private val statusAdapter by lazy {
+        StatusAdapter {
+            val dialog = StatusDialog(requireContext(), it, false) {}
+            dialog.show()
+        }
+    }
+
+    private val chatAdapter by lazy {
+        ChatAdapter {
+            val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(it.chatId, it.friendId)
+            requireView().findNavController().navigate(action)
+        }
+    }
 
     override fun initView() {
         super.initView()
-        friendIdList.clear()
         loadingDialog = LoadingDialog(requireContext())
+        binding.apply {
+            rcvStatus.adapter = statusAdapter
+            rcvChat.adapter = chatAdapter
+        }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onObserve() {
         super.onObserve()
         viewModel.getMyAccount().observe(viewLifecycleOwner) {
             myAccount = it
-            Log.d("Dunno", myAccount.toString())
-            if (myAccount.avatar == null || myAccount.avatar == "" || myAccount.avatar == "null") {
+            if (myAccount.avatar == "" || myAccount.avatar == "null") {
                 Glide.with(requireView()).load(ContextCompat.getDrawable(requireContext(), R.drawable.logo_chat_app)).into(binding.imgAvatar)
             } else {
                 Glide.with(requireView()).load(myAccount.avatar).into(binding.imgAvatar)
@@ -56,20 +71,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
 
-        viewModel.getFriendIdList().observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> { loadingDialog.show() }
-                is UiState.Failure -> {
-                    loadingDialog.dismiss()
-                    Log.e("Dunno", it.message.toString())
-                    notify(getString(R.string.error))
-                }
-                is UiState.Success -> {
-                    loadingDialog.dismiss()
-                    friendIdList.clear()
-                    friendIdList.addAll(it.data)
+        viewModel.getAllFriend().observe(viewLifecycleOwner) {
+            val statusArr = ArrayList<Account>()
+            statusArr.clear()
+            for (c in it){
+                if (c.account.status != "" && c.account.status != "null") {
+                    statusArr.add(c.account)
                 }
             }
+            statusAdapter.submitList(statusArr)
+            statusAdapter.notifyDataSetChanged()
+            chatAdapter.submitList(it)
+            chatAdapter.notifyDataSetChanged()
         }
     }
 
@@ -78,8 +91,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.apply {
             btnNotification.setOnClickListener { requireView().findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRequestFragment()) }
             btnMyStatus.setOnClickListener {
-                val dialog = StatusDialog(requireContext(), myAccount) {
-
+                val dialog = StatusDialog(requireContext(), myAccount) { status ->
+                    viewModel.updateStatus(status).observe(viewLifecycleOwner) {
+                        when (it) {
+                            is UiState.Loading -> {}
+                            is UiState.Failure -> {
+                                Log.e("Dunno", it.message.toString())
+                                notify(getString(R.string.error))
+                            }
+                            is UiState.Success -> {
+                                notify(getString(R.string.update_successful))
+                            }
+                        }
+                    }
                 }
                 dialog.show()
             }

@@ -10,6 +10,7 @@ import com.example.laughlines.R
 import com.example.laughlines.base.BaseDialog
 import com.example.laughlines.databinding.DialogStatusBinding
 import com.example.laughlines.model.Account
+import com.example.laughlines.utils.extensions.hideKeyboard
 import com.example.laughlines.utils.extensions.show
 
 class StatusDialog(private val context: Context, private val account: Account, private val owner: Boolean = true, private val onDoneClick: (String) -> Unit) : BaseDialog<DialogStatusBinding>(context) {
@@ -21,6 +22,12 @@ class StatusDialog(private val context: Context, private val account: Account, p
                 tvLength.visibility = View.INVISIBLE
                 btnDone.visibility = View.INVISIBLE
                 edtStatus.isEnabled = false
+            } else {
+                if (account.status!!.isNotEmpty()) {
+                    btnDone.show()
+                } else {
+                    btnDone.visibility = View.INVISIBLE
+                }
             }
             if (account.avatar == "null" || account.avatar == "" || account.avatar == null) {
                 Glide.with(context).load(ContextCompat.getDrawable(context, R.drawable.logo_chat_app)).into(imgAvatar)
@@ -28,20 +35,20 @@ class StatusDialog(private val context: Context, private val account: Account, p
                 Glide.with(context).load(account.avatar).into(imgAvatar)
             }
             edtStatus.setText(account.status)
-            if (account.status!!.isNotEmpty()) {
-                btnDone.show()
-            } else {
-                btnDone.visibility = View.INVISIBLE
-            }
         }
     }
 
     override fun initAction() {
         binding.apply {
-            btnClose.setOnClickListener { this@StatusDialog.dismiss() }
+            btnClose.setOnClickListener {
+                this@StatusDialog.dismiss()
+                it.hideKeyboard()
+            }
             btnDone.setOnClickListener {
                 val strStatus = edtStatus.text.toString().trim()
                 onDoneClick.invoke(strStatus)
+                it.hideKeyboard()
+                this@StatusDialog.dismiss()
             }
             edtStatus.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

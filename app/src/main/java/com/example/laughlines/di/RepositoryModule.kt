@@ -4,6 +4,7 @@ import com.example.laughlines.repository.*
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +21,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideChatRepository(fDb: FirebaseFirestore) = ChatRepository(fDb)
+    fun provideChatRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = ChatRepository(fDb, sharedPreManager)
 
     @Provides
     @Singleton
@@ -42,4 +43,7 @@ class RepositoryModule {
     @Singleton
     fun provideContactRepository(fDb: FirebaseFirestore, sharedPreManager: SharedPreferencesManager) = ContactRepository(fDb, sharedPreManager)
 
+    @Provides
+    @Singleton
+    fun provideImageRepository(fDb: FirebaseFirestore, fStorage: FirebaseStorage) = ImageRepository(fDb, fStorage)
 }

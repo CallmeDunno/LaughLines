@@ -26,8 +26,10 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
                     val chatId = i.data["chatId"].toString()
                     val friendId = i.data["friendId"].toString()
                     getInformation(friendId) { account ->
-                        arr.add(Contact(id, chatId, friendId, account))
-                        result.invoke(UiState.Success(arr))
+                        getLastTime(chatId) {lastTime ->
+                            arr.add(Contact(id, chatId, friendId, account, lastTime))
+                            result.invoke(UiState.Success(arr))
+                        }
                     }
                 }
             }
@@ -45,6 +47,16 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
                 result.invoke(Account(id, name, email, avatarUrl, status, numberPhone))
             }
         }
+    }
+
+    private fun getLastTime(id: String, result: (Long) -> Unit) {
+        fDb.collection(Constant.Collection.Chats.name)
+            .document(id)
+            .get()
+            .addOnSuccessListener {
+                val lastTime = it.data?.get("lastTime").toString().toLong()
+                result.invoke(lastTime)
+            }
     }
 
     fun deleteFriend(chatId: String, friendId: String) {

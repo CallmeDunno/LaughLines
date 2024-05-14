@@ -29,7 +29,7 @@ class ContactAdapter(private val onItemClick: (Contact) -> Unit, private val onM
             binding.apply {
                 tvName.isSelected = true
                 item = contact
-                if (contact.account.avatar == null || contact.account.avatar == "null" || contact.account.avatar == "") {
+                if (contact.account.avatar == "null" || contact.account.avatar == "") {
                     Glide.with(itemView.context).load(ContextCompat.getDrawable(itemView.context, R.drawable.logo_chat_app)).into(imgAvatar)
                 } else {
                     Glide.with(itemView.context).load(contact.account.avatar).into(imgAvatar)

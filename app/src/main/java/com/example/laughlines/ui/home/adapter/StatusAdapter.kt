@@ -1,7 +1,9 @@
 package com.example.laughlines.ui.home.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -26,8 +28,9 @@ class StatusAdapter(private val onClick: (Account) -> Unit) : ListAdapter<Accoun
         fun bindData(account: Account) {
             itemView.setOnClickListener { onClick.invoke(account) }
             binding.apply {
-                if (account.avatar.isNullOrEmpty()) {
-                    Glide.with(itemView.context).load(R.drawable.ic_person_24).into(imgAvatar)
+                if (account.avatar.isEmpty()) {
+                    Glide.with(itemView.context).load(R.drawable.logo_chat_app).into(imgAvatar)
+                    imgAvatar.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.white))
                 } else {
                     Glide.with(itemView.context).load(account.avatar).into(imgAvatar)
                 }

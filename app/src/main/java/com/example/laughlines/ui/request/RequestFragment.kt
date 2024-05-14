@@ -49,7 +49,6 @@ class RequestFragment : BaseFragment<FragmentRequestBinding>() {
     override fun onObserve() {
         super.onObserve()
         viewModel.getRequest().observeForever {
-            Log.e("Dunno", "a")
             when (it) {
                 is UiState.Loading -> {
                     loadingDialog.show()
@@ -57,6 +56,7 @@ class RequestFragment : BaseFragment<FragmentRequestBinding>() {
                 is UiState.Failure -> {
                     loadingDialog.dismiss()
                     Log.e("Dunno", it.message.toString())
+                    notify(getString(R.string.error))
                 }
                 is UiState.Success -> {
                     loadingDialog.dismiss()

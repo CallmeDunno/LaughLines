@@ -16,15 +16,21 @@ android {
         minSdk 24
         targetSdk 33
         versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionName "1.0.0"
+        def formattedDate = new Date().format('MM.dd.yyyy')
+        archivesBaseName = "LaughLines_v${versionName}_${formattedDate}"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -82,6 +88,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.6.0")
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     //DI
     implementation "com.google.dagger:hilt-android:2.44"
@@ -99,6 +106,18 @@ dependencies {
 
     //Notification animation
     implementation 'com.nex3z:notification-badge:1.0.4'
+
+    //CameraX
+    def camerax_version = "1.2.2"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
+
+    //Location, Map
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }
 
 kapt {

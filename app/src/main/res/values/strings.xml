@@ -76,6 +76,7 @@
     <string name="no_request">You don\'t have any friend requests, please come back later.</string>
     <string name="deleted_successful">Deleted successful</string>
     <string name="accept_successful">Accepted successful</string>
+    <string name="update_successful">Update successful</string>
     <string name="saved_successfully">Saved successfully</string>
     <string name="search">Search…</string>
     <string name="contact_empty">You are not connected to anyone yet. Use the Qr Code feature to connect with friends.</string>
@@ -89,4 +90,19 @@
     <string name="not_found">Not found</string>
     <string name="this_action_cannot_be_performed">This action cannot be performed</string>
     <string name="what_are_you_thinking">What are you thinking?</string>
+    <string name="send_message">Send message…</string>
+    <string name="location_sharing">Location sharing</string>
+    <string name="share_content">Share Content</string>
+    <string name="camera">Camera</string>
+    <string name="location">Location</string>
+    <string name="choose_photo_from_gallery">Choose photo from gallery</string>
+    <string name="share_your_location">Share your location</string>
+    <string name="requested_permission_message">This feature is unavailable because this feature requires permission that you have denied. Please allow this permission from settings to proceed further.</string>
+    <string name="requested_permission_title">Permission Required</string>
+    <string name="take_photos_successfully">Take a photo successfully!</string>
+    <string name="permission_setting">Settings</string>
+    <string name="see_the_way">See the way</string>
+    <string name="please_wait_a_moment">Please wait a moment</string>
+    <string name="text_no_compass">Your device has no magnetometer sensor because of that you cannot use compass and level meter</string>
+
 </resources>

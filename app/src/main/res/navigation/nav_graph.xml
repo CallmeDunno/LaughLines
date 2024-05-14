@@ -75,14 +75,14 @@
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
             <action
                 android:id="@+id/action_homeFragment_to_requestFragment"
                 app:destination="@id/requestFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         </fragment>
         <fragment
             android:id="@+id/profileFragment"
@@ -144,6 +144,12 @@
             <argument
                 android:name="fid"
                 app:argType="string" />
+            <action
+                android:id="@+id/action_chatFragment_to_cameraFragment"
+                app:destination="@id/cameraFragment" />
+            <action
+                android:id="@+id/action_chatFragment_to_mapFragment"
+                app:destination="@id/mapFragment" />
         </fragment>
         <fragment
             android:id="@+id/inforDetailFragment"
@@ -175,9 +181,27 @@
             android:label="QrCodeGeneratorFragment"
             tools:layout="@layout/fragment_qr_code_generator" />
         <fragment
-            tools:layout="@layout/fragment_request"
             android:id="@+id/requestFragment"
             android:name="com.example.laughlines.ui.request.RequestFragment"
-            android:label="RequestFragment" />
+            android:label="RequestFragment"
+            tools:layout="@layout/fragment_request" />
+        <fragment
+            android:id="@+id/cameraFragment"
+            android:name="com.example.laughlines.ui.camera.CameraFragment"
+            android:label="CameraFragment"
+            tools:layout="@layout/fragment_camera">
+            <argument
+                android:name="cid"
+                app:argType="string" />
+        </fragment>
+        <fragment
+            android:id="@+id/mapFragment"
+            android:name="com.example.laughlines.ui.map.MapFragment"
+            android:label="MapFragment"
+            tools:layout="@layout/fragment_map">
+            <argument
+                android:name="location"
+                app:argType="string" />
+        </fragment>
     </navigation>
 </navigation>

@@ -38,7 +38,7 @@ class LoginRepository @Inject constructor(
         val email = u.email.toString()
         val avatarUrl = u.photoUrl.toString()
         val uid = u.uid
-        val account = Account(uid, name, email, avatarUrl, null, null)
+        val account = Account(uid, name, email, avatarUrl)
         saveUserToFireStore(account)
     }
 

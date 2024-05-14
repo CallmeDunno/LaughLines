@@ -13,6 +13,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     protected lateinit var binding: VB
     abstract val layoutId: Int
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initData()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,27 +25,26 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        onObserve()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initVariable()
         initView()
-        onObserve()
         initAction()
+        super.onViewCreated(view, savedInstanceState)
     }
 
     open fun initVariable() {}
 
-    open fun initView() {
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-    }
+    open fun initView() {}
 
     open fun onObserve() {}
 
     open fun initAction() {}
+
+    open fun initData(){}
 
     fun notify(msg: String) {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()

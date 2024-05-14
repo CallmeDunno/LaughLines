@@ -67,6 +67,7 @@ class ContactFragment : BaseFragment<FragmentContactBinding>() {
                 is UiState.Success -> {
                     loadingDialog.dismiss()
                     adapter.submitList(it.data)
+                    adapter.notifyDataSetChanged()
                     currentList.clear()
                     currentList.addAll(it.data)
                     if (it.data.isNotEmpty()) {
