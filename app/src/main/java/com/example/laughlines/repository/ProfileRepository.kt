@@ -1,6 +1,7 @@
 package com.example.laughlines.repository
 
 import com.example.laughlines.model.Person
+import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
 import com.google.firebase.auth.FirebaseAuth
@@ -14,9 +15,25 @@ class ProfileRepository @Inject constructor(
 ) {
 
     fun getAccount(result: (UiState<Person>) -> Unit) {
-
+        val myId = sharedPreManager.getString(Constant.Key.ID.name) ?: ""
+        fDb.collection(Constant.Collection.User.name)
+            .document(myId)
+            .get()
+            .addOnSuccessListener {
+                val name = it.data?.get("name").toString()
+                val email = it.data?.get("email").toString()
+                val avatarUrl = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
+                result.invoke(UiState.Success(Person(name, email, avatarUrl)))
+            }
+            .addOnFailureListener { result.invoke(UiState.Failure(it.message)) }
     }
 
+    fun resetPassword(email: String, result: (UiState<Boolean>) -> Unit) {
+        result.invoke(UiState.Loading)
+        fAuth.sendPasswordResetEmail(email)
+            .addOnSuccessListener { result.invoke(UiState.Success(true)) }
+            .addOnFailureListener { result.invoke(UiState.Failure(it.message)) }
+    }
 
     fun signOut() {
         fAuth.signOut()

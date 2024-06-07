@@ -1,6 +1,7 @@
 package com.example.laughlines.di
 
 import com.example.laughlines.repository.*
+import com.example.laughlines.ui.chatbot.ChatbotRepository
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -46,4 +47,12 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideImageRepository(fDb: FirebaseFirestore, fStorage: FirebaseStorage) = ImageRepository(fDb, fStorage)
+
+    @Provides
+    @Singleton
+    fun provideChatbotRepository() = ChatbotRepository()
+
+    @Provides
+    @Singleton
+    fun provideInformationRepository(fDb: FirebaseFirestore, fStorage: FirebaseStorage, sharedPreManager: SharedPreferencesManager) = InformationRepository(fDb, fStorage, sharedPreManager)
 }

@@ -25,6 +25,7 @@ import com.example.laughlines.base.BaseFragment
 import com.example.laughlines.databinding.BottomSheetResultQrBinding
 import com.example.laughlines.databinding.FragmentQrCodeBinding
 import com.example.laughlines.dialog.LoadingDialog
+import com.example.laughlines.model.QrResult
 import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.StorageUtils
@@ -127,7 +128,7 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
             StorageUtils.uriToBitmap(requireContext(), Uri.parse(data.data.toString()))?.let { bitmap ->
                 decodeQRCode(bitmap)?.let { id ->
                     binding.scannerView.visibility = View.INVISIBLE
-                    showResultBottomSheet(id)
+                    showResult(id)
                 }
             }
         }
@@ -147,7 +148,7 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
                                               vibrator.vibrate(500)
                                           }
                                           binding.scannerView.isMaskVisible = false
-                                          showResultBottomSheet(result.text)
+                                          showResult(result.text)
                                       }, 500)
             }
         }
@@ -160,43 +161,53 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         binding.scannerView.isMaskVisible = true
     }
 
-    private fun showResultBottomSheet(id: String) {
+    private fun showResult(id: String) {
+        val loadingDialog = LoadingDialog(requireContext())
+        viewModel.getInformation(sharedPref.getString(Constant.Key.ID.name)!!, id).observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                    loadingDialog.show()
+                }
+                is UiState.Failure -> {
+                    loadingDialog.dismiss()
+                    if (it.message != "") {
+                        Log.e("Dunno", "Error: ${it.message}")
+                        notify(getString(R.string.qr_error))
+                    } else {
+                        notify(getString(R.string.you_have_made_friends_with_this_person))
+                    }
+                    actionContinuePreview()
+                    binding.scanning.show()
+                    binding.scannerView.show()
+                    onResume()
+                }
+                is UiState.Success -> {
+                    loadingDialog.dismiss()
+                    showResultBottomSheet(it.data, id)
+                }
+            }
+        }
+    }
+
+    private fun showResultBottomSheet(qrResult: QrResult, id: String) {
         binding.scanning.hide()
         val bottomSheetBinding = BottomSheetResultQrBinding.inflate(layoutInflater)
         val bottomSheet = BottomSheetDialog(requireContext())
         bottomSheet.setContentView(bottomSheetBinding.root)
 
-        viewModel.getInformation(sharedPref.getString(Constant.Key.ID.name)!!, id).observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {
-                    bottomSheetBinding.apply {
-                        vLoading.show()
-                        btnAddFriend.isEnabled = false
-                        btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.davy_grey))
-                    }
-                }
-                is UiState.Failure -> {
-                    Log.e("Dunno", "Error: ${it.message}")
-                    notify(getString(R.string.qr_error))
-                }
-                is UiState.Success -> {
-                    bottomSheetBinding.apply {
-                        vLoading.hide()
-                        btnAddFriend.isEnabled = true
-                        btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.jungle_green))
+        bottomSheetBinding.apply {
+            vLoading.hide()
+            btnAddFriend.isEnabled = true
+            btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.jungle_green))
 
-                        val qrResult = it.data
-                        if (qrResult.avatar == null || qrResult.avatar == "null") {
-                            Glide.with(requireView()).load(R.drawable.ic_person_green_24).into(imgAvatar)
-                        } else {
-                            Glide.with(requireView()).load(qrResult.avatar).into(imgAvatar)
-                        }
-                        tvName.text = qrResult.name
-                        tvEmail.text = qrResult.email
-                        tvFriend.text = "${qrResult.sumFriend} friends"
-                    }
-                }
+            if (qrResult.avatar == null || qrResult.avatar == "null" || qrResult.avatar == "") {
+                Glide.with(requireView()).load(R.drawable.ic_person_green_24).into(imgAvatar)
+            } else {
+                Glide.with(requireView()).load(qrResult.avatar).into(imgAvatar)
             }
+            tvName.text = qrResult.name
+            tvEmail.text = qrResult.email
+            tvFriend.text = "${qrResult.sumFriend} friends"
         }
 
         bottomSheetBinding.btnAddFriend.setOnClickListener {

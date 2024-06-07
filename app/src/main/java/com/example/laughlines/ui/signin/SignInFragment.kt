@@ -18,6 +18,8 @@ import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hideKeyboard
 import com.example.laughlines.viewmodel.LoginViewModel
+import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -73,8 +75,17 @@ class SignInFragment : BaseFragment<FragmentSigninBinding>() {
                                     is UiState.Loading -> {}
                                     is UiState.Failure -> {}
                                     is UiState.Success -> {
-                                        sharedPref.putString(Constant.Key.ID.name, it2.data)
+                                        sharedPref.putString(Constant.Key.ID.name, it2.data.first)
                                         loadingDialog.dismiss()
+
+                                        val application = requireActivity().application // Android's application context
+                                        val appID: Long = 1386242158   // yourAppID
+                                        val appSign = "ffb364052c3c90ef160dbae68eb65c89e2332dfb4756bb33e528698130309d70"  // yourAppSign
+                                        val userID = it2.data.first // yourUserID, userID should only contain numbers, English characters, and '_'.
+                                        val userName = it2.data.second   // yourUserName
+                                        val callInvitationConfig = ZegoUIKitPrebuiltCallInvitationConfig()
+                                        ZegoUIKitPrebuiltCallService.init(application, appID, appSign, userID, userName, callInvitationConfig);
+
                                         requireView().findNavController().popBackStack(R.id.login_navigation, true)
                                         requireView().findNavController().navigate(R.id.home_navigation)
                                     }

@@ -110,14 +110,13 @@ class HomeRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
 
     fun getMyAccount(result: (Account) -> Unit) {
         val myId = sharedPref.getString(Constant.Key.ID.name) ?: Constant.ID_DEFAULT
-
         fDb.collection(Constant.Collection.User.name)
             .document(myId)
             .get()
             .addOnSuccessListener {
                 val name = it.data?.get("name").toString()
                 val email = it.data?.get("email").toString()
-                val avatar = it.data?.get("avatarUrl").toString()
+                val avatar = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
                 val status = it.data?.get("status").toString()
                 val numberPhone = it.data?.get("numberPhone").toString()
                 result.invoke(Account(myId, name, email, avatar, status, numberPhone))
@@ -154,8 +153,10 @@ class HomeRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
             .document(id)
             .get()
             .addOnSuccessListener {
-                val lastTime = it.data?.get("lastTime").toString().toLong()
-                result.invoke(lastTime)
+                it.data?.get("lastTime").toString().let{time ->
+                    val lastTime = time.toLong()
+                    result.invoke(lastTime)
+                }
             }
 
     }

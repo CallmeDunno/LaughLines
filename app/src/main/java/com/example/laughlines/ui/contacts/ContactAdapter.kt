@@ -15,7 +15,7 @@ import com.example.laughlines.model.Contact
 
 class ContactAdapter(private val onItemClick: (Contact) -> Unit, private val onMoreClick: (Contact, View) -> Unit) : ListAdapter<Contact, ContactAdapter.ContactVH>(AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Contact>() {
     override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.id == newItem.id
+        return false
     }
 
     override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {

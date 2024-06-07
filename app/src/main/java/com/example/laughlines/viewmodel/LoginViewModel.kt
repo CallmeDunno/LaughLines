@@ -2,8 +2,8 @@ package com.example.laughlines.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.laughlines.repository.LoginRepository
 import com.example.laughlines.model.Account
+import com.example.laughlines.repository.LoginRepository
 import com.example.laughlines.utils.UiState
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
@@ -45,15 +45,12 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
         return mutableLiveData
     }
 
-    fun getID(uid: String) : MutableLiveData<UiState<String>> {
-        val mLiveData = MutableLiveData<UiState<String>>()
+    fun getID(uid: String) : MutableLiveData<UiState<Pair<String, String>>> {
+        val mLiveData = MutableLiveData<UiState<Pair<String, String>>>()
         repository.getIdDocument(uid) {
             mLiveData.postValue(it)
         }
         return mLiveData
     }
 
-    fun resetPassword() {
-        repository.resetPassword()
-    }
 }

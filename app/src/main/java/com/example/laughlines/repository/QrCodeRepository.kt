@@ -38,6 +38,8 @@ class QrCodeRepository @Inject constructor(private val fDb: FirebaseFirestore, p
                                 result.invoke(UiState.Success(QrResult(account.id, account.avatar, account.name, account.email, sum)))
                             }
                         }
+                    } else {
+                        result.invoke(UiState.Failure(""))
                     }
                 }
             }
@@ -99,7 +101,7 @@ class QrCodeRepository @Inject constructor(private val fDb: FirebaseFirestore, p
     }
 
     private fun checkFriendExists(myId: String, id: String, result: (UiState<Boolean>) -> Unit) {
-        fDb.collection(Constant.Collection.User.name).document(myId).collection(Constant.Collection.Friends.name).whereEqualTo("id", id).get().addOnSuccessListener {
+        fDb.collection(Constant.Collection.User.name).document(myId).collection(Constant.Collection.Friends.name).whereEqualTo("friendId", id).get().addOnSuccessListener {
                 if (it.isEmpty) result.invoke(UiState.Success(true))
                 else result.invoke(UiState.Success(false))
             }.addOnFailureListener { result.invoke(UiState.Failure("Error: ${it.message}")) }

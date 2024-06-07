@@ -6,6 +6,7 @@ import com.example.laughlines.model.Contact
 import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,23 +18,34 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
 
     fun getAllFriend(result: (UiState<List<Contact>>) -> Unit) {
         result.invoke(UiState.Loading)
-        fDb.collection(Constant.Collection.User.name).document(sharedPref.getString(Constant.Key.ID.name) ?: "").collection(Constant.Collection.Friends.name).get().addOnSuccessListener {
-            val arr = ArrayList<Contact>()
-            if (it.isEmpty) result.invoke(UiState.Success(arr))
+        val arr = ArrayList<Contact>()
+        fDb.collection(Constant.Collection.User.name).document(sharedPref.getString(Constant.Key.ID.name) ?: "").collection(Constant.Collection.Friends.name).addSnapshotListener { value, error ->
+            if (error != null) {
+                Log.e("Dunno", "Error: $error")
+                result.invoke(UiState.Failure(error.message.toString()))
+                return@addSnapshotListener
+            }
+            if (value!!.documentChanges.isEmpty()) result.invoke(UiState.Success(arr))
             else {
-                for (i in it) {
-                    val id = i.id
-                    val chatId = i.data["chatId"].toString()
-                    val friendId = i.data["friendId"].toString()
-                    getInformation(friendId) { account ->
-                        getLastTime(chatId) {lastTime ->
-                            arr.add(Contact(id, chatId, friendId, account, lastTime))
-                            result.invoke(UiState.Success(arr))
+                for (v in value.documentChanges) {
+                    when (v.type) {
+                        DocumentChange.Type.ADDED -> {
+                            val id = v.document.id
+                            val chatId = v.document.data["chatId"].toString()
+                            val friendId = v.document.data["friendId"].toString()
+                            getInformation(friendId) { account ->
+                                getLastTime(chatId) { lastTime ->
+                                    arr.add(Contact(id, chatId, friendId, account, lastTime))
+                                    result.invoke(UiState.Success(arr))
+                                }
+                            }
                         }
+                        DocumentChange.Type.MODIFIED -> {}
+                        DocumentChange.Type.REMOVED -> {}
                     }
                 }
             }
-        }.addOnFailureListener { result.invoke(UiState.Failure(it.message.toString())) }
+        }
     }
 
     private fun getInformation(id: String, result: (Account) -> Unit) {
@@ -50,51 +62,24 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
     }
 
     private fun getLastTime(id: String, result: (Long) -> Unit) {
-        fDb.collection(Constant.Collection.Chats.name)
-            .document(id)
-            .get()
-            .addOnSuccessListener {
-                val lastTime = it.data?.get("lastTime").toString().toLong()
-                result.invoke(lastTime)
-            }
+        fDb.collection(Constant.Collection.Chats.name).document(id).get().addOnSuccessListener {
+            val lastTime = it.data?.get("lastTime").toString().toLong()
+            result.invoke(lastTime)
+        }
     }
 
     fun deleteFriend(chatId: String, friendId: String) {
         val myId = sharedPref.getString(Constant.Key.ID.name) ?: ""
 
-        fDb.collection(Constant.Collection.Chats.name)
-            .document(chatId)
-            .delete()
-            .addOnSuccessListener { Log.d("Dunno", "Delete in Chats successfully") }
-            .addOnFailureListener { Log.e("Dunno", "Delete Chats: ${it.message}") }
+        fDb.collection(Constant.Collection.Chats.name).document(chatId).delete().addOnSuccessListener { Log.d("Dunno", "Delete in Chats successfully") }.addOnFailureListener { Log.e("Dunno", "Delete Chats: ${it.message}") }
 
-        fDb.collection(Constant.Collection.User.name)
-            .document(friendId)
-            .collection(Constant.Collection.Friends.name)
-            .whereEqualTo("chatId", chatId)
-            .whereEqualTo("friendId", myId)
-            .get()
-            .addOnSuccessListener {
-                fDb.collection(Constant.Collection.User.name)
-                    .document(friendId)
-                    .collection(Constant.Collection.Friends.name)
-                    .document(it.documents[0].id)
-                    .delete()
-            }
+        fDb.collection(Constant.Collection.User.name).document(friendId).collection(Constant.Collection.Friends.name).whereEqualTo("chatId", chatId).whereEqualTo("friendId", myId).get().addOnSuccessListener {
+            fDb.collection(Constant.Collection.User.name).document(friendId).collection(Constant.Collection.Friends.name).document(it.documents[0].id).delete()
+        }
 
-        fDb.collection(Constant.Collection.User.name)
-            .document(myId)
-            .collection(Constant.Collection.Friends.name)
-            .whereEqualTo("chatId", chatId)
-            .whereEqualTo("friendId", friendId)
-            .get()
-            .addOnSuccessListener {
-                fDb.collection(Constant.Collection.User.name)
-                    .document(myId)
-                    .collection(Constant.Collection.Friends.name)
-                    .document(it.documents[0].id)
-                    .delete()
-            }
+        fDb.collection(Constant.Collection.User.name).document(myId).collection(Constant.Collection.Friends.name).whereEqualTo("chatId", chatId).whereEqualTo("friendId", friendId).get().addOnSuccessListener {
+            fDb.collection(Constant.Collection.User.name).document(myId).collection(Constant.Collection.Friends.name).document(it.documents[0].id).delete()
+        }
     }
 
 

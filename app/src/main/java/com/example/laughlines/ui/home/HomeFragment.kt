@@ -2,7 +2,6 @@ package com.example.laughlines.ui.home
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -56,10 +55,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onObserve()
         viewModel.getMyAccount().observe(viewLifecycleOwner) {
             myAccount = it
-            if (myAccount.avatar == "" || myAccount.avatar == "null") {
-                Glide.with(requireView()).load(ContextCompat.getDrawable(requireContext(), R.drawable.logo_chat_app)).into(binding.imgAvatar)
+            if (myAccount.avatar == "") {
+                binding.imgAvatar.setImageResource(R.drawable.logo_chat_app)
             } else {
-                Glide.with(requireView()).load(myAccount.avatar).into(binding.imgAvatar)
+//                binding.imgAvatar.setImageResource(R.drawable.logo_chat_app)
+                Glide.with(requireActivity()).load(myAccount.avatar).into(binding.imgAvatar)
             }
         }
 

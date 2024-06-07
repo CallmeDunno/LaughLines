@@ -53,7 +53,7 @@ class MorseCode constructor(private val context: Context) {
         val stringBuilder = StringBuilder()
         currentIndex = 0
         this.morseCode = ""
-        for (char in text.uppercase(Locale.getDefault())) {
+        for (char in text.uppercase()) {
             if (char == ' ') {
                 stringBuilder.append(" ")
             } else {
@@ -81,13 +81,14 @@ class MorseCode constructor(private val context: Context) {
     }
 
     fun flashMorseCode() {
+        Log.d("Dunno", this.morseCode)
         scope.launch {
             while (true) {
                 if (currentIndex < morseCode.length) {
                     when (morseCode[currentIndex]) {
                         '.' -> flashLightOn(100)
-                        '-' -> flashLightOn(450)
-                        ' ' -> flashLightOff(500)
+                        '-' -> flashLightOn(300)
+                        ' ' -> flashLightOff(300)
                         '/' -> flashLightOff(700)
                     }
                     currentIndex += 1
@@ -95,29 +96,6 @@ class MorseCode constructor(private val context: Context) {
                 delay(300)
             }
             _isCompleted.postValue(true)
-        }
-    }
-
-    fun flashMorseCode(time: Long) {
-        scope.launch {
-            while (true) {
-                if (currentIndex < morseCode.length) {
-                    when (morseCode[currentIndex]) {
-                        '-' -> flashLightOn(time)
-                    }
-                    currentIndex += 1
-                } else break
-                delay(300)
-            }
-        }
-    }
-
-    fun flash(time: Long) {
-        scope.launch {
-            while (true) {
-                flashLightOn(time)
-                delay(300)
-            }
         }
     }
 
@@ -130,17 +108,7 @@ class MorseCode constructor(private val context: Context) {
         scope = CoroutineScope(Job() + Dispatchers.Default)
     }
 
-    fun flashLightOn() {
-        try {
-            cameraManager.setTorchMode(cameraId!!, true)
-            isFlashOn = true
-        } catch (e: Exception){
-            Log.d("Dunno", e.message.toString() + " on")
-        }
-
-    }
-
-    fun flashLightOff() {
+    private fun flashLightOff() {
         try {
             cameraManager.setTorchMode(cameraId!!, false)
             isFlashOn = false

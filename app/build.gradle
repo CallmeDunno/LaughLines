@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace 'com.example.laughlines'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.laughlines"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
         def formattedDate = new Date().format('MM.dd.yyyy')
@@ -118,6 +118,12 @@ dependencies {
     //Location, Map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    //Gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
+
+    //Zegocloud
+    implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+'
 }
 
 kapt {

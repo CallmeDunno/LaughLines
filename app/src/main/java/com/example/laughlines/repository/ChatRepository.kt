@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.laughlines.model.Account
 import com.example.laughlines.model.Messages
 import com.example.laughlines.utils.Constant
+import com.example.laughlines.utils.EncryptMessages
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
 import com.google.firebase.firestore.DocumentChange
@@ -30,6 +31,8 @@ class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
     }
 
     fun getMessageList(chatId: String, result: (List<Messages>) -> Unit) {
+        val encryptMessages = EncryptMessages()
+        encryptMessages.createKey(chatId.substring(0, 16))
         val arr = ArrayList<Messages>()
         var message: String
         var sender: String

@@ -116,6 +116,9 @@
             <action
                 android:id="@+id/action_profileFragment_to_qrCodeFragment"
                 app:destination="@id/qrCodeFragment" />
+            <action
+                android:id="@+id/action_profileFragment_to_chatbotFragment"
+                app:destination="@id/chatbotFragment" />
         </fragment>
         <fragment
             android:id="@+id/contactFragment"
@@ -203,5 +206,10 @@
                 android:name="location"
                 app:argType="string" />
         </fragment>
+        <fragment
+            android:id="@+id/chatbotFragment"
+            android:name="com.example.laughlines.ui.chatbot.ChatbotFragment"
+            android:label="ChatbotFragment"
+            tools:layout="@layout/fragment_chatbot" />
     </navigation>
 </navigation>

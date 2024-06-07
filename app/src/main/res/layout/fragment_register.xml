@@ -21,228 +21,235 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-            <TextView
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/rubik_medium"
-                android:text="@string/text_register"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:layout_height="0dp"
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="32dp"
-                android:gravity="bottom"
-                android:paddingTop="4dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtNameRegister"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_edt_2"
-                    android:drawableStart="@drawable/ic_person_green_24"
-                    android:drawablePadding="6dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="28dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:hint="@string/enter_your_name"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:singleLine="true"
+                    android:text="@string/text_register"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/davy_grey"
                     android:textSize="14sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tvWarning1Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/rubik_medium"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="5dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtEmailRegister"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_edt_2"
-                    android:drawableStart="@drawable/ic_person_green_24"
-                    android:drawablePadding="6dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp"
+                    android:gravity="bottom"
+                    android:paddingTop="4dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNameRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_edt_2"
+                        android:drawableStart="@drawable/ic_person_green_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:hint="@string/enter_your_name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/davy_grey"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvWarning1Register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:hint="@string/enter_your_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/davy_grey"
-                    android:textSize="14sp" />
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tvWarning2Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/rubik_medium"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="5dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtNumberPhoneRegister"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_edt_2"
-                    android:drawableStart="@drawable/ic_person_green_24"
-                    android:drawablePadding="6dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtEmailRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_edt_2"
+                        android:drawableStart="@drawable/ic_person_green_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:hint="@string/enter_your_email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/davy_grey"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvWarning2Register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:maxLength="10"
-                    android:hint="@string/enter_your_number_phone"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/davy_grey"
-                    android:textSize="14sp" />
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tvWarning5Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/rubik_medium"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="5dp"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPasswordRegister"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_edt_2"
-                    android:drawableStart="@drawable/ic_lock_24"
-                    android:drawablePadding="6dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNumberPhoneRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_edt_2"
+                        android:drawableStart="@drawable/ic_person_green_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:maxLength="10"
+                        android:hint="@string/enter_your_number_phone"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/davy_grey"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvWarning5Register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:hint="@string/enter_your_password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/davy_grey"
-                    android:textSize="14sp" />
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tvWarning3Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/rubik_medium"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="5dp"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtConfirmPasswordRegister"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_edt_2"
-                    android:drawableStart="@drawable/ic_lock_24"
-                    android:drawablePadding="6dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="5dp"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtPasswordRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_edt_2"
+                        android:drawableStart="@drawable/ic_lock_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:hint="@string/enter_your_password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/davy_grey"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvWarning3Register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/rubik_medium"
-                    android:hint="@string/confirm_your_password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:paddingVertical="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/davy_grey"
-                    android:textSize="14sp" />
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="5dp"
+                    app:passwordToggleEnabled="true">
 
-            <TextView
-                android:id="@+id/tvWarning4Register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/rubik_medium"
-                android:textColor="@color/red"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="invisible" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtConfirmPasswordRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_edt_2"
+                        android:drawableStart="@drawable/ic_lock_24"
+                        android:drawablePadding="6dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:hint="@string/confirm_your_password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/davy_grey"
+                        android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/btnCreateAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="64dp"
-                android:layout_marginTop="32dp"
-                android:padding="8dp"
-                android:text="@string/create_account"
-                android:textColor="@color/jungle_green"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:id="@+id/tvWarning4Register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/btnCreateAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="64dp"
+                    android:layout_marginTop="32dp"
+                    android:padding="8dp"
+                    android:text="@string/create_account"
+                    android:textColor="@color/jungle_green"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

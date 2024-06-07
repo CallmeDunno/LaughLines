@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.os.Build
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -24,6 +25,7 @@ import com.example.laughlines.model.Messages
 import com.example.laughlines.ui.chat.adapter.MessageAdapter
 import com.example.laughlines.utils.Constant
 import com.example.laughlines.utils.Constant.GALLERY_REQUEST_CODE
+import com.example.laughlines.utils.EncryptMessages
 import com.example.laughlines.utils.SharedPreferencesManager
 import com.example.laughlines.utils.UiState
 import com.example.laughlines.utils.extensions.hideKeyboard
@@ -31,6 +33,10 @@ import com.example.laughlines.viewmodel.ChatViewModel
 import com.example.laughlines.viewmodel.ImageViewModel
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService
+import com.zegocloud.uikit.prebuilt.call.config.ZegoNotificationConfig
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig
+import com.zegocloud.uikit.service.defines.ZegoUIKitUser
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -56,6 +62,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
 
     private val viewModel by viewModels<ChatViewModel>()
     private val imageViewModel by viewModels<ImageViewModel>()
+    private lateinit var encryptMessages: EncryptMessages
 
     @Inject
     lateinit var sharedPref: SharedPreferencesManager
@@ -64,14 +71,31 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
         super.initView()
         myId = sharedPref.getString(Constant.Key.ID.name) ?: Constant.ID_DEFAULT
         adapter.setMyId(myId)
+        adapter.createKey(chatId.substring(0, 16))
         binding.rcv.adapter = adapter
         binding.rcv.itemAnimator = null
+
+        val application = requireActivity().application // Android's application context
+        val appID: Long = 1386242158   // yourAppID
+        val appSign = "ffb364052c3c90ef160dbae68eb65c89e2332dfb4756bb33e528698130309d70"  // yourAppSign
+        val userID = sharedPref.getString(Constant.Key.ID.name) ?: "" // yourUserID, userID should only contain numbers, English characters, and '_'.
+        val userName = "ccc"   // yourUserName
+        val callInvitationConfig = ZegoUIKitPrebuiltCallInvitationConfig()
+        val notificationConfig = ZegoNotificationConfig()
+        notificationConfig.sound = "zego_uikit_sound_call"
+        notificationConfig.channelID = "CallInvitation"
+        notificationConfig.channelName = "CallInvitation"
+        ZegoUIKitPrebuiltCallService.init(application, appID, appSign, userID, userName, callInvitationConfig);
     }
 
     override fun initData() {
         super.initData()
         chatId = arg.cid
         friendId = arg.fid
+
+        encryptMessages = EncryptMessages()
+        encryptMessages.createKey(chatId.substring(0, 16))
+
     }
 
     override fun onObserve() {
@@ -94,8 +118,19 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
             }
         }
 
-        viewModel.getMessageList(chatId).observeForever {
-            adapter.submitList(it)
+        viewModel.getMessageList(chatId).observe(viewLifecycleOwner) {
+            Log.w("Dunno", "aaaa")
+            val arr = ArrayList<Messages>()
+            arr.clear()
+            for (i in it){
+                if (i.type == Constant.IMAGE) {
+                    arr.add(i)
+                } else {
+                    val text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) encryptMessages.decode(i.message) else i.message
+                    arr.add(Messages(text, i.sender, i.timestamp, i.type))
+                }
+            }
+            adapter.submitList(arr)
             adapter.notifyItemInserted(it.size - 1)
             binding.rcv.post {
                 binding.rcv.smoothScrollToPosition(it.size + 1)
@@ -129,7 +164,14 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
                 }
             })
             btnMore.setOnClickListener { handleMore() }
+            handleVideoCall()
         }
+    }
+
+    private fun handleVideoCall() {
+        binding.btnCall.setIsVideoCall(true)
+        binding.btnCall.resourceID = "zego_uikit_call"
+        binding.btnCall.setInvitees(listOf(ZegoUIKitUser(friendId)))
     }
 
     @Deprecated("Deprecated in Java")
@@ -163,8 +205,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
-                val message = "${location.longitude} ${location.latitude}"
-                viewModel.pushMessage(chatId, Messages(message, myId, System.currentTimeMillis(), Constant.LOCATION)).observe(viewLifecycleOwner) {
+                val text = "${location.longitude} ${location.latitude}"
+                val messages = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) encryptMessages.encode(text) else text
+                viewModel.pushMessage(chatId, Messages(messages, myId, System.currentTimeMillis(), Constant.LOCATION)).observe(viewLifecycleOwner) {
                     when (it) {
                         is UiState.Loading -> {}
                         is UiState.Failure -> {
@@ -216,8 +259,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
     private fun handleSendMessage() {
         val text = binding.edtMessage.text.toString().trim()
         if (!TextUtils.isEmpty(text)) {
+
+            val messages = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) encryptMessages.encode(text) else text
+
             binding.edtMessage.setText("")
-            viewModel.pushMessage(chatId, Messages(text, myId, System.currentTimeMillis(), Constant.MESSAGE)).observe(viewLifecycleOwner) {
+            viewModel.pushMessage(chatId, Messages(messages, myId, System.currentTimeMillis(), Constant.MESSAGE)).observe(viewLifecycleOwner) {
                 when (it) {
                     is UiState.Loading -> {}
                     is UiState.Failure -> {

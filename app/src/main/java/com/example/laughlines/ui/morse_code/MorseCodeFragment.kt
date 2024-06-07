@@ -18,6 +18,7 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
     override val layoutId: Int = R.layout.fragment_morse_code
 
     private lateinit var morseCode: MorseCode
+    private var isSosMode = false
 
     override fun initView() {
         super.initView()
@@ -116,6 +117,28 @@ class MorseCodeFragment : BaseFragment<FragmentMorseCodeBinding>() {
                     if (b) {
                         btnTransmit.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_border_green_conner_10)
                     }
+                }
+                btnSos.setOnClickListener {
+                    isSosMode = !isSosMode
+                    if (isSosMode) {
+                        tvSos.text = "Off"
+                        morseCode.cancelFlashMorseCode()
+                        morseCode.setMorseCode(morseCode.textToMorse("sos"))
+                        morseCode.flashMorseCode()
+                        morseCode.isCompleted.observe(viewLifecycleOwner) {
+                            if (it) {
+                                morseCode.cancelFlashMorseCode()
+                                morseCode.setMorseCode(" ${morseCode.textToMorse("sos")}")
+                                morseCode.flashMorseCode()
+                            } else {
+                                morseCode.cancelFlashMorseCode()
+                            }
+                        }
+                    } else {
+                        tvSos.text = "SOS"
+                        morseCode.isCompleted.postValue(false)
+                    }
+
                 }
             }
         }

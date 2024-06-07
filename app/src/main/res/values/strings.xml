@@ -13,9 +13,13 @@
     <string name="save">Save</string>
     <string name="change_your_password">Change your password</string>
     <string name="change_password">Change password</string>
+    <string name="change_email">Change your email</string>
+    <string name="change_phone_number">Change your phone number:</string>
     <string name="change_avatar">Change your avatar:</string>
     <string name="change_name">Change your name:</string>
     <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_new_email">Enter your new email</string>
+    <string name="enter_your_phone_number">Enter your new phone number</string>
     <string name="change_information">Change information</string>
     <string name="text_register">Get chatting with friends and family today by signing up for our chat app!</string>
     <string name="enter_your_email">Enter your email</string>
@@ -39,7 +43,7 @@
     <string name="or">OR</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="register">Register</string>
-    <string name="chat_with_bot">Chat with LaughLines bot</string>
+    <string name="chat_with_bot">Chat with Gemini AI</string>
     <string name="morse_code">Morse code</string>
     <string name="qr_code">QR code</string>
     <string name="sign_out">Sign out</string>
@@ -102,7 +106,8 @@
     <string name="take_photos_successfully">Take a photo successfully!</string>
     <string name="permission_setting">Settings</string>
     <string name="see_the_way">See the way</string>
+    <string name="no_internet_connection">No Internet Connection</string>
     <string name="please_wait_a_moment">Please wait a moment</string>
     <string name="text_no_compass">Your device has no magnetometer sensor because of that you cannot use compass and level meter</string>
-
+    <string name="you_have_made_friends_with_this_person">You have made friends with this person.</string>
 </resources>

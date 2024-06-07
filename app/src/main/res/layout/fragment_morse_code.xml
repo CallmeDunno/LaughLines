@@ -172,5 +172,29 @@
             app:layout_constraintTop_toBottomOf="@id/tvLabelMorseCode"
             tools:layout_editor_absoluteX="13dp" />
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/btnSos"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_white_circle"
+            android:backgroundTint="@color/red"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvSos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_medium"
+                android:gravity="center"
+                android:text="SOS"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
