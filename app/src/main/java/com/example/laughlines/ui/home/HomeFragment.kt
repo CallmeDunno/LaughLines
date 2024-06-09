@@ -55,11 +55,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onObserve()
         viewModel.getMyAccount().observe(viewLifecycleOwner) {
             myAccount = it
-            if (myAccount.avatar == "") {
+            if (myAccount.avatar == "" || myAccount.avatar == "null") {
                 binding.imgAvatar.setImageResource(R.drawable.logo_chat_app)
             } else {
-//                binding.imgAvatar.setImageResource(R.drawable.logo_chat_app)
-                Glide.with(requireActivity()).load(myAccount.avatar).into(binding.imgAvatar)
+                Glide.with(requireContext()).load(myAccount.avatar).into(binding.imgAvatar)
             }
         }
 
@@ -68,6 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is UiState.Loading -> {}
                 is UiState.Failure -> { Log.e("Dunno", it.message.toString()) }
                 is UiState.Success -> { binding.nb.setNumber(it.data) }
+                else -> {}
             }
         }
 
@@ -102,6 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             is UiState.Success -> {
                                 notify(getString(R.string.update_successful))
                             }
+                            else -> {}
                         }
                     }
                 }

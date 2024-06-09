@@ -30,7 +30,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth) = LoginRepository(fDb, fAuth)
+    fun provideLoginRepository(fDb: FirebaseFirestore, fAuth: FirebaseAuth, sharedPreManager: SharedPreferencesManager) = LoginRepository(fDb, fAuth, sharedPreManager)
 
     @Provides
     @Singleton

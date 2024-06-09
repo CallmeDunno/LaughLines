@@ -23,9 +23,9 @@ class ChatRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
                 val name = it.data?.get("name").toString()
                 val email = it.data?.get("email").toString()
                 val status = it.data?.get("status").toString()
-                val avatarUrl = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
+                val avatar = if (it.data?.get("avatar").toString() == "null") "" else it.data?.get("avatar").toString()
                 val numberPhone = it.data?.get("numberPhone").toString()
-                result.invoke(UiState.Success(Account(id, name, email, avatarUrl, status, numberPhone)))
+                result.invoke(UiState.Success(Account(id, name, email, avatar, status, numberPhone)))
             }
             .addOnFailureListener { result.invoke(UiState.Failure(it.message.toString())) }
     }

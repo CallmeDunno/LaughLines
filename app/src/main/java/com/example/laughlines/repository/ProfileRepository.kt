@@ -15,15 +15,15 @@ class ProfileRepository @Inject constructor(
 ) {
 
     fun getAccount(result: (UiState<Person>) -> Unit) {
-        val myId = sharedPreManager.getString(Constant.Key.ID.name) ?: ""
+        val myId = sharedPreManager.getString(Constant.Key.ID.name) ?: Constant.ID_DEFAULT
         fDb.collection(Constant.Collection.User.name)
             .document(myId)
             .get()
             .addOnSuccessListener {
                 val name = it.data?.get("name").toString()
                 val email = it.data?.get("email").toString()
-                val avatarUrl = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
-                result.invoke(UiState.Success(Person(name, email, avatarUrl)))
+                val avatar = if (it.data?.get("avatar").toString() == "null") "" else it.data?.get("avatar").toString()
+                result.invoke(UiState.Success(Person(name, email, avatar)))
             }
             .addOnFailureListener { result.invoke(UiState.Failure(it.message)) }
     }

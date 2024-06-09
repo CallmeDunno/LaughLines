@@ -19,7 +19,7 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
     fun getAllFriend(result: (UiState<List<Contact>>) -> Unit) {
         result.invoke(UiState.Loading)
         val arr = ArrayList<Contact>()
-        fDb.collection(Constant.Collection.User.name).document(sharedPref.getString(Constant.Key.ID.name) ?: "").collection(Constant.Collection.Friends.name).addSnapshotListener { value, error ->
+        fDb.collection(Constant.Collection.User.name).document(sharedPref.getString(Constant.Key.ID.name) ?: Constant.ID_DEFAULT).collection(Constant.Collection.Friends.name).addSnapshotListener { value, error ->
             if (error != null) {
                 Log.e("Dunno", "Error: $error")
                 result.invoke(UiState.Failure(error.message.toString()))
@@ -54,9 +54,9 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
                 val name = it.data?.get("name").toString()
                 val email = it.data?.get("email").toString()
                 val status = it.data?.get("status").toString()
-                val avatarUrl = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
+                val avatar = if (it.data?.get("avatar").toString() == "null") "" else it.data?.get("avatar").toString()
                 val numberPhone = it.data?.get("numberPhone").toString()
-                result.invoke(Account(id, name, email, avatarUrl, status, numberPhone))
+                result.invoke(Account(id, name, email, avatar, status, numberPhone))
             }
         }
     }
@@ -69,7 +69,7 @@ class ContactRepository @Inject constructor(private val fDb: FirebaseFirestore, 
     }
 
     fun deleteFriend(chatId: String, friendId: String) {
-        val myId = sharedPref.getString(Constant.Key.ID.name) ?: ""
+        val myId = sharedPref.getString(Constant.Key.ID.name) ?: Constant.ID_DEFAULT
 
         fDb.collection(Constant.Collection.Chats.name).document(chatId).delete().addOnSuccessListener { Log.d("Dunno", "Delete in Chats successfully") }.addOnFailureListener { Log.e("Dunno", "Delete Chats: ${it.message}") }
 

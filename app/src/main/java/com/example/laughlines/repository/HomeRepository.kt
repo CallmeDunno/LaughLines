@@ -116,7 +116,7 @@ class HomeRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
             .addOnSuccessListener {
                 val name = it.data?.get("name").toString()
                 val email = it.data?.get("email").toString()
-                val avatar = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
+                val avatar = if (it.data?.get("avatar").toString() == "null") "" else it.data?.get("avatar").toString()
                 val status = it.data?.get("status").toString()
                 val numberPhone = it.data?.get("numberPhone").toString()
                 result.invoke(Account(myId, name, email, avatar, status, numberPhone))
@@ -141,9 +141,9 @@ class HomeRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
                 val name = it.data?.get("name").toString()
                 val email = it.data?.get("email").toString()
                 val status = it.data?.get("status").toString()
-                val avatarUrl = if (it.data?.get("avatarUrl").toString() == "null") "" else it.data?.get("avatarUrl").toString()
+                val avatar = if (it.data?.get("avatar").toString() == "null") "" else it.data?.get("avatar").toString()
                 val numberPhone = it.data?.get("numberPhone").toString()
-                result.invoke(Account(id, name, email, avatarUrl, status, numberPhone))
+                result.invoke(Account(id, name, email, avatar, status, numberPhone))
             }
         }
     }

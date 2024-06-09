@@ -48,8 +48,8 @@ class RequestRepository @Inject constructor(private val fDb: FirebaseFirestore, 
     private fun getAccount(id: String, result: (String) -> Unit) {
         fDb.collection(Constant.Collection.User.name).document(id).get().addOnSuccessListener {
             val name = it.data!!["name"].toString()
-            val avatarUrl = it.data!!["avatarUrl"].toString()
-            result.invoke("${name}_$avatarUrl")
+            val avatar = it.data!!["avatar"].toString()
+            result.invoke("${name}_$avatar")
         }.addOnFailureListener {
             Log.e("Dunno", "Error: ${it.message}")
         }

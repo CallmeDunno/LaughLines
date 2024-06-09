@@ -78,7 +78,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
         val application = requireActivity().application // Android's application context
         val appID: Long = 1386242158   // yourAppID
         val appSign = "ffb364052c3c90ef160dbae68eb65c89e2332dfb4756bb33e528698130309d70"  // yourAppSign
-        val userID = sharedPref.getString(Constant.Key.ID.name) ?: "" // yourUserID, userID should only contain numbers, English characters, and '_'.
+        val userID = myId // yourUserID, userID should only contain numbers, English characters, and '_'.
         val userName = "ccc"   // yourUserName
         val callInvitationConfig = ZegoUIKitPrebuiltCallInvitationConfig()
         val notificationConfig = ZegoNotificationConfig()

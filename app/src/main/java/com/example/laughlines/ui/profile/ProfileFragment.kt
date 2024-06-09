@@ -48,10 +48,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     binding.tvName.text = p.name
                     binding.tvEmail.text = p.email
                     email = p.email
-                    if (p.avatarUrl == "") {
+                    if (p.avatar == "") {
                         Glide.with(requireContext()).load(R.drawable.logo_chat_app).into(binding.imgAvatar)
                     } else {
-                        Glide.with(requireContext()).load(p.avatarUrl).into(binding.imgAvatar)
+                        Glide.with(requireContext()).load(p.avatar).into(binding.imgAvatar)
                     }
                 }
             }

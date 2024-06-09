@@ -1,5 +1,6 @@
 package com.example.laughlines.ui
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -41,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         _navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)
 
+        Log.e("Dunno", sharedPreManager.getString(Constant.Key.ID.name)  ?: "hehe")
         if (sharedPreManager.getString(Constant.Key.ID.name).isNullOrEmpty()) {
             navController.popBackStack(R.id.home_navigation, true)
             navController.navigate(R.id.login_navigation)

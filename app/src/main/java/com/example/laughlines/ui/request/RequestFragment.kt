@@ -155,7 +155,7 @@ class RequestFragment : BaseFragment<FragmentRequestBinding>() {
     }
 
     private fun handleAccept(requestModel2: RequestModel2) {
-        val myId = sharedPref.getString(Constant.Key.ID.name) ?: ""
+        val myId = sharedPref.getString(Constant.Key.ID.name) ?: Constant.ID_DEFAULT
         viewModel.acceptRequest(myId, requestModel2.idRequest)
         viewModel.deleteRequest(requestModel2.id).observe(viewLifecycleOwner) {
             when (it) {
