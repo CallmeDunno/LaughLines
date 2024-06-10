@@ -2,6 +2,7 @@ package com.example.laughlines.ui.home
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -14,6 +15,7 @@ import com.example.laughlines.model.Account
 import com.example.laughlines.ui.home.adapter.ChatAdapter
 import com.example.laughlines.ui.home.adapter.StatusAdapter
 import com.example.laughlines.utils.UiState
+import com.example.laughlines.utils.extensions.hide
 import com.example.laughlines.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -74,6 +76,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         viewModel.getAllFriend().observe(viewLifecycleOwner) {
             val statusArr = ArrayList<Account>()
             statusArr.clear()
+            if (it.isNotEmpty()) {
+                binding.tvWarningHome.hide()
+            } else {
+                binding.tvWarningHome.visibility = View.VISIBLE
+            }
             for (c in it){
                 if (c.account.status != "" && c.account.status != "null") {
                     statusArr.add(c.account)

@@ -2,11 +2,15 @@ package com.example.laughlines.ui.chat
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.Editable
+import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -23,11 +27,9 @@ import com.example.laughlines.databinding.FragmentChatBinding
 import com.example.laughlines.dialog.LoadingDialog
 import com.example.laughlines.model.Messages
 import com.example.laughlines.ui.chat.adapter.MessageAdapter
-import com.example.laughlines.utils.Constant
+import com.example.laughlines.utils.*
 import com.example.laughlines.utils.Constant.GALLERY_REQUEST_CODE
-import com.example.laughlines.utils.EncryptMessages
-import com.example.laughlines.utils.SharedPreferencesManager
-import com.example.laughlines.utils.UiState
+import com.example.laughlines.utils.Constant.PERMISSION_CAMERA
 import com.example.laughlines.utils.extensions.hideKeyboard
 import com.example.laughlines.viewmodel.ChatViewModel
 import com.example.laughlines.viewmodel.ImageViewModel
@@ -122,7 +124,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
             Log.w("Dunno", "aaaa")
             val arr = ArrayList<Messages>()
             arr.clear()
-            for (i in it){
+            for (i in it) {
                 if (i.type == Constant.IMAGE) {
                     arr.add(i)
                 } else {
@@ -237,19 +239,15 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
         bottomSheet.setContentView(bottomSheetBinding.root)
         bottomSheetBinding.apply {
             btnCamera.setOnClickListener {
-                val action = ChatFragmentDirections.actionChatFragmentToCameraFragment(chatId)
-                requireView().findNavController().navigate(action)
+                requestCamera()
                 bottomSheet.dismiss()
             }
             btnGallery.setOnClickListener {
                 bottomSheet.dismiss()
-                val i = Intent()
-                i.type = "image/*"
-                i.action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(Intent.createChooser(i, "Select Picture"), GALLERY_REQUEST_CODE)
+                requestStorage()
             }
             btnLocation.setOnClickListener {
-                getLatLng()
+                requestLocation()
                 bottomSheet.dismiss()
             }
         }
@@ -275,5 +273,98 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
                 }
             }
         }
+    }
+
+    private fun handleCamera() {
+        val action = ChatFragmentDirections.actionChatFragmentToCameraFragment(chatId)
+        requireView().findNavController().navigate(action)
+    }
+
+    private fun handleStorage() {
+        val i = Intent()
+        i.type = "image/*"
+        i.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), GALLERY_REQUEST_CODE)
+    }
+
+    private fun requestLocation() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Constant.PER_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getLatLng()
+        } else {
+            requestPermissions(arrayOf(Constant.PER_FINE_LOCATION), Constant.PER_LOCATION_CODE)
+        }
+    }
+
+    private fun requestStorage() {
+        if (Build.VERSION.SDK_INT <= 32) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                handleStorage()
+            } else {
+                requestPermissions(arrayOf(Constant.PERMISSION_READ_EXTERNAL_STORAGE, Constant.PERMISSION_WRITE_EXTERNAL_STORAGE), Constant.PER_STORAGE_CODE)
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_READ_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                handleStorage()
+            } else {
+                requestPermissions(arrayOf(Constant.PERMISSION_READ_IMAGES), Constant.PER_STORAGE_CODE)
+            }
+        }
+
+    }
+
+    private fun requestCamera() {
+        if (ContextCompat.checkSelfPermission(requireContext(), PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            handleCamera()
+        } else {
+            requestPermissions(arrayOf(Constant.PERMISSION_CAMERA), Constant.PER_CAMERA_CODE)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            Constant.PER_STORAGE_CODE -> {
+                if (Build.VERSION.SDK_INT >= 33) {
+                    if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        handleStorage()
+                    } else {
+                        showGoToSettingDialog()
+                    }
+                } else {
+                    if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        handleStorage()
+                    } else {
+                        showGoToSettingDialog()
+                    }
+                }
+            }
+            Constant.PER_CAMERA_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    handleCamera()
+                } else {
+                    showGoToSettingDialog()
+                }
+            }
+            Constant.PER_LOCATION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getLatLng()
+                } else {
+                    showGoToSettingDialog()
+                }
+            }
+        }
+    }
+
+    private fun showGoToSettingDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage(getString(R.string.requested_permission_message)).setTitle(getString(R.string.requested_permission_title)).setCancelable(false).setPositiveButton(Html.fromHtml("<font color='#21A884'>${getString(R.string.permission_setting)}</font>")) { p0, _ ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", requireActivity().packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            p0.dismiss()
+        }
+        builder.show()
     }
 }

@@ -1,8 +1,10 @@
 package com.example.laughlines.ui.qr_code
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.LinearGradient
@@ -12,6 +14,8 @@ import android.os.Build
 import android.os.Handler
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.provider.Settings
+import android.text.Html
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -58,7 +62,7 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
 
     override fun initView() {
         super.initView()
-
+        requestCamera()
         binding.toolbar.apply {
             tvToolbar.text = getString(R.string.qr_code_scanner)
             btnSettings.hide()
@@ -77,11 +81,15 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
         binding.toolbar.btnBack.setOnClickListener { requireView().findNavController().popBackStack() }
         binding.btnMyQrCode.setOnClickListener { requireView().findNavController().navigate(R.id.action_qrCodeFragment_to_qrCodeGeneratorFragment) }
         binding.btnGallery.setOnClickListener {
-            val i = Intent()
-            i.type = "image/*"
-            i.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(i, "Select Picture"), GALLERY_REQUEST_CODE)
+            requestStorage()
         }
+    }
+
+    private fun handleStorage() {
+        val i = Intent()
+        i.type = "image/*"
+        i.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), GALLERY_REQUEST_CODE)
     }
 
     override fun onObserve() {
@@ -132,6 +140,72 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
                 }
             }
         }
+    }
+
+    private fun requestStorage() {
+        if (Build.VERSION.SDK_INT <= 32) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                handleStorage()
+            } else {
+                requestPermissions(arrayOf(Constant.PERMISSION_READ_EXTERNAL_STORAGE, Constant.PERMISSION_WRITE_EXTERNAL_STORAGE), Constant.PER_STORAGE_CODE)
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_READ_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                handleStorage()
+            } else {
+                requestPermissions(arrayOf(Constant.PERMISSION_READ_IMAGES), Constant.PER_STORAGE_CODE)
+            }
+        }
+
+    }
+
+    private fun requestCamera() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Constant.PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            requestPermissions(arrayOf(Constant.PERMISSION_CAMERA), Constant.PER_CAMERA_CODE)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            Constant.PER_STORAGE_CODE -> {
+                if (Build.VERSION.SDK_INT >= 33) {
+                    if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        handleStorage()
+                    } else {
+                        showGoToSettingDialog()
+                    }
+                } else {
+                    if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        handleStorage()
+                    } else {
+                        showGoToSettingDialog()
+                    }
+                }
+            }
+            Constant.PER_CAMERA_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    showGoToSettingDialog()
+                }
+            }
+        }
+    }
+
+    private fun showGoToSettingDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage(getString(R.string.requested_permission_message)).setTitle(getString(R.string.requested_permission_title)).setCancelable(false).setPositiveButton(Html.fromHtml("<font color='#21A884'>${getString(R.string.permission_setting)}</font>")) { p0, _ ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", requireActivity().packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            p0.dismiss()
+        }
+        builder.show()
     }
 
     private fun initScanner() {

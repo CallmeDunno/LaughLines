@@ -66,10 +66,10 @@ class ContactFragment : BaseFragment<FragmentContactBinding>() {
                 }
                 is UiState.Success -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.data)
-                    adapter.notifyDataSetChanged()
                     currentList.clear()
                     currentList.addAll(it.data)
+                    adapter.submitList(currentList)
+                    adapter.notifyDataSetChanged()
                     if (it.data.isNotEmpty()) {
                         binding.tvContactEmpty.hide()
                     } else {

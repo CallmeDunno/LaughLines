@@ -87,22 +87,26 @@ class HomeRepository @Inject constructor(private val fDb: FirebaseFirestore, pri
                     return@addSnapshotListener
                 }
                 Log.w("Dunno", value!!.documents.size.toString())
-                for (v in value.documentChanges) {
-                    when(v.type) {
-                        DocumentChange.Type.ADDED -> {
-                            val id = v.document.id
-                            val chatId = v.document.data["chatId"].toString()
-                            val friendId = v.document.data["friendId"].toString()
-                            getInformation(friendId) { account ->
-                                getLastTime(chatId) {lastTime ->
-                                    arr.add(Contact(id, chatId, friendId, account, lastTime))
-                                    Collections.sort(arr, Contact.Companion.SortByTimestamp())
-                                    result.invoke(arr)
+                if (value.documentChanges.size ==0){
+                    result.invoke(arr)
+                } else {
+                    for (v in value.documentChanges) {
+                        when(v.type) {
+                            DocumentChange.Type.ADDED -> {
+                                val id = v.document.id
+                                val chatId = v.document.data["chatId"].toString()
+                                val friendId = v.document.data["friendId"].toString()
+                                getInformation(friendId) { account ->
+                                    getLastTime(chatId) {lastTime ->
+                                        arr.add(Contact(id, chatId, friendId, account, lastTime))
+                                        Collections.sort(arr, Contact.Companion.SortByTimestamp())
+                                        result.invoke(arr)
+                                    }
                                 }
                             }
+                            DocumentChange.Type.MODIFIED -> {}
+                            DocumentChange.Type.REMOVED -> {}
                         }
-                        DocumentChange.Type.MODIFIED -> {}
-                        DocumentChange.Type.REMOVED -> {}
                     }
                 }
             }
