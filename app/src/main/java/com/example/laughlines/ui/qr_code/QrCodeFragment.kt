@@ -273,9 +273,8 @@ class QrCodeFragment : BaseFragment<FragmentQrCodeBinding>() {
             vLoading.hide()
             btnAddFriend.isEnabled = true
             btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.jungle_green))
-
             if (qrResult.avatar == null || qrResult.avatar == "null" || qrResult.avatar == "") {
-                Glide.with(requireView()).load(R.drawable.ic_person_green_24).into(imgAvatar)
+                Glide.with(requireView()).load(R.drawable.logo_chat_app).into(imgAvatar)
             } else {
                 Glide.with(requireView()).load(qrResult.avatar).into(imgAvatar)
             }

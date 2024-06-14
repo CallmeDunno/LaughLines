@@ -106,6 +106,12 @@ class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback, Sens
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=${originalLatitude},${originalLongitude}&daddr=${latitude},${longitude}"))
             startActivity(intent)
         }
+        binding.btnCurrentLocation.setOnClickListener {
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(originalLatitude, originalLongitude), zoom))
+        }
+        binding.btnFriendLocation.setOnClickListener {
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoom))
+        }
     }
 
     override fun onStop() {

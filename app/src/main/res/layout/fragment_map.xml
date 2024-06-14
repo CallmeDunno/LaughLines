@@ -67,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutSeeTheWay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="8dp"
@@ -99,6 +100,28 @@
                 android:layout_marginHorizontal="10dp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ImageView
+            android:id="@+id/btnCurrentLocation"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_location_3"
+            app:layout_constraintBottom_toTopOf="@id/layoutSeeTheWay"
+            app:layout_constraintEnd_toEndOf="@id/layoutSeeTheWay"
+            android:layout_margin="16dp"
+            android:padding="5dp"
+            android:background="@drawable/bg_gray_circle"/>
+
+        <ImageView
+            android:id="@+id/btnFriendLocation"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_location_2"
+            app:layout_constraintBottom_toTopOf="@id/btnCurrentLocation"
+            app:layout_constraintEnd_toEndOf="@id/btnCurrentLocation"
+            android:padding="5dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_gray_circle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

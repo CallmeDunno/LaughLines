@@ -1,5 +1,6 @@
 package com.example.laughlines.ui.request
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -28,9 +29,9 @@ class RequestAdapter(private val onClickItem: (RequestModel2) -> Unit, private v
             binding.apply {
                 btnAccept.setOnClickListener { onClickAccept.invoke(requestModel2) }
                 btnDelete.setOnClickListener { onClickDelete.invoke(requestModel2.id) }
-
-                if (requestModel2.avatar == null || requestModel2.avatar == "null") {
-                    Glide.with(itemView.context).load(R.drawable.ic_person_green_24).into(img)
+                Log.e("Dunno", requestModel2.avatar ?: "")
+                if (requestModel2.avatar == null || requestModel2.avatar == "null" || requestModel2.avatar == "") {
+                    Glide.with(itemView.context).load(R.drawable.logo_chat_app).into(img)
                 } else {
                     Glide.with(itemView.context).load(requestModel2.avatar).into(img)
                 }

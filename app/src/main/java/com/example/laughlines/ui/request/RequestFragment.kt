@@ -60,8 +60,8 @@ class RequestFragment : BaseFragment<FragmentRequestBinding>() {
                 }
                 is UiState.Success -> {
                     loadingDialog.dismiss()
+                    adapter.submitList(it.data)
                     if (it.data.isNotEmpty()) {
-                        adapter.submitList(it.data)
                         binding.tvEmpty.hide()
                     } else {
                         binding.tvEmpty.show()
@@ -105,8 +105,9 @@ class RequestFragment : BaseFragment<FragmentRequestBinding>() {
                         btnAddFriend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.jungle_green))
 
                         val data = it.data
-                        if (data.avatar == null || data.avatar == "null") {
-                            Glide.with(requireView()).load(R.drawable.ic_person_green_24).into(imgAvatar)
+                        Log.e("Dunno", data.avatar ?: "aaa")
+                        if (data.avatar == null || data.avatar == "null" || data.avatar == "") {
+                            Glide.with(requireView()).load(R.drawable.logo_chat_app).into(imgAvatar)
                         } else {
                             Glide.with(requireView()).load(data.avatar).into(imgAvatar)
                         }

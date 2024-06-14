@@ -29,7 +29,7 @@ class RequestRepository @Inject constructor(private val fDb: FirebaseFirestore, 
                     val timeRequest = i.data!!["timeRequest"].toString()
 
                     getAccount(idRequest) { str ->
-                        val field = str.split("_")
+                        val field = str.split("_____")
                         arr.add(RequestModel2(id, idRequest, field[0], timeRequest, field[1]))
                         result.invoke(UiState.Success(arr))
                     }
@@ -49,7 +49,8 @@ class RequestRepository @Inject constructor(private val fDb: FirebaseFirestore, 
         fDb.collection(Constant.Collection.User.name).document(id).get().addOnSuccessListener {
             val name = it.data!!["name"].toString()
             val avatar = it.data!!["avatar"].toString()
-            result.invoke("${name}_$avatar")
+            Log.d("Dunno", avatar)
+            result.invoke("${name}_____$avatar")
         }.addOnFailureListener {
             Log.e("Dunno", "Error: ${it.message}")
         }

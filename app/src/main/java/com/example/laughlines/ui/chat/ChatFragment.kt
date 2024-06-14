@@ -14,6 +14,7 @@ import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View.OnClickListener
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -40,6 +41,7 @@ import com.zegocloud.uikit.prebuilt.call.config.ZegoNotificationConfig
 import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig
 import com.zegocloud.uikit.service.defines.ZegoUIKitUser
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -77,17 +79,17 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
         binding.rcv.adapter = adapter
         binding.rcv.itemAnimator = null
 
-        val application = requireActivity().application // Android's application context
+        val application = requireActivity().application
         val appID: Long = 1386242158   // yourAppID
         val appSign = "ffb364052c3c90ef160dbae68eb65c89e2332dfb4756bb33e528698130309d70"  // yourAppSign
         val userID = myId // yourUserID, userID should only contain numbers, English characters, and '_'.
-        val userName = "ccc"   // yourUserName
+        val userName = "Calling"   // yourUserName
         val callInvitationConfig = ZegoUIKitPrebuiltCallInvitationConfig()
         val notificationConfig = ZegoNotificationConfig()
         notificationConfig.sound = "zego_uikit_sound_call"
         notificationConfig.channelID = "CallInvitation"
         notificationConfig.channelName = "CallInvitation"
-        ZegoUIKitPrebuiltCallService.init(application, appID, appSign, userID, userName, callInvitationConfig);
+        ZegoUIKitPrebuiltCallService.init(application, appID, appSign, userID, userName, callInvitationConfig)
     }
 
     override fun initData() {
@@ -167,6 +169,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
             })
             btnMore.setOnClickListener { handleMore() }
             handleVideoCall()
+            btnCall.setOnClickListener(OnClickListener {
+                notify("Calling")
+            })
         }
     }
 
@@ -174,6 +179,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>() {
         binding.btnCall.setIsVideoCall(true)
         binding.btnCall.resourceID = "zego_uikit_call"
         binding.btnCall.setInvitees(listOf(ZegoUIKitUser(friendId)))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ZegoUIKitPrebuiltCallService.unInit()
     }
 
     @Deprecated("Deprecated in Java")

@@ -38,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val chatAdapter by lazy {
         ChatAdapter {
+            Log.e("Dunno", it.friendId)
             val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(it.chatId, it.friendId)
             requireView().findNavController().navigate(action)
         }
@@ -88,6 +89,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
             statusAdapter.submitList(statusArr)
             statusAdapter.notifyDataSetChanged()
+            binding.rcvStatus.post { binding.rcvStatus.smoothScrollToPosition(0) }
             chatAdapter.submitList(it)
             chatAdapter.notifyDataSetChanged()
         }
@@ -98,6 +100,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.apply {
             btnNotification.setOnClickListener { requireView().findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRequestFragment()) }
             btnMyStatus.setOnClickListener {
+                viewModel.getMyAccount().observe(viewLifecycleOwner){
+                    myAccount = it
+                }
                 val dialog = StatusDialog(requireContext(), myAccount) { status ->
                     viewModel.updateStatus(status).observe(viewLifecycleOwner) {
                         when (it) {
